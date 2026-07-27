@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
@@ -25,13 +25,39 @@ const SVG_TOP_PCT = -(CARD_Y / CARD_H) * 100;
 
 export const LightDarkSlider = forwardRef<
   HTMLDivElement,
-  { lightSvg: string; darkSvg: string; style?: React.CSSProperties }
->(function LightDarkSlider({ lightSvg, darkSvg, style }, forwardedRef) {
+  { lightSrc: string; darkSrc: string; style?: React.CSSProperties }
+>(function LightDarkSlider({ lightSrc, darkSrc, style }, forwardedRef) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const percentRef = useRef(50);
   const rafRef = useRef(0);
+
+  // The two mockup SVGs are ~1MB each. Fetching them client-side (instead of
+  // passing their text as server-rendered props) keeps that weight out of
+  // both the initial HTML and the RSC hydration payload — passing large
+  // strings as props to a client component makes Next.js serialize them a
+  // second time for hydration, nearly doubling the page's transfer size.
+  const [lightSvg, setLightSvg] = useState<string | null>(null);
+  const [darkSvg, setDarkSvg] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    function stripShadowFilter(svg: string) {
+      return svg.replace(/ filter="url\(#filter0_d_[^)]*\)"/, "");
+    }
+    Promise.all([
+      fetch(lightSrc).then((res) => res.text()),
+      fetch(darkSrc).then((res) => res.text()),
+    ]).then(([light, dark]) => {
+      if (cancelled) return;
+      setLightSvg(stripShadowFilter(light));
+      setDarkSvg(stripShadowFilter(dark));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [lightSrc, darkSrc]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -116,23 +142,27 @@ export const LightDarkSlider = forwardRef<
           container above: Safari can fail to clip a rounded overflow-hidden
           box to its border-radius when that same element also carries a
           box-shadow, so the shadow and the clip must not share an element. */}
-      <div className="absolute inset-0 overflow-hidden rounded-2xl">
-        <div
-          className="light-dark-slider-svg"
-          style={svgWrapperStyle}
-          dangerouslySetInnerHTML={{ __html: lightSvg }}
-        />
+      <div className="absolute inset-0 overflow-hidden rounded-2xl bg-[#f8f8f8]">
+        {lightSvg && (
+          <div
+            className="light-dark-slider-svg"
+            style={svgWrapperStyle}
+            dangerouslySetInnerHTML={{ __html: lightSvg }}
+          />
+        )}
 
         <div
           ref={overlayRef}
           className="absolute inset-0 overflow-hidden rounded-2xl"
           style={{ clipPath: "inset(0 0 0 50%)" }}
         >
-          <div
-            className="light-dark-slider-svg"
-            style={svgWrapperStyle}
-            dangerouslySetInnerHTML={{ __html: darkSvg }}
-          />
+          {darkSvg && (
+            <div
+              className="light-dark-slider-svg"
+              style={svgWrapperStyle}
+              dangerouslySetInnerHTML={{ __html: darkSvg }}
+            />
+          )}
         </div>
 
         <div

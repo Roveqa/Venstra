@@ -1,16 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
 import { LightDarkSlider } from "@/components/light-dark-slider";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
-
-function readMockupSvg(filename: string) {
-  const svg = fs.readFileSync(
-    path.join(process.cwd(), "public", "images", filename),
-    "utf8"
-  );
-  return svg.replace(/ filter="url\(#filter0_d_[^)]*\)"/, "");
-}
 
 export const metadata: Metadata = buildMetadata({
   title: "Theming — Venstra Design System",
@@ -20,9 +10,6 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function ThemingPage() {
-  const lightSvg = readMockupSvg("dashboard-mockup-light.svg");
-  const darkSvg = readMockupSvg("dashboard-mockup-dark.svg");
-
   return (
     <>
       <div className="flex w-full flex-col gap-9">
@@ -33,7 +20,10 @@ export default function ThemingPage() {
       </div>
 
       <div className="flex w-full flex-col gap-12">
-        <LightDarkSlider lightSvg={lightSvg} darkSvg={darkSvg} />
+        <LightDarkSlider
+          lightSrc="/images/dashboard-mockup-light.svg"
+          darkSrc="/images/dashboard-mockup-dark.svg"
+        />
 
         <p className="text-[16px] leading-[1.4] tracking-[-0.48px] text-ink-600">
           Venstra supports light and dark mode out of the box, powered by

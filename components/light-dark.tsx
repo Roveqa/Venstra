@@ -1,21 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
 import { BlurReveal } from "./blur-reveal";
 import { LightDarkSlider } from "./light-dark-slider";
 import { ScrollReveal3D } from "./scroll-reveal-3d";
 
-function readSvg(filename: string) {
-  const svg = fs.readFileSync(
-    path.join(process.cwd(), "public", "images", filename),
-    "utf8"
-  );
-  return svg.replace(/ filter="url\(#filter0_d_[^)]*\)"/, "");
-}
-
 export function LightDark() {
-  const lightSvg = readSvg("dashboard-mockup-light.svg");
-  const darkSvg = readSvg("dashboard-mockup-dark.svg");
-
   return (
     <section className="flex w-full flex-col items-center gap-[60px] px-4 pt-24 pb-16 md:px-10 md:py-16 lg:py-[120px]">
       <div className="flex flex-col items-center gap-4 text-center">
@@ -33,7 +20,10 @@ export function LightDark() {
 
       <ScrollReveal3D>
         <div className="w-full max-w-[1222px]">
-          <LightDarkSlider lightSvg={lightSvg} darkSvg={darkSvg} />
+          <LightDarkSlider
+            lightSrc="/images/dashboard-mockup-light.svg"
+            darkSrc="/images/dashboard-mockup-dark.svg"
+          />
         </div>
       </ScrollReveal3D>
     </section>
