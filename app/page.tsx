@@ -23,7 +23,7 @@ const websiteJsonLd = {
   name: "Venstra",
   description:
     "Free Figma design system with 27 components, semantic tokens, and light/dark mode. Built for product designers who care about consistency.",
-  url: "https://venstra.design",
+  url: "https://venstra.vercel.app",
 };
 
 export default function Home() {
