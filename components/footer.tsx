@@ -30,11 +30,16 @@ export function Footer() {
   return (
     <footer className="w-full border-t border-stroke px-4 pb-7 pt-12 md:px-10 md:pb-16 lg:px-[244px] lg:py-[60px]">
       <div className="flex flex-col items-start gap-10 lg:flex-row lg:items-start lg:justify-between">
-        <div className="flex flex-col items-start gap-3">
+        <div className="flex shrink-0 flex-col items-start gap-3">
           <Logo />
-          <span className="text-[16px] leading-[1.25] tracking-[-0.48px] text-ink-700 opacity-40">
-            Copyright © 2026 Venstra
-          </span>
+          <div className="flex flex-col items-start gap-2">
+            <span className="whitespace-nowrap text-[16px] leading-[1.25] tracking-[-0.48px] text-ink-700">
+              Made by Yan Bogdanov
+            </span>
+            <span className="whitespace-nowrap text-[16px] leading-[1.25] tracking-[-0.48px] text-ink-700 opacity-40">
+              Copyright © 2026 Venstra
+            </span>
+          </div>
         </div>
 
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:flex lg:w-auto lg:grid-cols-none lg:items-start lg:gap-[20px]">
