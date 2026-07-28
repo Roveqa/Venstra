@@ -146,9 +146,11 @@ function BadgeDemo() {
                       {i.label}
                     </Badge>
                   ))}
-                  <Badge variant={v.key} size={s.key} shape="number">
-                    8
-                  </Badge>
+                  {intents.map((i) => (
+                    <Badge key={`${i.key}-number`} variant={v.key} size={s.key} intent={i.key} shape="number">
+                      8
+                    </Badge>
+                  ))}
                 </div>
               </div>
             ))}
