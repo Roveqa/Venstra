@@ -2,7 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Design tokens generated from the Figma design system
+ * (r2dbmly2FCs307sePH1Z9C). Source of truth: lib/semantic-color-tokens.ts
+ * (Surface/Fill/Foreground/Stroke, light + dark), lib/spacing-tokens.ts,
+ * lib/border-radius-tokens.ts, lib/typography-tokens.ts.
+ *
+ * "Inverse" color-mode variants (tokens meant for placement on an
+ * already-dark/inverse surface, e.g. Primary-inverse, Neutral-inverse)
+ * are intentionally not included below — none of the current components
+ * use them. Re-derive from lib/semantic-color-tokens.ts if a component
+ * needs one.
+ */
+
 :root {
+  /* Legacy names — kept as-is, already referenced by tailwind.config.ts
+     and existing pages. Values match the generated Surface/Stroke tokens
+     of the same meaning (surface-low/subtle/strong, stroke, overlay). */
   --surface-low: #fefefe;
   --surface-subtle: #f8f8f8;
   --surface-strong: #ebebeb;
@@ -15,7 +31,33 @@
   --overlay-hover: rgba(4, 4, 4, 0.08);
   --header-bg: rgba(254, 254, 254, 0.68);
 
-  /* Fill — component/2306:5541 Badge, Button (r2dbmly2FCs307sePH1Z9C) */
+  /* Surface */
+  --surface-muted: #fefefe;
+  --surface-elevated: #fefefe;
+  --surface-subtle-hover: #f2f2f2;
+  --surface-soft: #f2f2f2;
+  --surface-strong-hover: #d0d0d0;
+  --surface-inverse: #040404;
+  --surface-neutral: #040404;
+  --surface-neutral-low: #f8f8f8;
+  --surface-neutral-inverse: #fefefe;
+  --surface-primary-overlay-hover: rgba(10, 97, 249, 0.12);
+  --surface-primary-overlay-active: rgba(10, 97, 249, 0.16);
+  --surface-error: #fd3a36;
+  --surface-error-low: #fee2e2;
+  --surface-error-inverse: #fefefe;
+  --surface-success: #00c754;
+  --surface-success-low: #dcfce7;
+  --surface-success-inverse: #fefefe;
+  --surface-warning: #f0b100;
+  --surface-warning-low: #fef3c6;
+  --surface-warning-inverse: #fefefe;
+  --surface-info: #1672ff;
+  --surface-info-low: #dbeafe;
+  --surface-info-inverse: #fefefe;
+
+  /* Fill */
+  --fill-base: #ebebeb;
   --fill-primary: #0a61f9;
   --fill-primary-hover: #3967ff;
   --fill-primary-active: #0753d8;
@@ -24,66 +66,272 @@
   --fill-primary-overlay-active: rgba(10, 97, 249, 0.16);
   --fill-neutral: #040404;
   --fill-neutral-hover: #0f0f0f;
-  --fill-neutral-overlay: rgba(4, 4, 4, 0.04);
-  --fill-neutral-overlay-hover: rgba(4, 4, 4, 0.08);
-  --fill-success: #00c754;
-  --fill-success-hover: #05df72;
-  --fill-success-active: #00b047;
-  --fill-success-overlay: rgba(0, 199, 84, 0.1);
-  --fill-success-overlay-hover: rgba(0, 199, 84, 0.12);
-  --fill-warning: #f0b100;
-  --fill-warning-hover: #ffb900;
-  --fill-warning-active: #e17100;
-  --fill-warning-overlay: rgba(240, 177, 0, 0.1);
-  --fill-warning-overlay-hover: rgba(240, 177, 0, 0.12);
+  --fill-neutral-active: #040404;
+  --fill-neutral-overlay: rgba(0, 0, 0, 0.04);
+  --fill-neutral-overlay-hover: rgba(0, 0, 0, 0.08);
+  --fill-neutral-overlay-active: rgba(0, 0, 0, 0.04);
   --fill-error: #fd3a36;
   --fill-error-hover: #ff6467;
   --fill-error-active: #e7000b;
   --fill-error-overlay: rgba(253, 58, 54, 0.1);
   --fill-error-overlay-hover: rgba(253, 58, 54, 0.12);
+  --fill-error-overlay-active: rgba(253, 58, 54, 0.16);
+  --fill-success: #00c754;
+  --fill-success-hover: #05df72;
+  --fill-success-active: #00b047;
+  --fill-success-overlay: rgba(0, 199, 84, 0.1);
+  --fill-success-overlay-hover: rgba(0, 199, 84, 0.12);
+  --fill-success-overlay-active: rgba(0, 199, 84, 0.16);
+  --fill-warning: #f0b100;
+  --fill-warning-hover: #ffb900;
+  --fill-warning-active: #e17100;
+  --fill-warning-overlay: rgba(240, 177, 0, 0.1);
+  --fill-warning-overlay-hover: rgba(240, 177, 0, 0.12);
+  --fill-warning-overlay-active: rgba(240, 177, 0, 0.16);
   --fill-info: #1672ff;
   --fill-info-hover: #3f98ff;
   --fill-info-active: #105aff;
   --fill-info-overlay: rgba(22, 114, 255, 0.1);
   --fill-info-overlay-hover: rgba(22, 114, 255, 0.12);
+  --fill-info-overlay-active: rgba(22, 114, 255, 0.16);
 
   /* Foreground */
   --foreground: #040404;
-  --foreground-primary: #0a61f9;
-  --foreground-primary-subtle: #3967ff;
+  --foreground-subtle: #4a4a4a;
+  --foreground-muted: #b3b3b3;
   --foreground-inverse: #fefefe;
+  --foreground-weak: #5f5f5f;
+  --foreground-base-muted: rgba(4, 4, 4, 0.32);
+  --foreground-neutral-strong: #040404;
   --foreground-neutral: #0f0f0f;
   --foreground-neutral-subtle: #1b1b1b;
-  --foreground-neutral-strong: #040404;
-  --foreground-subtle: #4a4a4a;
-  --foreground-weak: #5f5f5f;
-  --foreground-muted: #b3b3b3;
-  --foreground-base-muted: rgba(4, 4, 4, 0.32);
-  --foreground-success: #00c754;
-  --foreground-warning: #f0b100;
+  --foreground-primary: #0a61f9;
+  --foreground-primary-subtle: #3967ff;
+  --foreground-primary-strong: #0753d8;
+  --foreground-error-inverse: #fefefe;
+  --foreground-error-subtle: #ff6467;
   --foreground-error: #fd3a36;
+  --foreground-error-strong: #320404;
+  --foreground-success-subtle: #05df72;
+  --foreground-success: #00c754;
+  --foreground-success-inverse: #fefefe;
+  --foreground-success-strong: #02220f;
+  --foreground-warning-subtle: #ffb900;
+  --foreground-warning: #f0b100;
+  --foreground-warning-inverse: #fefefe;
+  --foreground-warning-strong: #2f1203;
+  --foreground-info-inverse: #fefefe;
+  --foreground-info-subtle: #3f98ff;
   --foreground-info: #1672ff;
+  --foreground-info-strong: #03144e;
 
   /* Stroke */
-  --stroke-primary: #0a61f9;
-  --stroke-primary-subtle: #3967ff;
+  --stroke-strong: #b3b3b3;
+  --stroke-emphasis: #040404;
+  --stroke-bold: #1b1b1b;
+  --stroke-neutral-strong: #d0d0d0;
   --stroke-neutral: #ebebeb;
   --stroke-neutral-subtle: #f2f2f2;
-  --stroke-neutral-strong: #d0d0d0;
-  --stroke-success: #00c754;
-  --stroke-warning: #f0b100;
+  --stroke-primary: #0a61f9;
+  --stroke-primary-subtle: #3967ff;
+  --stroke-primary-strong: #0753d8;
+  --stroke-error-strong: #e7000b;
   --stroke-error: #fd3a36;
+  --stroke-error-subtle: #ff6467;
+  --stroke-success-strong: #00b047;
+  --stroke-success: #00c754;
+  --stroke-success-subtle: #05df72;
+  --stroke-warning-strong: #e17100;
+  --stroke-warning: #f0b100;
+  --stroke-warning-subtle: #ffb900;
+  --stroke-info-strong: #105aff;
   --stroke-info: #1672ff;
+  --stroke-info-subtle: #3f98ff;
 
-  /* Radius */
+  /* Spacing */
+  --spacing-0: 0px;
+  --spacing-1: 2px;
+  --spacing-2: 4px;
+  --spacing-3: 6px;
+  --spacing-4: 8px;
+  --spacing-5: 10px;
+  --spacing-6: 12px;
+  --spacing-7: 14px;
+  --spacing-8: 16px;
+  --spacing-9: 18px;
+  --spacing-10: 20px;
+  --spacing-11: 24px;
+  --spacing-12: 28px;
+  --spacing-13: 32px;
+  --spacing-14: 36px;
+  --spacing-15: 40px;
+  --spacing-16: 44px;
+  --spacing-17: 48px;
+  --spacing-18: 52px;
+
+  /* Border radius */
+  --radius-none: 0px;
   --radius-s: 4px;
+  --radius-sm: 6px;
   --radius-md: 8px;
+  --radius-l: 10px;
+  --radius-xl: 12px;
+  --radius-xxl: 16px;
+  --radius-xxxl: 20px;
+  --radius-xxxxl: 24px;
   --radius-full: 9999px;
 
   /* Type scale */
   --text-xs: 10px;
   --text-sm: 12px;
   --text-md: 14px;
+  --text-lg: 16px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
+  --text-4xl: 40px;
+  --text-5xl: 48px;
+  --text-6xl: 56px;
+  --text-7xl: 64px;
+
+  /* Line height */
+  --leading-xs: 1.16;
+  --leading-sm: 1.2;
+  --leading-md: 1.24;
+  --leading-lg: 1.28;
+  --leading-xl: 1.4;
+}
+
+/*
+ * Dark-mode token values, gated behind an explicit `.dark` class on
+ * <html> — nothing sets that class today, so this block is inert and
+ * carries zero risk to the live (light-only) site. Wire up a theme
+ * toggle that adds/removes `.dark` on <html> to activate it; every
+ * value below already matches the "dark" column in
+ * lib/semantic-color-tokens.ts.
+ */
+:root.dark {
+  /* Surface */
+  --surface-low: #040404;
+  --surface-subtle: #1b1b1b;
+  --surface-strong: #5f5f5f;
+  --stroke: #1b1b1b;
+  --stroke-subtle: #4a4a4a;
+  --surface-muted: #040404;
+  --surface-elevated: #040404;
+  --surface-subtle-hover: #4a4a4a;
+  --surface-soft: #4a4a4a;
+  --surface-strong-hover: #b3b3b3;
+  --surface-inverse: #fefefe;
+  --surface-neutral: #fefefe;
+  --surface-neutral-low: #4a4a4a;
+  --surface-neutral-inverse: #040404;
+  --surface-primary-overlay-hover: rgba(10, 97, 249, 0.16);
+  --surface-primary-overlay-active: rgba(10, 97, 249, 0.2);
+  --surface-error: #e7000b;
+  --surface-error-low: #82181a;
+  --surface-error-inverse: #040404;
+  --surface-success: #00b047;
+  --surface-success-low: #0d542b;
+  --surface-success-inverse: #040404;
+  --surface-warning: #e17100;
+  --surface-warning-low: #7b3306;
+  --surface-warning-inverse: #040404;
+  --surface-info: #105aff;
+  --surface-info-low: #1c398e;
+  --surface-info-inverse: #040404;
+
+  /* Fill */
+  --fill-base: #1b1b1b;
+  --fill-primary: #0753d8;
+  --fill-primary-hover: #0a61f9;
+  --fill-primary-active: #0441ac;
+  --fill-primary-overlay: rgba(10, 97, 249, 0.2);
+  --fill-primary-overlay-hover: rgba(10, 97, 249, 0.16);
+  --fill-primary-overlay-active: rgba(10, 97, 249, 0.16);
+  --fill-neutral: #fefefe;
+  --fill-neutral-hover: #f8f8f8;
+  --fill-neutral-active: #f2f2f2;
+  --fill-neutral-overlay: rgba(255, 255, 255, 0.08);
+  --fill-neutral-overlay-hover: rgba(255, 255, 255, 0.12);
+  --fill-neutral-overlay-active: rgba(255, 255, 255, 0.08);
+  --fill-error: #c10007;
+  --fill-error-hover: #e7000b;
+  --fill-error-active: #9f0712;
+  --fill-error-overlay: rgba(253, 58, 54, 0.2);
+  --fill-error-overlay-hover: rgba(253, 58, 54, 0.24);
+  --fill-error-overlay-active: rgba(253, 58, 54, 0.28);
+  --fill-success: #008236;
+  --fill-success-hover: #00b047;
+  --fill-success-active: #016630;
+  --fill-success-overlay: rgba(0, 199, 84, 0.2);
+  --fill-success-overlay-hover: rgba(0, 199, 84, 0.24);
+  --fill-success-overlay-active: rgba(0, 199, 84, 0.28);
+  --fill-warning: #bb4d00;
+  --fill-warning-hover: #e17100;
+  --fill-warning-active: #973c00;
+  --fill-warning-overlay: rgba(240, 177, 0, 0.2);
+  --fill-warning-overlay-hover: rgba(240, 177, 0, 0.24);
+  --fill-warning-overlay-active: rgba(240, 177, 0, 0.28);
+  --fill-info: #105aff;
+  --fill-info-hover: #1672ff;
+  --fill-info-active: #1447e6;
+  --fill-info-overlay: rgba(22, 114, 255, 0.2);
+  --fill-info-overlay-hover: rgba(22, 114, 255, 0.24);
+  --fill-info-overlay-active: rgba(22, 114, 255, 0.28);
+
+  /* Foreground */
+  --foreground: #fefefe;
+  --foreground-subtle: #f2f2f2;
+  --foreground-muted: #d0d0d0;
+  --foreground-inverse: #040404;
+  --foreground-weak: #b3b3b3;
+  --foreground-base-muted: rgba(255, 255, 255, 0.32);
+  --foreground-neutral-strong: #fefefe;
+  --foreground-neutral: #fefefe;
+  --foreground-neutral-subtle: #f2f2f2;
+  --foreground-primary: #0753d8;
+  --foreground-primary-subtle: #0a61f9;
+  --foreground-primary-strong: #0441ac;
+  --foreground-error-inverse: #fefefe;
+  --foreground-error-subtle: #ff6467;
+  --foreground-error: #e7000b;
+  --foreground-error-strong: #fef2f2;
+  --foreground-success-subtle: #05df72;
+  --foreground-success: #00b047;
+  --foreground-success-inverse: #fefefe;
+  --foreground-success-strong: #f0fdf4;
+  --foreground-warning-subtle: #ffb900;
+  --foreground-warning: #e17100;
+  --foreground-warning-inverse: #fefefe;
+  --foreground-warning-strong: #fffbeb;
+  --foreground-info-inverse: #fefefe;
+  --foreground-info-subtle: #3f98ff;
+  --foreground-info: #105aff;
+  --foreground-info-strong: #eff6ff;
+
+  /* Stroke */
+  --stroke-strong: #5f5f5f;
+  --stroke-emphasis: #fefefe;
+  --stroke-bold: #ebebeb;
+  --stroke-neutral-strong: #1b1b1b;
+  --stroke-neutral: #4a4a4a;
+  --stroke-neutral-subtle: #5f5f5f;
+  --stroke-primary: #0753d8;
+  --stroke-primary-subtle: #0a61f9;
+  --stroke-primary-strong: #0441ac;
+  --stroke-error-strong: #c10007;
+  --stroke-error: #e7000b;
+  --stroke-error-subtle: #fd3a36;
+  --stroke-success-strong: #008236;
+  --stroke-success: #00b047;
+  --stroke-success-subtle: #00c754;
+  --stroke-warning-strong: #bb4d00;
+  --stroke-warning: #e17100;
+  --stroke-warning-subtle: #f0b100;
+  --stroke-info-strong: #1447e6;
+  --stroke-info: #105aff;
+  --stroke-info-subtle: #1672ff;
 }
 
 html {
