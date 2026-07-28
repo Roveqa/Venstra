@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check } from "lucide-react";
+import { Check, CornerDownLeft } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -352,6 +352,44 @@ function ButtonDemo() {
   );
 }
 
+function KbdDemo() {
+  const [showIcon, setShowIcon] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Icon</span>
+          <input
+            type="checkbox"
+            checked={showIcon}
+            onChange={(e) => setShowIcon(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        {kbdVariants.map((variant) => (
+          <div key={variant.key} className="flex w-full flex-col gap-3">
+            <GroupLabel>{variant.label}</GroupLabel>
+            <div className="flex flex-wrap items-center gap-6">
+              {shortcuts.map(([mod, key]) => (
+                <div key={key} className="flex items-center gap-1">
+                  <Kbd variant={variant.key} icon={showIcon ? <CornerDownLeft /> : undefined}>
+                    {mod}
+                  </Kbd>
+                  <Kbd variant={variant.key}>{key}</Kbd>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -399,23 +437,7 @@ export function PlaygroundContent() {
 
             {active === "Button" && <ButtonDemo />}
 
-            {active === "Kbd" && (
-              <ComponentSection>
-                {kbdVariants.map((variant) => (
-                  <div key={variant.key} className="flex w-full flex-col gap-3">
-                    <GroupLabel>{variant.label}</GroupLabel>
-                    <div className="flex flex-wrap items-center gap-6">
-                      {shortcuts.map(([mod, key]) => (
-                        <div key={key} className="flex items-center gap-1">
-                          <Kbd variant={variant.key}>{mod}</Kbd>
-                          <Kbd variant={variant.key}>{key}</Kbd>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </ComponentSection>
-            )}
+            {active === "Kbd" && <KbdDemo />}
 
             {active === "Divider" && (
               <ComponentSection>

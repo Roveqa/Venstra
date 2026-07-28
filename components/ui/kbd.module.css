@@ -36,3 +36,20 @@
   letter-spacing: -0.28px;
   color: var(--foreground-muted);
 }
+
+/* Lucide Icon slot — squircle_12 for Background/Outline, squircle_14
+   for Ghost (matches its larger 14px font, both per Figma). */
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+.ghost .icon {
+  width: 14px;
+  height: 14px;
+}
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
