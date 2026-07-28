@@ -11,7 +11,7 @@ import { cn } from "@/lib/cn";
  * below) plus Avatar left/right, which aren't implemented here.
  */
 const badgeVariants = cva(
-  "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-full)] font-normal token-leading-compact",
+  "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-full)] font-normal",
   {
     variants: {
       intent: {
@@ -28,7 +28,7 @@ const badgeVariants = cva(
       },
       size: {
         medium: "text-[length:var(--text-md)] tracking-[-0.28px]",
-        small: "text-[length:var(--text-xs)] tracking-[-0.2px] token-leading-relaxed",
+        small: "text-[length:var(--text-xs)] tracking-[-0.2px]",
       },
       shape: {
         text: "",
@@ -131,6 +131,27 @@ function BadgeDot({ side }: { side: "left" | "right" }) {
   );
 }
 
+// node 865:6939 (text) + its child <p>: Figma wraps the label text in a
+// styling span with leading-[0] (collapses the wrapper's own line-box so
+// it doesn't add extra height), then applies the real line-height on the
+// text itself — token-leading-compact (1.16) for Medium, token-leading-
+// relaxed (1.4) for Small.
+function BadgeText({
+  size,
+  children,
+}: {
+  size: BadgeProps["size"];
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="flex flex-col justify-center leading-[0]">
+      <span className={size === "small" ? "token-leading-relaxed" : "token-leading-compact"}>
+        {children}
+      </span>
+    </span>
+  );
+}
+
 // node 1538:8175 / 1538:8242 (Icon Left / Icon Right): 14px icon slot with
 // 2px of padding on the outer side only (none between the icon and text).
 function BadgeIcon({ side, children }: { side: "left" | "right"; children: React.ReactNode }) {
@@ -173,9 +194,15 @@ export function Badge({
     <span className={cn(badgeVariants({ intent, variant, size, shape }), className)} {...props}>
       {iconLeft && <BadgeIcon side="left">{iconLeft}</BadgeIcon>}
       {dotLeft && <BadgeDot side="left" />}
-      {/* node 1538:7950 "label": px-[4px] on its own, on top of the outer
-          padding — this is the gap between icon/dot and the text. */}
-      {shape === "number" ? children : <span className="px-[4px]">{children}</span>}
+      {shape === "number" ? (
+        <BadgeText size={size}>{children}</BadgeText>
+      ) : (
+        // node 1538:7950 "label": px-[4px] on its own, on top of the outer
+        // padding — this is the gap between icon/dot and the text.
+        <span className="flex shrink-0 items-center justify-center px-[4px]">
+          <BadgeText size={size}>{children}</BadgeText>
+        </span>
+      )}
       {dotRight && <BadgeDot side="right" />}
       {iconRight && <BadgeIcon side="right">{iconRight}</BadgeIcon>}
     </span>
