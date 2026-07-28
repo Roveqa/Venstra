@@ -74,14 +74,6 @@ const dividerVariants = [
   { key: "vertical", label: "Vertically" },
 ] as const;
 
-function GroupLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="text-xs font-medium uppercase tracking-[0.08em] text-ink-600">
-      {children}
-    </span>
-  );
-}
-
 function ComponentSection({ children }: { children: React.ReactNode }) {
   return (
     <div className="example-zoom flex w-full flex-col gap-10 rounded-2xl border border-stroke px-8 py-16 sm:px-10 sm:py-20">
@@ -372,7 +364,6 @@ function KbdDemo() {
       <ComponentSection>
         {kbdVariants.map((variant) => (
           <div key={variant.key} className="flex w-full flex-col items-center gap-3 text-center">
-            <GroupLabel>{variant.label}</GroupLabel>
             <div className="flex flex-wrap items-center justify-center gap-6">
               {shortcuts.map(([mod, key]) => (
                 <div key={key} className="flex items-center gap-1">
@@ -441,31 +432,28 @@ export function PlaygroundContent() {
 
             {active === "Divider" && (
               <ComponentSection>
-                {dividerVariants.map((variant) => (
-                  <div key={variant.key} className="flex w-full flex-col gap-3">
-                    <GroupLabel>{variant.label}</GroupLabel>
-                    {variant.key === "vertical" ? (
-                      <div className="flex h-[80px] items-center justify-center">
-                        <Divider variant="vertical" />
-                      </div>
-                    ) : (
-                      <div className="max-w-[420px]">
+                {dividerVariants.map((variant) =>
+                  variant.key === "vertical" ? (
+                    <div key={variant.key} className="flex h-[80px] w-full items-center justify-center">
+                      <Divider variant="vertical" />
+                    </div>
+                  ) : (
+                    <div key={variant.key} className="flex w-full justify-center">
+                      <div className="w-full max-w-[420px]">
                         <Divider variant={variant.key} />
                       </div>
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  )
+                )}
               </ComponentSection>
             )}
 
             {active === "Label" && (
               <ComponentSection>
-                <div className="flex w-full flex-col gap-6">
-                  <GroupLabel>Default</GroupLabel>
+                <div className="flex w-full flex-col items-center gap-6">
                   <Label htmlFor="playground-label-default">Email address</Label>
                 </div>
-                <div className="flex w-full flex-col gap-6">
-                  <GroupLabel>Optional</GroupLabel>
+                <div className="flex w-full flex-col items-center gap-6">
                   <Label htmlFor="playground-label-optional" optional>
                     Company name
                   </Label>
