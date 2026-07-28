@@ -74,7 +74,7 @@ function GroupLabel({ children }: { children: React.ReactNode }) {
 
 function ComponentSection({ children }: { children: React.ReactNode }) {
   return (
-    <div className="example-zoom flex w-full flex-col gap-10 rounded-2xl border border-stroke p-8 sm:p-10">
+    <div className="example-zoom flex w-full flex-col gap-10 rounded-2xl border border-stroke px-8 py-16 sm:px-10 sm:py-20">
       {children}
     </div>
   );
@@ -181,11 +181,9 @@ function BadgeDemo() {
 
       <ComponentSection>
         {variants.map((v) => (
-          <div key={v.key} className="flex w-full flex-col items-center gap-6 text-center">
-            {variants.length > 1 && <GroupLabel>{v.label}</GroupLabel>}
+          <div key={v.key} className="flex w-full flex-col items-center gap-10 text-center">
             {sizes.map((s) => (
               <div key={s.key} className="flex flex-col items-center gap-3 text-center">
-                {sizes.length > 1 && <span className="text-[13px] text-ink-600">{s.label}</span>}
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   {intents.map((i) => (
                     <Badge
