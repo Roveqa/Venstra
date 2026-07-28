@@ -270,6 +270,11 @@
 .button[data-variant="link"] {
   color: var(--btn-text);
   padding: 0 !important;
+  /* Figma's Link text style is literally named "Label/Large-Underline" —
+     the label carries a font-level underline (decoration-from-font) in
+     every state, not just on hover. */
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
 }
 .button[data-variant="link"]:hover,
 .button[data-variant="link"][data-force-state="hover"] {

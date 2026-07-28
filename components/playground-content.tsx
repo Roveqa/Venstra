@@ -300,10 +300,10 @@ function ButtonDemo() {
           <div key={v.key} className="flex flex-wrap items-center justify-center gap-3">
             {intents.map((i) =>
               sizes.map((s) =>
-                states.map((st) =>
-                  iconOnly ? (
+                states.map((st) => {
+                  const key = `${v.key}-${i.key}-${s.key}-${st.key}`;
+                  const button = iconOnly ? (
                     <Button
-                      key={`${v.key}-${i.key}-${s.key}-${st.key}`}
                       variant={v.key}
                       intent={i.key}
                       size={s.key}
@@ -313,7 +313,6 @@ function ButtonDemo() {
                     />
                   ) : (
                     <Button
-                      key={`${v.key}-${i.key}-${s.key}-${st.key}`}
                       variant={v.key}
                       intent={i.key}
                       size={s.key}
@@ -323,8 +322,27 @@ function ButtonDemo() {
                     >
                       Button
                     </Button>
-                  )
-                )
+                  );
+
+                  // -inverse intents are designed to sit on an already-dark
+                  // surface — their Fill is near-white, so on the white
+                  // playground background they'd otherwise render as
+                  // invisible/ghost-looking. Give them a dark backdrop so
+                  // they're actually legible here.
+                  const isInverse = i.key === "primary-inverse" || i.key === "neutral-inverse";
+                  return isInverse ? (
+                    <div
+                      key={key}
+                      className="flex items-center justify-center rounded-[10px] bg-[var(--surface-inverse)] p-3"
+                    >
+                      {button}
+                    </div>
+                  ) : (
+                    <div key={key} className="flex items-center justify-center">
+                      {button}
+                    </div>
+                  );
+                })
               )
             )}
           </div>
