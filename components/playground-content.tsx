@@ -154,9 +154,11 @@ function SimpleSelect({
 }
 
 function BadgeDemo() {
-  const [variant, setVariant] = useState<WithAll<(typeof badgeStyles)[number]["key"]>>("all");
-  const [size, setSize] = useState<WithAll<(typeof badgeSizes)[number]["key"]>>("all");
-  const [intent, setIntent] = useState<WithAll<(typeof badgeIntents)[number]["key"]>>("all");
+  // Default to a single representative variant (Neutral/Primary, Medium)
+  // rather than "All" — same convention for every future playground demo.
+  const [variant, setVariant] = useState<WithAll<(typeof badgeStyles)[number]["key"]>>("fill");
+  const [size, setSize] = useState<WithAll<(typeof badgeSizes)[number]["key"]>>("medium");
+  const [intent, setIntent] = useState<WithAll<(typeof badgeIntents)[number]["key"]>>("neutral");
   const [dot, setDot] = useState<DotIconValue>("none");
   const [icon, setIcon] = useState<DotIconValue>("none");
 
