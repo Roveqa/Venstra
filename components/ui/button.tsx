@@ -5,28 +5,51 @@ import { cn } from "@/lib/cn";
 
 /**
  * Source: Figma "Button" component set (r2dbmly2FCs307sePH1Z9C, page 1:11).
- * Style × Type × Size × State variants. Hover/Active/Focus are real CSS
- * pseudo-classes; Disabled/Loading are props (Figma states, not variants a
- * user can hover into).
+ * Every value below was read directly from a Figma component instance via
+ * get_design_context — node IDs are noted per variant so they can be
+ * re-verified if the design changes.
+ *
+ *  variant     Figma Style × Type          node (Default / Hover)
+ *  ─────────   ──────────────────────────  ──────────────────────────
+ *  primary     Fill      × Primary         1011:4227 / 1011:4242
+ *  secondary   Light     × Neutral         1943:8782 / 1943:8786
+ *  outline     Outline   × Neutral         1602:9288 / 1602:9304
+ *  ghost       Ghost     × Neutral         1602:9292 / 1602:9308
+ *  destructive Fill      × Error           1609:8162 / 1609:8178
+ *  link        Link      × Primary         1602:8995 / 1602:8999
+ *
+ *  size  padding (Figma "Button master")        node
+ *  ────  ────────────────────────────────────   ─────────
+ *  lg    px-[spacing-10,20px] py-[spacing-6,12px]  1494:15787
+ *  md    px-[spacing-6,12px]  py-[spacing-5,10px]  1011:4227
+ *  sm    px-[spacing-6,12px]  py-[spacing-4,8px]   1494:14323
+ *
+ * All sizes: gap-[spacing-3,6px] between icon/text, 16px icons,
+ * rounded-[md,8px], text-[size-md,14px]/tracking[-0.14px]/leading[1.16]
+ * (leading[1.4] for the underlined "link" variant — node 1602:8995).
+ *
+ * Active: fill-primary-active #0753d8 (1011:4255) / fill-error-active
+ * #e7000b (1609:8194). Focus-visible: ring 0 0 0 2px rgba(10,10,10,0.1)
+ * (1011:4268). Disabled: opacity 0.4, colors unchanged (1011:4294,
+ * 1609:8242). Loading: icon replaced by a spinner, colors unchanged
+ * (1011:4281).
  */
 const buttonVariants = cva(
   "inline-flex shrink-0 items-center justify-center gap-[var(--spacing-3,6px)] whitespace-nowrap rounded-[var(--radius-md)] font-medium leading-[1.16] tracking-[-0.14px] transition-colors disabled:pointer-events-none disabled:opacity-[0.4] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_rgba(10,10,10,0.1)]",
   {
     variants: {
-      intent: {
-        primary: "",
-        neutral: "",
-        success: "",
-        warning: "",
-        error: "",
-        info: "",
-      },
       variant: {
-        fill: "",
-        light: "",
-        outline: "border border-solid",
-        ghost: "",
-        link: "!p-0 underline decoration-solid underline-offset-[from-font] !leading-[1.4]",
+        primary:
+          "bg-[var(--fill-primary)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-primary-hover)] active:bg-[var(--fill-primary-active)]",
+        secondary:
+          "bg-[var(--fill-neutral-overlay)] text-[color:var(--foreground-neutral)] hover:bg-[var(--fill-neutral-overlay-hover)]",
+        outline:
+          "border border-solid border-[var(--stroke-neutral)] text-[color:var(--foreground-neutral)] hover:border-[var(--stroke-neutral-subtle)] hover:text-[color:var(--foreground-neutral-subtle)]",
+        ghost:
+          "text-[color:var(--foreground-neutral)] hover:bg-[var(--fill-neutral-overlay-hover)] hover:text-[color:var(--foreground-neutral-subtle)]",
+        destructive:
+          "bg-[var(--fill-error)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-error-hover)] active:bg-[var(--fill-error-active)]",
+        link: "!p-0 !leading-[1.4] text-[color:var(--foreground-primary)] underline decoration-solid underline-offset-[from-font] hover:text-[color:var(--foreground-primary-subtle)]",
       },
       size: {
         lg: "px-[var(--spacing-10,20px)] py-[var(--spacing-6,12px)] text-[length:var(--text-md)] [&_svg]:size-[16px]",
@@ -34,165 +57,8 @@ const buttonVariants = cva(
         sm: "px-[var(--spacing-6,12px)] py-[var(--spacing-4,8px)] text-[length:var(--text-md)] [&_svg]:size-[16px]",
       },
     },
-    compoundVariants: [
-      // Fill — solid background, inverse text
-      {
-        variant: "fill",
-        intent: "primary",
-        class:
-          "bg-[var(--fill-primary)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-primary-hover)] active:bg-[var(--fill-primary-active)]",
-      },
-      {
-        variant: "fill",
-        intent: "neutral",
-        class:
-          "bg-[var(--fill-neutral)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-neutral-hover)] active:bg-[var(--fill-neutral)]",
-      },
-      {
-        variant: "fill",
-        intent: "success",
-        class:
-          "bg-[var(--fill-success)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-success-hover)] active:bg-[var(--fill-success-active)]",
-      },
-      {
-        variant: "fill",
-        intent: "warning",
-        class:
-          "bg-[var(--fill-warning)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-warning-hover)] active:bg-[var(--fill-warning-active)]",
-      },
-      {
-        variant: "fill",
-        intent: "error",
-        class:
-          "bg-[var(--fill-error)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-error-hover)] active:bg-[var(--fill-error-active)]",
-      },
-      {
-        variant: "fill",
-        intent: "info",
-        class:
-          "bg-[var(--fill-info)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-info-hover)] active:bg-[var(--fill-info-active)]",
-      },
-      // Light — tinted background, colored text
-      {
-        variant: "light",
-        intent: "primary",
-        class:
-          "bg-[var(--fill-primary-overlay)] text-[color:var(--foreground-primary)] hover:bg-[var(--fill-primary-overlay-hover)] active:bg-[var(--fill-primary-overlay-active)]",
-      },
-      {
-        variant: "light",
-        intent: "neutral",
-        class:
-          "bg-[var(--fill-neutral-overlay)] text-[color:var(--foreground-neutral-strong)] hover:bg-[var(--fill-neutral-overlay-hover)]",
-      },
-      {
-        variant: "light",
-        intent: "success",
-        class:
-          "bg-[var(--fill-success-overlay)] text-[color:var(--foreground-success)] hover:bg-[var(--fill-success-overlay-hover)]",
-      },
-      {
-        variant: "light",
-        intent: "warning",
-        class:
-          "bg-[var(--fill-warning-overlay)] text-[color:var(--foreground-warning)] hover:bg-[var(--fill-warning-overlay-hover)]",
-      },
-      {
-        variant: "light",
-        intent: "error",
-        class:
-          "bg-[var(--fill-error-overlay)] text-[color:var(--foreground-error)] hover:bg-[var(--fill-error-overlay-hover)]",
-      },
-      {
-        variant: "light",
-        intent: "info",
-        class:
-          "bg-[var(--fill-info-overlay)] text-[color:var(--foreground-info)] hover:bg-[var(--fill-info-overlay-hover)]",
-      },
-      // Outline — bordered, colored text
-      {
-        variant: "outline",
-        intent: "primary",
-        class:
-          "border-[var(--stroke-primary)] text-[color:var(--foreground-primary)] hover:bg-[var(--fill-primary-overlay)]",
-      },
-      {
-        variant: "outline",
-        intent: "neutral",
-        class:
-          "border-[var(--stroke-neutral-strong)] text-[color:var(--foreground-neutral-strong)] hover:bg-[var(--fill-neutral-overlay)]",
-      },
-      {
-        variant: "outline",
-        intent: "success",
-        class:
-          "border-[var(--stroke-success)] text-[color:var(--foreground-success)] hover:bg-[var(--fill-success-overlay)]",
-      },
-      {
-        variant: "outline",
-        intent: "warning",
-        class:
-          "border-[var(--stroke-warning)] text-[color:var(--foreground-warning)] hover:bg-[var(--fill-warning-overlay)]",
-      },
-      {
-        variant: "outline",
-        intent: "error",
-        class:
-          "border-[var(--stroke-error)] text-[color:var(--foreground-error)] hover:bg-[var(--fill-error-overlay)]",
-      },
-      {
-        variant: "outline",
-        intent: "info",
-        class:
-          "border-[var(--stroke-info)] text-[color:var(--foreground-info)] hover:bg-[var(--fill-info-overlay)]",
-      },
-      // Ghost — no background/border, colored text, tinted hover
-      {
-        variant: "ghost",
-        intent: "primary",
-        class: "text-[color:var(--foreground-primary)] hover:bg-[var(--fill-primary-overlay)]",
-      },
-      {
-        variant: "ghost",
-        intent: "neutral",
-        class:
-          "text-[color:var(--foreground-neutral-strong)] hover:bg-[var(--fill-neutral-overlay)]",
-      },
-      {
-        variant: "ghost",
-        intent: "success",
-        class: "text-[color:var(--foreground-success)] hover:bg-[var(--fill-success-overlay)]",
-      },
-      {
-        variant: "ghost",
-        intent: "warning",
-        class: "text-[color:var(--foreground-warning)] hover:bg-[var(--fill-warning-overlay)]",
-      },
-      {
-        variant: "ghost",
-        intent: "error",
-        class: "text-[color:var(--foreground-error)] hover:bg-[var(--fill-error-overlay)]",
-      },
-      {
-        variant: "ghost",
-        intent: "info",
-        class: "text-[color:var(--foreground-info)] hover:bg-[var(--fill-info-overlay)]",
-      },
-      // Link — text only, underlined
-      { variant: "link", intent: "primary", class: "text-[color:var(--foreground-primary)]" },
-      {
-        variant: "link",
-        intent: "neutral",
-        class: "text-[color:var(--foreground-neutral-strong)]",
-      },
-      { variant: "link", intent: "success", class: "text-[color:var(--foreground-success)]" },
-      { variant: "link", intent: "warning", class: "text-[color:var(--foreground-warning)]" },
-      { variant: "link", intent: "error", class: "text-[color:var(--foreground-error)]" },
-      { variant: "link", intent: "info", class: "text-[color:var(--foreground-info)]" },
-    ],
     defaultVariants: {
-      intent: "primary",
-      variant: "fill",
+      variant: "primary",
       size: "md",
     },
   }
@@ -207,13 +73,13 @@ export interface ButtonProps
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, intent, variant, size, loading, disabled, leftIcon, rightIcon, children, ...props },
+  { className, variant, size, loading, disabled, leftIcon, rightIcon, children, ...props },
   ref
 ) {
   return (
     <button
       ref={ref}
-      className={cn(buttonVariants({ intent, variant, size }), className)}
+      className={cn(buttonVariants({ variant, size }), className)}
       disabled={disabled || loading}
       aria-busy={loading}
       {...props}

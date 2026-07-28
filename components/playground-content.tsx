@@ -12,10 +12,11 @@ import { Label } from "@/components/ui/label";
 const sections = ["Badge", "Button", "Kbd", "Divider", "Label"];
 
 const buttonVariants = [
-  { key: "fill", label: "Fill" },
-  { key: "light", label: "Light" },
+  { key: "primary", label: "Primary" },
+  { key: "secondary", label: "Secondary" },
   { key: "outline", label: "Outline" },
   { key: "ghost", label: "Ghost" },
+  { key: "destructive", label: "Destructive" },
   { key: "link", label: "Link" },
 ] as const;
 
@@ -23,15 +24,6 @@ const buttonSizes = [
   { key: "lg", label: "Large" },
   { key: "md", label: "Medium" },
   { key: "sm", label: "Small" },
-] as const;
-
-const buttonIntents = [
-  { key: "primary", label: "Primary" },
-  { key: "neutral", label: "Neutral" },
-  { key: "success", label: "Success" },
-  { key: "warning", label: "Warning" },
-  { key: "error", label: "Error" },
-  { key: "info", label: "Info" },
 ] as const;
 
 const badgeStyles = [
@@ -147,33 +139,28 @@ export function PlaygroundContent() {
                 {buttonVariants.map((variant) => (
                   <div key={variant.key} className="flex w-full flex-col gap-6">
                     <GroupLabel>{variant.label}</GroupLabel>
-                    {buttonSizes.map((size) => (
-                      <div key={size.key} className="flex flex-col gap-3">
-                        <span className="text-[13px] text-ink-600">{size.label}</span>
-                        <div className="flex flex-wrap items-center gap-3">
-                          {buttonIntents.map((intent) => (
-                            <Button
-                              key={intent.key}
-                              variant={variant.key}
-                              size={size.key}
-                              intent={intent.key}
-                            >
-                              {intent.label}
-                            </Button>
-                          ))}
+                    <div className="flex flex-col gap-4">
+                      {buttonSizes.map((size) => (
+                        <div key={size.key} className="flex items-center gap-3">
+                          <span className="w-16 shrink-0 text-[13px] text-ink-600">
+                            {size.label}
+                          </span>
+                          <Button variant={variant.key} size={size.key}>
+                            Button
+                          </Button>
                         </div>
-                      </div>
-                    ))}
-                    <div className="flex flex-col gap-3">
-                      <span className="text-[13px] text-ink-600">State</span>
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-3 border-t border-stroke pt-4">
+                      <span className="text-[13px] text-ink-600">State (Medium)</span>
                       <div className="flex flex-wrap items-center gap-3">
-                        <Button variant={variant.key} size="md" intent="primary">
+                        <Button variant={variant.key} size="md">
                           Default
                         </Button>
-                        <Button variant={variant.key} size="md" intent="primary" disabled>
+                        <Button variant={variant.key} size="md" disabled>
                           Disabled
                         </Button>
-                        <Button variant={variant.key} size="md" intent="primary" loading>
+                        <Button variant={variant.key} size="md" loading>
                           Loading
                         </Button>
                       </div>

@@ -50,8 +50,10 @@
   /* Foreground */
   --foreground: #040404;
   --foreground-primary: #0a61f9;
+  --foreground-primary-subtle: #3967ff;
   --foreground-inverse: #fefefe;
   --foreground-neutral: #0f0f0f;
+  --foreground-neutral-subtle: #1b1b1b;
   --foreground-neutral-strong: #040404;
   --foreground-subtle: #4a4a4a;
   --foreground-weak: #5f5f5f;
@@ -64,6 +66,9 @@
 
   /* Stroke */
   --stroke-primary: #0a61f9;
+  --stroke-primary-subtle: #3967ff;
+  --stroke-neutral: #ebebeb;
+  --stroke-neutral-subtle: #f2f2f2;
   --stroke-neutral-strong: #d0d0d0;
   --stroke-success: #00c754;
   --stroke-warning: #f0b100;
