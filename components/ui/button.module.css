@@ -26,6 +26,9 @@
      box-shadow never affects layout size, so every variant/size stays
      pixel-identical regardless of which one has a "stroke". */
   --btn-ring: 0 0 0 0 transparent;
+  /* Active text color defaults to the same as everywhere else — only
+     Primary's Outline/Link get a "-strong" override below, per Figma. */
+  --btn-text-active: var(--btn-text);
   box-shadow: var(--btn-ring);
   transition:
     background-color 0.15s ease,
@@ -83,21 +86,29 @@
   --btn-fill-text: var(--foreground-inverse);
   --btn-overlay: var(--fill-primary-overlay);
   --btn-overlay-hover: var(--fill-primary-overlay-hover);
+  --btn-overlay-active: var(--fill-primary-overlay-active);
   --btn-stroke: var(--stroke-primary);
   --btn-stroke-subtle: var(--stroke-primary-subtle);
+  --btn-stroke-strong: var(--stroke-primary-strong);
   --btn-text: var(--foreground-primary);
   --btn-text-subtle: var(--foreground-primary-subtle);
+  /* Primary is the only intent where Active also darkens the text
+     itself (Outline/Link) — every other intent keeps the base text
+     color and lets the fill/stroke change carry the "active" read. */
+  --btn-text-active: var(--foreground-primary-strong);
 }
 
 .button[data-intent="neutral"] {
   --btn-fill: var(--fill-neutral);
   --btn-fill-hover: var(--fill-neutral-hover);
-  --btn-fill-active: var(--fill-neutral);
+  --btn-fill-active: var(--fill-neutral-active);
   --btn-fill-text: var(--foreground-inverse);
   --btn-overlay: var(--fill-neutral-overlay);
   --btn-overlay-hover: var(--fill-neutral-overlay-hover);
+  --btn-overlay-active: var(--fill-neutral-overlay-active);
   --btn-stroke: var(--stroke-neutral);
   --btn-stroke-subtle: var(--stroke-neutral-subtle);
+  --btn-stroke-strong: var(--stroke-neutral-strong);
   --btn-text: var(--foreground-neutral);
   --btn-text-subtle: var(--foreground-neutral-subtle);
 }
@@ -109,8 +120,10 @@
   --btn-fill-text: var(--foreground-inverse);
   --btn-overlay: var(--fill-success-overlay);
   --btn-overlay-hover: var(--fill-success-overlay-hover);
+  --btn-overlay-active: var(--fill-success-overlay-active);
   --btn-stroke: var(--stroke-success);
   --btn-stroke-subtle: var(--stroke-success-subtle);
+  --btn-stroke-strong: var(--stroke-success-strong);
   --btn-text: var(--foreground-success);
   --btn-text-subtle: var(--foreground-success-subtle);
 }
@@ -122,8 +135,10 @@
   --btn-fill-text: var(--foreground-inverse);
   --btn-overlay: var(--fill-warning-overlay);
   --btn-overlay-hover: var(--fill-warning-overlay-hover);
+  --btn-overlay-active: var(--fill-warning-overlay-active);
   --btn-stroke: var(--stroke-warning);
   --btn-stroke-subtle: var(--stroke-warning-subtle);
+  --btn-stroke-strong: var(--stroke-warning-strong);
   --btn-text: var(--foreground-warning);
   --btn-text-subtle: var(--foreground-warning-subtle);
 }
@@ -135,8 +150,10 @@
   --btn-fill-text: var(--foreground-inverse);
   --btn-overlay: var(--fill-error-overlay);
   --btn-overlay-hover: var(--fill-error-overlay-hover);
+  --btn-overlay-active: var(--fill-error-overlay-active);
   --btn-stroke: var(--stroke-error);
   --btn-stroke-subtle: var(--stroke-error-subtle);
+  --btn-stroke-strong: var(--stroke-error-strong);
   --btn-text: var(--foreground-error);
   --btn-text-subtle: var(--foreground-error-subtle);
 }
@@ -148,8 +165,10 @@
   --btn-fill-text: var(--foreground-inverse);
   --btn-overlay: var(--fill-info-overlay);
   --btn-overlay-hover: var(--fill-info-overlay-hover);
+  --btn-overlay-active: var(--fill-info-overlay-active);
   --btn-stroke: var(--stroke-info);
   --btn-stroke-subtle: var(--stroke-info-subtle);
+  --btn-stroke-strong: var(--stroke-info-strong);
   --btn-text: var(--foreground-info);
   --btn-text-subtle: var(--foreground-info-subtle);
 }
@@ -167,8 +186,10 @@
   --btn-fill-text: var(--foreground-primary);
   --btn-overlay: var(--fill-primary-overlay-inverse);
   --btn-overlay-hover: var(--fill-primary-overlay-inverse);
+  --btn-overlay-active: var(--fill-primary-overlay-inverse);
   --btn-stroke: var(--stroke-primary-inverse);
   --btn-stroke-subtle: var(--stroke-primary-inverse);
+  --btn-stroke-strong: var(--stroke-primary-inverse);
   --btn-text: var(--foreground-inverse);
   --btn-text-subtle: var(--foreground-inverse);
 }
@@ -180,8 +201,10 @@
   --btn-fill-text: var(--foreground-neutral);
   --btn-overlay: var(--fill-neutral-overlay-inverse);
   --btn-overlay-hover: var(--fill-neutral-overlay-inverse);
+  --btn-overlay-active: var(--fill-neutral-overlay-inverse);
   --btn-stroke: var(--stroke-neutral-inverse);
   --btn-stroke-subtle: var(--stroke-neutral-inverse);
+  --btn-stroke-strong: var(--stroke-neutral-inverse);
   --btn-text: var(--foreground-inverse);
   --btn-text-subtle: var(--foreground-inverse);
 }
@@ -209,6 +232,11 @@
 .button[data-variant="light"][data-force-state="hover"] {
   background-color: var(--btn-overlay-hover);
 }
+.button[data-variant="light"]:active,
+.button[data-variant="light"][data-force-state="active"] {
+  /* Active only darkens the fill, same as Figma — text stays --btn-text. */
+  background-color: var(--btn-overlay-active);
+}
 
 .button[data-variant="outline"] {
   --btn-ring: inset 0 0 0 1px var(--btn-stroke);
@@ -219,6 +247,11 @@
   --btn-ring: inset 0 0 0 1px var(--btn-stroke-subtle);
   color: var(--btn-text-subtle);
 }
+.button[data-variant="outline"]:active,
+.button[data-variant="outline"][data-force-state="active"] {
+  --btn-ring: inset 0 0 0 1px var(--btn-stroke-strong);
+  color: var(--btn-text-active);
+}
 
 .button[data-variant="ghost"] {
   color: var(--btn-text);
@@ -228,6 +261,11 @@
   background-color: var(--btn-overlay-hover);
   color: var(--btn-text-subtle);
 }
+.button[data-variant="ghost"]:active,
+.button[data-variant="ghost"][data-force-state="active"] {
+  /* Active only darkens the fill, same as Figma — text stays --btn-text. */
+  background-color: var(--btn-overlay-active);
+}
 
 .button[data-variant="link"] {
   color: var(--btn-text);
@@ -236,6 +274,10 @@
 .button[data-variant="link"]:hover,
 .button[data-variant="link"][data-force-state="hover"] {
   color: var(--btn-text-subtle);
+}
+.button[data-variant="link"]:active,
+.button[data-variant="link"][data-force-state="active"] {
+  color: var(--btn-text-active);
 }
 
 /* node 1011:4190 (text) + child <p>: leading-[0] wrapper around the real
