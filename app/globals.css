@@ -480,6 +480,24 @@ body {
     text-wrap: balance;
   }
 
+  /*
+   * tailwind-merge groups any `leading-[...]` utility into the same
+   * conflict class as `text-[length:...]` (it assumes a font-size
+   * utility always carries its own paired line-height, the way
+   * `text-lg` does) — so `cn("text-[length:var(--text-md)]",
+   * "leading-[1.16]")` silently drops the leading class entirely.
+   * These two custom classes carry the token line-heights without
+   * looking like a Tailwind utility, so tailwind-merge leaves them
+   * alone. Used by components/ui/badge.tsx and button.tsx.
+   */
+  .token-leading-compact {
+    line-height: var(--leading-xs); /* 1.16 — Figma "Label/Large-Compact" */
+  }
+
+  .token-leading-relaxed {
+    line-height: var(--leading-xl); /* 1.4 — Figma "Label/Large" / "Large-Underline" */
+  }
+
   .scrollbar-hide {
     scrollbar-width: none;
     -ms-overflow-style: none;

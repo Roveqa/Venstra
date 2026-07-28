@@ -35,7 +35,7 @@ import { cn } from "@/lib/cn";
  * (1011:4281).
  */
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-[var(--spacing-3,6px)] whitespace-nowrap rounded-[var(--radius-md)] font-medium leading-[1.16] tracking-[-0.14px] transition-colors disabled:pointer-events-none disabled:opacity-[0.4] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_rgba(10,10,10,0.1)]",
+  "inline-flex shrink-0 items-center justify-center gap-[var(--spacing-3,6px)] whitespace-nowrap rounded-[var(--radius-md)] font-medium token-leading-compact tracking-[-0.14px] transition-colors disabled:pointer-events-none disabled:opacity-[0.4] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_rgba(10,10,10,0.1)]",
   {
     variants: {
       variant: {
@@ -49,7 +49,7 @@ const buttonVariants = cva(
           "text-[color:var(--foreground-neutral)] hover:bg-[var(--fill-neutral-overlay-hover)] hover:text-[color:var(--foreground-neutral-subtle)]",
         destructive:
           "bg-[var(--fill-error)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-error-hover)] active:bg-[var(--fill-error-active)]",
-        link: "!p-0 !leading-[1.4] text-[color:var(--foreground-primary)] underline decoration-solid underline-offset-[from-font] hover:text-[color:var(--foreground-primary-subtle)]",
+        link: "!p-0 token-leading-relaxed text-[color:var(--foreground-primary)] underline decoration-solid underline-offset-[from-font] hover:text-[color:var(--foreground-primary-subtle)]",
       },
       size: {
         lg: "px-[var(--spacing-10,20px)] py-[var(--spacing-6,12px)] text-[length:var(--text-md)] [&_svg]:size-[16px]",

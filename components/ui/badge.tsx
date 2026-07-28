@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
  * Status × Style × Size variants — Content=Number uses the `shape="number"` prop.
  */
 const badgeVariants = cva(
-  "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-full)] font-normal leading-[1.16]",
+  "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-full)] font-normal token-leading-compact",
   {
     variants: {
       intent: {
@@ -24,11 +24,11 @@ const badgeVariants = cva(
       },
       size: {
         medium: "text-[length:var(--text-md)] tracking-[-0.28px]",
-        small: "text-[length:var(--text-xs)] tracking-[-0.2px] leading-[1.4]",
+        small: "text-[length:var(--text-xs)] tracking-[-0.2px] token-leading-relaxed",
       },
       shape: {
         text: "",
-        number: "aspect-square justify-center p-0",
+        number: "justify-center",
       },
     },
     compoundVariants: [
@@ -90,10 +90,16 @@ const badgeVariants = cva(
       { variant: "ghost", intent: "warning", class: "text-[color:var(--foreground-warning)]" },
       { variant: "ghost", intent: "error", class: "text-[color:var(--foreground-error)]" },
       { variant: "ghost", intent: "info", class: "text-[color:var(--foreground-info)]" },
-      // Size × shape padding (text pill vs. number square)
-      { size: "medium", shape: "text", class: "gap-[var(--spacing-0,0px)] p-[4px] px-[8px]" },
-      { size: "small", shape: "text", class: "px-[4px] py-[2px]" },
-      { size: "medium", shape: "number", class: "h-[24px] min-w-[24px]" },
+      // Size × shape padding — node 1801:1598 (Medium Text): outer p-[4px] +
+      // inner label px-[4px] = py-[4px] px-[8px] effective. Node 1802:14198
+      // (Small Text): outer px-[4px] py-[2px] + inner label px-[4px] =
+      // py-[2px] px-[8px] effective. Node 1802:1600 (Medium Number):
+      // h-[24px] min-w-[24px] p-[4px], no aspect-ratio lock — it's allowed
+      // to grow wider than tall for 2-digit counts. Node 1802:14228 (Small
+      // Number): h-[18px] min-w-[18px] px-[4px], no vertical padding.
+      { size: "medium", shape: "text", class: "py-[4px] px-[8px]" },
+      { size: "small", shape: "text", class: "py-[2px] px-[8px]" },
+      { size: "medium", shape: "number", class: "h-[24px] min-w-[24px] p-[4px]" },
       { size: "small", shape: "number", class: "h-[18px] min-w-[18px] px-[4px]" },
     ],
     defaultVariants: {
