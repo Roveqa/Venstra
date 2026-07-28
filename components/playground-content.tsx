@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
@@ -334,8 +334,21 @@ function ButtonDemo() {
   );
 }
 
+const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
+
 export function PlaygroundContent() {
   const [active, setActive] = useState(sections[0]);
+
+  // Restore the last-viewed tab after mount (not during the initial render,
+  // to avoid a server/client hydration mismatch — SSR has no localStorage).
+  useEffect(() => {
+    const stored = localStorage.getItem(ACTIVE_TAB_STORAGE_KEY);
+    if (stored && sections.includes(stored)) setActive(stored);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(ACTIVE_TAB_STORAGE_KEY, active);
+  }, [active]);
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center">
