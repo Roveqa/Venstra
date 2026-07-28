@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /playground-v1-internal
 
 Sitemap: https://venstra.vercel.app/sitemap.xml
