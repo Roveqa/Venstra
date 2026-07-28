@@ -1,4 +1,6 @@
 import { readSvg } from "@/lib/inline-svg";
+import { Header } from "@/components/header";
+import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import type { Metadata } from "next";
 
 // Internal-only testing page. Deliberately not linked from nav, footer,
@@ -63,7 +65,7 @@ function ComponentSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full flex-col gap-6">
+    <div id={name.toLowerCase()} className="flex w-full scroll-mt-[140px] flex-col gap-6">
       <h2 className="text-[20px] font-semibold leading-[1.2] tracking-[-0.6px] text-ink-950">
         {name}
       </h2>
@@ -87,8 +89,13 @@ export default function PlaygroundPage() {
   const labelSvg = readSvg("components/label-example.svg");
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center bg-white px-4 py-16 md:px-10 lg:px-24">
-      <div className="flex w-full max-w-[960px] flex-col gap-16">
+    <main className="flex min-h-screen w-full flex-col items-center">
+      <Header />
+
+      <div className="flex w-full max-w-[1710px] items-start gap-[83px] px-4 pt-[140px] md:px-10 lg:px-[244px]">
+        <PlaygroundSidebar />
+
+        <div className="flex w-full max-w-[704px] flex-col gap-16 pb-24">
         <div className="flex w-full flex-col gap-9">
           <div className="flex flex-col gap-2">
             <h1 className="text-[28px] font-semibold leading-none tracking-[-0.84px] text-ink-950">
@@ -163,6 +170,7 @@ export default function PlaygroundPage() {
             dangerouslySetInnerHTML={{ __html: labelSvg }}
           />
         </ComponentSection>
+        </div>
       </div>
     </main>
   );
