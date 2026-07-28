@@ -117,33 +117,44 @@ function ControlBar({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-wrap items-end justify-center gap-4">{children}</div>;
 }
 
-const NONE_OPTION = { key: "none", label: "None" } as const;
 type DotIconValue = "none" | "left" | "right" | "both";
-const dotIconOptions = [
+const dotIconValues = [
+  { key: "none", label: "None" },
   { key: "left", label: "Left" },
   { key: "right", label: "Right" },
   { key: "both", label: "Both" },
 ] as const;
 
-function SimpleSelect({
+type ButtonStateValue = "default" | "disabled" | "loading";
+const buttonStateValues = [
+  { key: "default", label: "Default" },
+  { key: "disabled", label: "Disabled" },
+  { key: "loading", label: "Loading" },
+] as const;
+
+// Like PlaygroundSelect but no built-in "All" option — for controls that
+// aren't a matrix dimension (Dot/Icon/State are single toggles applied to
+// every rendered instance, not exploded into rows).
+function TinySelect<T extends string>({
   label,
   value,
   onChange,
+  options,
 }: {
   label: string;
-  value: DotIconValue;
-  onChange: (value: DotIconValue) => void;
+  value: T;
+  onChange: (value: T) => void;
+  options: readonly { key: T; label: string }[];
 }) {
   return (
     <label className="flex flex-col gap-1.5">
       <span className="text-[13px] text-ink-600">{label}</span>
       <select
         value={value}
-        onChange={(e) => onChange(e.target.value as DotIconValue)}
+        onChange={(e) => onChange(e.target.value as T)}
         className="rounded-lg bg-surface-subtle px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:bg-[var(--surface-subtle-hover)] focus-visible:bg-[var(--surface-subtle-hover)]"
       >
-        <option value={NONE_OPTION.key}>{NONE_OPTION.label}</option>
-        {dotIconOptions.map((o) => (
+        {options.map((o) => (
           <option key={o.key} value={o.key}>
             {o.label}
           </option>
@@ -177,8 +188,8 @@ function BadgeDemo() {
         <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={badgeStyles} />
         <PlaygroundSelect label="Size" value={size} onChange={setSize} options={badgeSizes} />
         <PlaygroundSelect label="Type" value={intent} onChange={setIntent} options={badgeIntents} />
-        <SimpleSelect label="Dot" value={dot} onChange={setDot} />
-        <SimpleSelect label="Icon" value={icon} onChange={setIcon} />
+        <TinySelect label="Dot" value={dot} onChange={setDot} options={dotIconValues} />
+        <TinySelect label="Icon" value={icon} onChange={setIcon} options={dotIconValues} />
       </ControlBar>
 
       <ComponentSection>
@@ -216,6 +227,51 @@ function BadgeDemo() {
   );
 }
 
+function ButtonDemo() {
+  // Default to Primary + Medium, not "All" — see feedback_playground_defaults.
+  const [variant, setVariant] = useState<WithAll<(typeof buttonVariants)[number]["key"]>>("primary");
+  const [size, setSize] = useState<WithAll<(typeof buttonSizes)[number]["key"]>>("md");
+  const [state, setState] = useState<ButtonStateValue>("default");
+  const [icon, setIcon] = useState<DotIconValue>("none");
+
+  const variants = variant === "all" ? buttonVariants : buttonVariants.filter((v) => v.key === variant);
+  const sizes = size === "all" ? buttonSizes : buttonSizes.filter((s) => s.key === size);
+
+  const iconLeft = icon === "left" || icon === "both";
+  const iconRight = icon === "right" || icon === "both";
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <PlaygroundSelect label="Variant" value={variant} onChange={setVariant} options={buttonVariants} />
+        <PlaygroundSelect label="Size" value={size} onChange={setSize} options={buttonSizes} />
+        <TinySelect label="State" value={state} onChange={setState} options={buttonStateValues} />
+        <TinySelect label="Icon" value={icon} onChange={setIcon} options={dotIconValues} />
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {variants.map((v) =>
+            sizes.map((s) => (
+              <Button
+                key={`${v.key}-${s.key}`}
+                variant={v.key}
+                size={s.key}
+                disabled={state === "disabled"}
+                loading={state === "loading"}
+                leftIcon={iconLeft ? <Check /> : undefined}
+                rightIcon={iconRight ? <Check /> : undefined}
+              >
+                Button
+              </Button>
+            ))
+          )}
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 export function PlaygroundContent() {
   const [active, setActive] = useState(sections[0]);
 
@@ -248,41 +304,7 @@ export function PlaygroundContent() {
 
             {active === "Badge" && <BadgeDemo />}
 
-            {active === "Button" && (
-              <ComponentSection>
-                {buttonVariants.map((variant) => (
-                  <div key={variant.key} className="flex w-full flex-col gap-6">
-                    <GroupLabel>{variant.label}</GroupLabel>
-                    <div className="flex flex-col gap-4">
-                      {buttonSizes.map((size) => (
-                        <div key={size.key} className="flex items-center gap-3">
-                          <span className="w-16 shrink-0 text-[13px] text-ink-600">
-                            {size.label}
-                          </span>
-                          <Button variant={variant.key} size={size.key}>
-                            Button
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-3 border-t border-stroke pt-4">
-                      <span className="text-[13px] text-ink-600">State (Medium)</span>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <Button variant={variant.key} size="md">
-                          Default
-                        </Button>
-                        <Button variant={variant.key} size="md" disabled>
-                          Disabled
-                        </Button>
-                        <Button variant={variant.key} size="md" loading>
-                          Loading
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </ComponentSection>
-            )}
+            {active === "Button" && <ButtonDemo />}
 
             {active === "Kbd" && (
               <ComponentSection>

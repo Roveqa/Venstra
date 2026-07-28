@@ -18,15 +18,20 @@ import { cn } from "@/lib/cn";
  *  destructive Fill      × Error           1609:8162 / 1609:8178
  *  link        Link      × Primary         1602:8995 / 1602:8999
  *
- *  size  padding (Figma "Button master")        node
- *  ────  ────────────────────────────────────   ─────────
- *  lg    px-[spacing-10,20px] py-[spacing-6,12px]  1494:15787
- *  md    px-[spacing-6,12px]  py-[spacing-5,10px]  1011:4227
- *  sm    px-[spacing-6,12px]  py-[spacing-4,8px]   1494:14323
+ *  size  padding, Content=Text+Icon (node)         padding, Content=Icon (node)
+ *  ────  ───────────────────────────────────────   ────────────────────────────
+ *  lg    px-[spacing-10,20px] py-[spacing-6,12px]   p-[spacing-6,12px]  (1494:15895)
+ *        (1494:15787)
+ *  md    px-[spacing-6,12px]  py-[spacing-5,10px]   p-[spacing-5,10px] (1164:4725)
+ *        (1011:4227)
+ *  sm    px-[spacing-6,12px]  py-[spacing-4,8px]    p-[spacing-4,8px]  (1494:14431)
+ *        (1494:14323)
  *
  * All sizes: gap-[spacing-3,6px] between icon/text, 16px icons,
- * rounded-[md,8px], text-[size-md,14px]/tracking[-0.14px]/leading[1.16]
- * (leading[1.4] for the underlined "link" variant — node 1602:8995).
+ * rounded-[md,8px], text-[size-md,14px]/tracking[-0.14px]. The label text
+ * sits in its own leading-[0] wrapper with the real line-height (1.16 /
+ * 1.4 for the underlined "link" variant, node 1602:8995) applied to the
+ * text itself, same nested structure as Badge.
  *
  * Active: fill-primary-active #0753d8 (1011:4255) / fill-error-active
  * #e7000b (1609:8194). Focus-visible: ring 0 0 0 2px rgba(10,10,10,0.1)
@@ -35,7 +40,7 @@ import { cn } from "@/lib/cn";
  * (1011:4281).
  */
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-[var(--spacing-3,6px)] whitespace-nowrap rounded-[var(--radius-md)] font-medium token-leading-compact tracking-[-0.14px] transition-colors disabled:pointer-events-none disabled:opacity-[0.4] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_rgba(10,10,10,0.1)]",
+  "inline-flex shrink-0 items-center justify-center gap-[var(--spacing-3,6px)] whitespace-nowrap rounded-[var(--radius-md)] font-medium tracking-[-0.14px] transition-colors disabled:pointer-events-none disabled:opacity-[0.4] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_rgba(10,10,10,0.1)]",
   {
     variants: {
       variant: {
@@ -49,43 +54,93 @@ const buttonVariants = cva(
           "text-[color:var(--foreground-neutral)] hover:bg-[var(--fill-neutral-overlay-hover)] hover:text-[color:var(--foreground-neutral-subtle)]",
         destructive:
           "bg-[var(--fill-error)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-error-hover)] active:bg-[var(--fill-error-active)]",
-        link: "!p-0 token-leading-relaxed text-[color:var(--foreground-primary)] underline decoration-solid underline-offset-[from-font] hover:text-[color:var(--foreground-primary-subtle)]",
+        link: "!p-0 text-[color:var(--foreground-primary)] underline decoration-solid underline-offset-[from-font] hover:text-[color:var(--foreground-primary-subtle)]",
       },
       size: {
-        lg: "px-[var(--spacing-10,20px)] py-[var(--spacing-6,12px)] text-[length:var(--text-md)] [&_svg]:size-[16px]",
-        md: "px-[var(--spacing-6,12px)] py-[var(--spacing-5,10px)] text-[length:var(--text-md)] [&_svg]:size-[16px]",
-        sm: "px-[var(--spacing-6,12px)] py-[var(--spacing-4,8px)] text-[length:var(--text-md)] [&_svg]:size-[16px]",
+        lg: "text-[length:var(--text-md)] [&_svg]:size-[16px]",
+        md: "text-[length:var(--text-md)] [&_svg]:size-[16px]",
+        sm: "text-[length:var(--text-md)] [&_svg]:size-[16px]",
+      },
+      content: {
+        text: "",
+        icon: "",
       },
     },
+    compoundVariants: [
+      // Content=Text+Icon padding (asymmetric px/py)
+      { size: "lg", content: "text", class: "px-[var(--spacing-10,20px)] py-[var(--spacing-6,12px)]" },
+      { size: "md", content: "text", class: "px-[var(--spacing-6,12px)] py-[var(--spacing-5,10px)]" },
+      { size: "sm", content: "text", class: "px-[var(--spacing-6,12px)] py-[var(--spacing-4,8px)]" },
+      // Content=Icon padding (uniform, square button) — nodes 1494:15895 /
+      // 1164:4725 / 1494:14431
+      { size: "lg", content: "icon", class: "p-[var(--spacing-6,12px)]" },
+      { size: "md", content: "icon", class: "p-[var(--spacing-5,10px)]" },
+      { size: "sm", content: "icon", class: "p-[var(--spacing-4,8px)]" },
+    ],
     defaultVariants: {
       variant: "primary",
       size: "md",
+      content: "text",
     },
   }
 );
 
+// node 1011:4190 (text) + its child <p>: same leading-[0] wrapper + real
+// line-height pattern as Badge — see components/ui/badge.tsx BadgeText.
+function ButtonLabel({
+  variant,
+  children,
+}: {
+  variant: ButtonProps["variant"];
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="flex flex-col justify-center leading-[0]">
+      <span className={variant === "link" ? "token-leading-relaxed" : "token-leading-compact"}>
+        {children}
+      </span>
+    </span>
+  );
+}
+
 export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    Omit<VariantProps<typeof buttonVariants>, "content"> {
   loading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  /** Content=Icon in Figma — square button, icon only, no label. */
+  iconOnly?: React.ReactNode;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, variant, size, loading, disabled, leftIcon, rightIcon, children, ...props },
+  { className, variant, size, loading, disabled, leftIcon, rightIcon, iconOnly, children, ...props },
   ref
 ) {
+  if (iconOnly) {
+    return (
+      <button
+        ref={ref}
+        className={cn(buttonVariants({ variant, size, content: "icon" }), className)}
+        disabled={disabled || loading}
+        aria-busy={loading}
+        {...props}
+      >
+        {loading ? <Loader2 className="animate-spin" /> : iconOnly}
+      </button>
+    );
+  }
+
   return (
     <button
       ref={ref}
-      className={cn(buttonVariants({ variant, size }), className)}
+      className={cn(buttonVariants({ variant, size, content: "text" }), className)}
       disabled={disabled || loading}
       aria-busy={loading}
       {...props}
     >
       {loading ? <Loader2 className="animate-spin" /> : leftIcon}
-      {children}
+      <ButtonLabel variant={variant}>{children}</ButtonLabel>
       {!loading && rightIcon}
     </button>
   );
