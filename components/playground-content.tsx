@@ -100,7 +100,7 @@ function PlaygroundSelect<T extends string>({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as WithAll<T>)}
-        className="rounded-lg border border-stroke bg-surface-low px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:border-stroke-neutral-subtle focus-visible:border-primary"
+        className="rounded-lg bg-surface-subtle px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:bg-[var(--surface-subtle-hover)] focus-visible:bg-[var(--surface-subtle-hover)]"
       >
         <option value={ALL_OPTION.key}>{ALL_OPTION.label}</option>
         {options.map((o) => (
@@ -140,7 +140,7 @@ function SimpleSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as DotIconValue)}
-        className="rounded-lg border border-stroke bg-surface-low px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:border-stroke-neutral-subtle focus-visible:border-primary"
+        className="rounded-lg bg-surface-subtle px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:bg-[var(--surface-subtle-hover)] focus-visible:bg-[var(--surface-subtle-hover)]"
       >
         <option value={NONE_OPTION.key}>{NONE_OPTION.label}</option>
         {dotIconOptions.map((o) => (
