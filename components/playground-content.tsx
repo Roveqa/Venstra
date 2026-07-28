@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Check } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -113,36 +114,90 @@ function PlaygroundSelect<T extends string>({
 }
 
 function ControlBar({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-wrap items-end gap-4">{children}</div>;
+  return <div className="flex flex-wrap items-end justify-center gap-4">{children}</div>;
+}
+
+const NONE_OPTION = { key: "none", label: "None" } as const;
+type DotIconValue = "none" | "left" | "right" | "both";
+const dotIconOptions = [
+  { key: "left", label: "Left" },
+  { key: "right", label: "Right" },
+  { key: "both", label: "Both" },
+] as const;
+
+function SimpleSelect({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: DotIconValue;
+  onChange: (value: DotIconValue) => void;
+}) {
+  return (
+    <label className="flex flex-col gap-1.5">
+      <span className="text-[13px] text-ink-600">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as DotIconValue)}
+        className="rounded-lg border border-stroke bg-surface-low px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:border-stroke-neutral-subtle focus-visible:border-primary"
+      >
+        <option value={NONE_OPTION.key}>{NONE_OPTION.label}</option>
+        {dotIconOptions.map((o) => (
+          <option key={o.key} value={o.key}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
 }
 
 function BadgeDemo() {
   const [variant, setVariant] = useState<WithAll<(typeof badgeStyles)[number]["key"]>>("all");
   const [size, setSize] = useState<WithAll<(typeof badgeSizes)[number]["key"]>>("all");
   const [intent, setIntent] = useState<WithAll<(typeof badgeIntents)[number]["key"]>>("all");
+  const [dot, setDot] = useState<DotIconValue>("none");
+  const [icon, setIcon] = useState<DotIconValue>("none");
 
   const variants = variant === "all" ? badgeStyles : badgeStyles.filter((v) => v.key === variant);
   const sizes = size === "all" ? badgeSizes : badgeSizes.filter((s) => s.key === size);
   const intents = intent === "all" ? badgeIntents : badgeIntents.filter((i) => i.key === intent);
 
+  const dotLeft = dot === "left" || dot === "both";
+  const dotRight = dot === "right" || dot === "both";
+  const iconLeft = icon === "left" || icon === "both";
+  const iconRight = icon === "right" || icon === "both";
+
   return (
-    <div className="flex w-full flex-col gap-8">
+    <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
         <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={badgeStyles} />
         <PlaygroundSelect label="Size" value={size} onChange={setSize} options={badgeSizes} />
         <PlaygroundSelect label="Type" value={intent} onChange={setIntent} options={badgeIntents} />
+        <SimpleSelect label="Dot" value={dot} onChange={setDot} />
+        <SimpleSelect label="Icon" value={icon} onChange={setIcon} />
       </ControlBar>
 
       <ComponentSection>
         {variants.map((v) => (
-          <div key={v.key} className="flex w-full flex-col gap-6">
+          <div key={v.key} className="flex w-full flex-col items-center gap-6 text-center">
             {variants.length > 1 && <GroupLabel>{v.label}</GroupLabel>}
             {sizes.map((s) => (
-              <div key={s.key} className="flex flex-col gap-3">
+              <div key={s.key} className="flex flex-col items-center gap-3 text-center">
                 {sizes.length > 1 && <span className="text-[13px] text-ink-600">{s.label}</span>}
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center justify-center gap-3">
                   {intents.map((i) => (
-                    <Badge key={i.key} variant={v.key} size={s.key} intent={i.key}>
+                    <Badge
+                      key={i.key}
+                      variant={v.key}
+                      size={s.key}
+                      intent={i.key}
+                      dotLeft={dotLeft}
+                      dotRight={dotRight}
+                      iconLeft={iconLeft ? <Check /> : undefined}
+                      iconRight={iconRight ? <Check /> : undefined}
+                    >
                       {i.label}
                     </Badge>
                   ))}

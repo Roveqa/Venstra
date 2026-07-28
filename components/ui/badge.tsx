@@ -5,6 +5,10 @@ import { cn } from "@/lib/cn";
 /**
  * Source: Figma "Badge" component set (r2dbmly2FCs307sePH1Z9C, page 903:5385).
  * Status × Style × Size variants — Content=Number uses the `shape="number"` prop.
+ *
+ * "Badge master" (node 887:4424) also exposes Dot left/right and Icon
+ * left/right boolean properties (`dotLeft`/`dotRight`/`iconLeft`/`iconRight`
+ * below) plus Avatar left/right, which aren't implemented here.
  */
 const badgeVariants = cva(
   "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-full)] font-normal token-leading-compact",
@@ -111,12 +115,67 @@ const badgeVariants = cva(
   }
 );
 
-export interface BadgeProps
-  extends HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
-
-export function Badge({ className, intent, variant, size, shape, ...props }: BadgeProps) {
+// node 1538:8024 / 1538:8087 (Dot Left / Dot Right): a 4px circle centered
+// in a 10x16 box, hugging the text side (justify-end on the left, justify-
+// start on the right) — currentColor so it always matches the label text.
+function BadgeDot({ side }: { side: "left" | "right" }) {
   return (
-    <span className={cn(badgeVariants({ intent, variant, size, shape }), className)} {...props} />
+    <span
+      className={cn(
+        "flex h-[16px] w-[10px] shrink-0 items-center",
+        side === "left" ? "justify-end" : "justify-start"
+      )}
+    >
+      <span className="size-[4px] rounded-full bg-current" />
+    </span>
+  );
+}
+
+// node 1538:8175 / 1538:8242 (Icon Left / Icon Right): 14px icon slot with
+// 2px of padding on the outer side only (none between the icon and text).
+function BadgeIcon({ side, children }: { side: "left" | "right"; children: React.ReactNode }) {
+  return (
+    <span
+      className={cn(
+        "flex shrink-0 items-center [&_svg]:size-[14px]",
+        side === "left" ? "pl-[2px]" : "pr-[2px]"
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
+export interface BadgeProps
+  extends Omit<HTMLAttributes<HTMLSpanElement>, "children">,
+    VariantProps<typeof badgeVariants> {
+  children?: React.ReactNode;
+  dotLeft?: boolean;
+  dotRight?: boolean;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
+}
+
+export function Badge({
+  className,
+  intent,
+  variant,
+  size,
+  shape,
+  dotLeft,
+  dotRight,
+  iconLeft,
+  iconRight,
+  children,
+  ...props
+}: BadgeProps) {
+  return (
+    <span className={cn(badgeVariants({ intent, variant, size, shape }), className)} {...props}>
+      {iconLeft && <BadgeIcon side="left">{iconLeft}</BadgeIcon>}
+      {dotLeft && <BadgeDot side="left" />}
+      {children}
+      {dotRight && <BadgeDot side="right" />}
+      {iconRight && <BadgeIcon side="right">{iconRight}</BadgeIcon>}
+    </span>
   );
 }
