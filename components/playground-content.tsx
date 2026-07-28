@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, CornerDownLeft } from "lucide-react";
+import { Check, Command } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -62,11 +62,10 @@ const kbdVariants = [
   { key: "ghost", label: "Ghost" },
 ] as const;
 
-const shortcuts = [
-  ["⌘", "K"],
-  ["⌘", "S"],
-  ["⌘", "Z"],
-];
+// The Command modifier goes through Kbd's icon slot, not as typed "⌘"
+// text — Figma's anatomy renders it as an icon (squircle_12/14), same
+// as any other modifier symbol would be.
+const shortcuts = ["K", "S", "Z"];
 
 const dividerVariants = [
   { key: "horizontal", label: "Horizontally" },
@@ -345,39 +344,21 @@ function ButtonDemo() {
 }
 
 function KbdDemo() {
-  const [showIcon, setShowIcon] = useState(false);
-
   return (
-    <div className="flex w-full flex-col items-center gap-8">
-      <ControlBar>
-        <label className="flex flex-col items-start gap-1.5">
-          <span className="text-[13px] text-ink-600">Icon</span>
-          <input
-            type="checkbox"
-            checked={showIcon}
-            onChange={(e) => setShowIcon(e.target.checked)}
-            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
-          />
-        </label>
-      </ControlBar>
-
-      <ComponentSection>
-        {kbdVariants.map((variant) => (
-          <div key={variant.key} className="flex w-full flex-col items-center gap-3 text-center">
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              {shortcuts.map(([mod, key]) => (
-                <div key={key} className="flex items-center gap-1">
-                  <Kbd variant={variant.key} icon={showIcon ? <CornerDownLeft /> : undefined}>
-                    {mod}
-                  </Kbd>
-                  <Kbd variant={variant.key}>{key}</Kbd>
-                </div>
-              ))}
-            </div>
+    <ComponentSection>
+      {kbdVariants.map((variant) => (
+        <div key={variant.key} className="flex w-full flex-col items-center gap-3 text-center">
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            {shortcuts.map((key) => (
+              <div key={key} className="flex items-center gap-1">
+                <Kbd variant={variant.key} icon={<Command />} aria-label="Command" />
+                <Kbd variant={variant.key}>{key}</Kbd>
+              </div>
+            ))}
           </div>
-        ))}
-      </ComponentSection>
-    </div>
+        </div>
+      ))}
+    </ComponentSection>
   );
 }
 
