@@ -25,7 +25,7 @@
      than a same-size Fill/Light button sitting right next to it.
      box-shadow never affects layout size, so every variant/size stays
      pixel-identical regardless of which one has a "stroke". */
-  --btn-ring: none;
+  --btn-ring: 0 0 0 0 transparent;
   box-shadow: var(--btn-ring);
   transition:
     background-color 0.15s ease,

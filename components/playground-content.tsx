@@ -282,14 +282,14 @@ function ButtonDemo() {
         <PlaygroundSelect label="Size" value={size} onChange={setSize} options={buttonSizes} />
         <PlaygroundSelect label="State" value={state} onChange={setState} options={buttonStates} />
         <TinySelect label="Icon" value={icon} onChange={setIcon} options={dotIconValues} />
-        <label className="flex items-center gap-2 self-end pb-2.5">
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Icon only</span>
           <input
             type="checkbox"
             checked={iconOnly}
             onChange={(e) => setIconOnly(e.target.checked)}
             className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
           />
-          <span className="text-[13px] text-ink-600">Icon only</span>
         </label>
       </ControlBar>
 
