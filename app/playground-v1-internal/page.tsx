@@ -53,11 +53,28 @@ const shortcuts = [
   ["⌘", "Z"],
 ];
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function ComponentSection({
+  name,
+  bare = false,
+  children,
+}: {
+  name: string;
+  bare?: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <span className="text-xs font-medium uppercase tracking-[0.08em] text-ink-600">
-      {children}
-    </span>
+    <div className="flex w-full flex-col gap-6">
+      <h2 className="text-[20px] font-semibold leading-[1.2] tracking-[-0.6px] text-ink-950">
+        {name}
+      </h2>
+      {bare ? (
+        <div className="example-zoom flex w-full items-center justify-center">{children}</div>
+      ) : (
+        <div className="example-zoom flex w-full flex-wrap items-center justify-center gap-4 rounded-2xl border border-stroke px-10 py-20">
+          {children}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -70,10 +87,21 @@ export default function PlaygroundPage() {
   const labelSvg = readSvg("components/label-example.svg");
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-start gap-24 bg-white px-6 py-20 sm:px-10 md:px-16">
-      <section className="flex w-full flex-col gap-6">
-        <SectionLabel>Badge</SectionLabel>
-        <div className="flex flex-wrap items-center gap-4">
+    <main className="flex min-h-screen w-full flex-col items-center bg-white px-4 py-16 md:px-10 lg:px-24">
+      <div className="flex w-full max-w-[960px] flex-col gap-16">
+        <div className="flex w-full flex-col gap-9">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-[28px] font-semibold leading-none tracking-[-0.84px] text-ink-950">
+              Playground
+            </h1>
+            <p className="text-[16px] leading-[1.4] tracking-[-0.48px] text-ink-600">
+              Internal component testing. Not linked anywhere on the site.
+            </p>
+          </div>
+          <div className="h-px w-full bg-stroke" />
+        </div>
+
+        <ComponentSection name="Badge">
           <div
             className="[&_svg]:h-6 [&_svg]:w-[49px]"
             dangerouslySetInnerHTML={{ __html: badgeDraftSvg }}
@@ -90,31 +118,27 @@ export default function PlaygroundPage() {
             className="[&_svg]:h-6 [&_svg]:w-[55px]"
             dangerouslySetInnerHTML={{ __html: badgeFailedSvg }}
           />
-        </div>
-      </section>
+        </ComponentSection>
 
-      <section className="flex w-full flex-col gap-6">
-        <SectionLabel>Button</SectionLabel>
-        <div className="flex flex-col gap-8">
-          {buttonSizes.map((size) => (
-            <div key={size.key} className="flex flex-wrap items-center gap-4">
-              {buttonStyles.map((style) => (
-                <button
-                  key={style.key}
-                  type="button"
-                  className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium tracking-[-0.02em] transition-colors ${size.padding} ${size.text} ${style.className}`}
-                >
-                  {style.label}
-                </button>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
+        <ComponentSection name="Button">
+          <div className="flex w-full flex-col items-center gap-8">
+            {buttonSizes.map((size) => (
+              <div key={size.key} className="flex flex-wrap items-center justify-center gap-4">
+                {buttonStyles.map((style) => (
+                  <button
+                    key={style.key}
+                    type="button"
+                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium tracking-[-0.02em] transition-colors ${size.padding} ${size.text} ${style.className}`}
+                  >
+                    {style.label}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </ComponentSection>
 
-      <section className="flex w-full flex-col gap-6">
-        <SectionLabel>Kbd</SectionLabel>
-        <div className="flex flex-wrap items-center gap-4">
+        <ComponentSection name="Kbd">
           {shortcuts.map(([mod, key]) => (
             <div
               key={key}
@@ -124,24 +148,22 @@ export default function PlaygroundPage() {
               <kbd className="font-sans text-sm font-medium text-ink-950">{key}</kbd>
             </div>
           ))}
-        </div>
-      </section>
+        </ComponentSection>
 
-      <section className="flex w-full flex-col gap-6">
-        <SectionLabel>Divider</SectionLabel>
-        <div
-          className="example-zoom max-w-[480px] [&_svg]:h-auto [&_svg]:w-full"
-          dangerouslySetInnerHTML={{ __html: dividerSvg }}
-        />
-      </section>
+        <ComponentSection name="Divider" bare>
+          <div
+            className="w-full max-w-[480px] [&_svg]:h-auto [&_svg]:w-full"
+            dangerouslySetInnerHTML={{ __html: dividerSvg }}
+          />
+        </ComponentSection>
 
-      <section className="flex w-full flex-col gap-6">
-        <SectionLabel>Label</SectionLabel>
-        <div
-          className="example-zoom max-w-[320px] [&_svg]:h-auto [&_svg]:w-full"
-          dangerouslySetInnerHTML={{ __html: labelSvg }}
-        />
-      </section>
+        <ComponentSection name="Label" bare>
+          <div
+            className="w-full max-w-[320px] [&_svg]:h-auto [&_svg]:w-full"
+            dangerouslySetInnerHTML={{ __html: labelSvg }}
+          />
+        </ComponentSection>
+      </div>
     </main>
   );
 }
