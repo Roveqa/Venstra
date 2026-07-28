@@ -279,6 +279,23 @@
   --fill-info-overlay-hover: var(--blue-alpha-12);
   --fill-info-overlay-active: var(--blue-alpha-16);
 
+  /* Fill — Inverse mode (for placing a button/badge on an already-dark
+     surface). Button nodes 1623:12740/12756/12772 (Primary-inverse Fill
+     Default/Hover/Active) and 1921:8216/8232 (Neutral-inverse Fill
+     Default/Hover). Hover/active read directly from Figma, not
+     extrapolated — Primary-inverse's hover is Primary/50 (a light blue
+     tint), not a step on the neutral scale like everything else. */
+  --fill-primary-inverse: var(--neutral-50);
+  --fill-primary-inverse-hover: var(--primary-50);
+  --fill-primary-inverse-active: var(--neutral-50);
+  --fill-primary-overlay-inverse: rgba(254, 254, 254, 0.1);
+  --stroke-primary-inverse: var(--neutral-50);
+  --fill-neutral-inverse: var(--neutral-50);
+  --fill-neutral-inverse-hover: var(--neutral-100);
+  --fill-neutral-inverse-active: var(--neutral-50);
+  --fill-neutral-overlay-inverse: var(--neutral-white-alpha-12);
+  --stroke-neutral-inverse: var(--neutral-white-alpha-80);
+
   /* Foreground */
   --foreground: var(--neutral-950);
   --foreground-subtle: var(--neutral-700);

@@ -12,13 +12,23 @@ import { Label } from "@/components/ui/label";
 
 const sections = ["Badge", "Button", "Kbd", "Divider", "Label"];
 
-const buttonVariants = [
-  { key: "primary", label: "Primary" },
-  { key: "secondary", label: "Secondary" },
+const buttonStyles = [
+  { key: "fill", label: "Fill" },
+  { key: "light", label: "Light" },
   { key: "outline", label: "Outline" },
   { key: "ghost", label: "Ghost" },
-  { key: "destructive", label: "Destructive" },
   { key: "link", label: "Link" },
+] as const;
+
+const buttonIntents = [
+  { key: "primary", label: "Primary" },
+  { key: "neutral", label: "Neutral" },
+  { key: "success", label: "Success" },
+  { key: "warning", label: "Warning" },
+  { key: "error", label: "Error" },
+  { key: "info", label: "Info" },
+  { key: "primary-inverse", label: "Primary-inverse" },
+  { key: "neutral-inverse", label: "Neutral-inverse" },
 ] as const;
 
 const buttonSizes = [
@@ -228,13 +238,16 @@ function BadgeDemo() {
 }
 
 function ButtonDemo() {
-  // Default to Primary + Medium, not "All" — see feedback_playground_defaults.
-  const [variant, setVariant] = useState<WithAll<(typeof buttonVariants)[number]["key"]>>("primary");
+  // Default to Fill/Primary/Medium, not "All" — see feedback_playground_defaults.
+  const [variant, setVariant] = useState<WithAll<(typeof buttonStyles)[number]["key"]>>("fill");
+  const [intent, setIntent] = useState<WithAll<(typeof buttonIntents)[number]["key"]>>("primary");
   const [size, setSize] = useState<WithAll<(typeof buttonSizes)[number]["key"]>>("md");
   const [state, setState] = useState<ButtonStateValue>("default");
   const [icon, setIcon] = useState<DotIconValue>("none");
+  const [iconOnly, setIconOnly] = useState(false);
 
-  const variants = variant === "all" ? buttonVariants : buttonVariants.filter((v) => v.key === variant);
+  const variants = variant === "all" ? buttonStyles : buttonStyles.filter((v) => v.key === variant);
+  const intents = intent === "all" ? buttonIntents : buttonIntents.filter((i) => i.key === intent);
   const sizes = size === "all" ? buttonSizes : buttonSizes.filter((s) => s.key === size);
 
   const iconLeft = icon === "left" || icon === "both";
@@ -243,28 +256,54 @@ function ButtonDemo() {
   return (
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
-        <PlaygroundSelect label="Variant" value={variant} onChange={setVariant} options={buttonVariants} />
+        <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={buttonStyles} />
+        <PlaygroundSelect label="Type" value={intent} onChange={setIntent} options={buttonIntents} />
         <PlaygroundSelect label="Size" value={size} onChange={setSize} options={buttonSizes} />
         <TinySelect label="State" value={state} onChange={setState} options={buttonStateValues} />
         <TinySelect label="Icon" value={icon} onChange={setIcon} options={dotIconValues} />
+        <label className="flex flex-col gap-1.5">
+          <span className="text-[13px] text-ink-600">Icon only</span>
+          <input
+            type="checkbox"
+            checked={iconOnly}
+            onChange={(e) => setIconOnly(e.target.checked)}
+            className="h-[38px] w-[38px] cursor-pointer rounded-lg bg-surface-subtle accent-primary"
+          />
+        </label>
       </ControlBar>
 
       <ComponentSection>
         <div className="flex flex-wrap items-center justify-center gap-3">
           {variants.map((v) =>
-            sizes.map((s) => (
-              <Button
-                key={`${v.key}-${s.key}`}
-                variant={v.key}
-                size={s.key}
-                disabled={state === "disabled"}
-                loading={state === "loading"}
-                leftIcon={iconLeft ? <Check /> : undefined}
-                rightIcon={iconRight ? <Check /> : undefined}
-              >
-                Button
-              </Button>
-            ))
+            intents.map((i) =>
+              sizes.map((s) =>
+                iconOnly ? (
+                  <Button
+                    key={`${v.key}-${i.key}-${s.key}`}
+                    variant={v.key}
+                    intent={i.key}
+                    size={s.key}
+                    disabled={state === "disabled"}
+                    loading={state === "loading"}
+                    iconOnly={<Check />}
+                    aria-label="Button"
+                  />
+                ) : (
+                  <Button
+                    key={`${v.key}-${i.key}-${s.key}`}
+                    variant={v.key}
+                    intent={i.key}
+                    size={s.key}
+                    disabled={state === "disabled"}
+                    loading={state === "loading"}
+                    leftIcon={iconLeft ? <Check /> : undefined}
+                    rightIcon={iconRight ? <Check /> : undefined}
+                  >
+                    Button
+                  </Button>
+                )
+              )
+            )
           )}
         </div>
       </ComponentSection>

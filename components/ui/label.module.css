@@ -1,0 +1,23 @@
+/*
+ * Source: Figma "Label" component set (r2dbmly2FCs307sePH1Z9C, page 1:13).
+ * Variant: Optional Text = Yes/No.
+ */
+
+.label {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: var(--foreground);
+}
+
+.optional {
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.16;
+  color: var(--foreground-base-muted);
+}

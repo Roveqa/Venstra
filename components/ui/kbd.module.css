@@ -1,0 +1,38 @@
+/*
+ * Source: Figma "Kbd" component set (r2dbmly2FCs307sePH1Z9C, page 149:3743).
+ * Style variants: Background, Outline, Ghost.
+ */
+
+.kbd {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: var(--radius-s);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.background {
+  background-color: var(--surface-strong);
+  padding: 4px 6px;
+  font-size: 12px;
+  letter-spacing: -0.24px;
+  color: var(--foreground-subtle);
+}
+
+.outline {
+  border: 1px solid var(--stroke-subtle);
+  padding: 4px 6px;
+  font-size: 12px;
+  letter-spacing: -0.24px;
+  color: var(--foreground-weak);
+}
+
+.ghost {
+  padding: 0;
+  font-size: 14px;
+  letter-spacing: -0.28px;
+  color: var(--foreground-muted);
+}

@@ -1,5 +1,6 @@
+import clsx from "clsx";
 import type { HTMLAttributes } from "react";
-import { cn } from "@/lib/cn";
+import styles from "./divider.module.css";
 
 /**
  * Source: Figma "Divider" component set (r2dbmly2FCs307sePH1Z9C, page 1637:14992).
@@ -17,7 +18,7 @@ export function Divider({ className, variant = "horizontal", label = "Or", ...pr
       <div
         role="separator"
         aria-orientation="vertical"
-        className={cn("h-full w-px shrink-0 bg-[var(--stroke)]", className)}
+        className={clsx(styles.vertical, className)}
         {...props}
       />
     );
@@ -28,17 +29,12 @@ export function Divider({ className, variant = "horizontal", label = "Or", ...pr
       <div
         role="separator"
         aria-orientation="horizontal"
-        className={cn(
-          "flex w-full items-center gap-[var(--spacing-6,12px)]",
-          className
-        )}
+        className={clsx(styles.or, className)}
         {...props}
       >
-        <div className="h-px min-w-px flex-1 bg-[var(--stroke)]" />
-        <span className="shrink-0 whitespace-nowrap text-[length:var(--text-sm)] font-medium leading-[1.16] tracking-[-0.12px] text-[color:var(--foreground-muted)]">
-          {label}
-        </span>
-        <div className="h-px min-w-px flex-1 bg-[var(--stroke)]" />
+        <div className={styles.orLine} />
+        <span className={styles.orLabel}>{label}</span>
+        <div className={styles.orLine} />
       </div>
     );
   }
@@ -47,7 +43,7 @@ export function Divider({ className, variant = "horizontal", label = "Or", ...pr
     <div
       role="separator"
       aria-orientation="horizontal"
-      className={cn("h-px w-full shrink-0 bg-[var(--stroke)]", className)}
+      className={clsx(styles.horizontal, className)}
       {...props}
     />
   );

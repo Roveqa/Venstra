@@ -1,111 +1,45 @@
-import { type VariantProps, cva } from "class-variance-authority";
+import clsx from "clsx";
 import { Loader2 } from "lucide-react";
 import { type ButtonHTMLAttributes, forwardRef } from "react";
-import { cn } from "@/lib/cn";
+import styles from "./button.module.css";
 
 /**
  * Source: Figma "Button" component set (r2dbmly2FCs307sePH1Z9C, page 1:11).
- * Every value below was read directly from a Figma component instance via
- * get_design_context — node IDs are noted per variant so they can be
- * re-verified if the design changes.
+ * See button.module.css for the full per-variant/intent color recipe and
+ * node-by-node source comments — this file only handles structure
+ * (icon slots, text nesting, content=icon square variant) and wiring
+ * props to `data-variant`/`data-intent`/`data-size`/`data-content`
+ * attributes that the stylesheet selects on.
  *
- *  variant     Figma Style × Type          node (Default / Hover)
- *  ─────────   ──────────────────────────  ──────────────────────────
- *  primary     Fill      × Primary         1011:4227 / 1011:4242
- *  secondary   Light     × Neutral         1943:8782 / 1943:8786
- *  outline     Outline   × Neutral         1602:9288 / 1602:9304
- *  ghost       Ghost     × Neutral         1602:9292 / 1602:9308
- *  destructive Fill      × Error           1609:8162 / 1609:8178
- *  link        Link      × Primary         1602:8995 / 1602:8999
+ * size  padding, Content=Text+Icon (node)         padding, Content=Icon (node)
+ * ────  ───────────────────────────────────────   ────────────────────────────
+ * lg    px-[spacing-10,20px] py-[spacing-6,12px]   p-[spacing-6,12px]  (1494:15895)
+ *       (1494:15787)
+ * md    px-[spacing-6,12px]  py-[spacing-5,10px]   p-[spacing-5,10px] (1164:4725)
+ *       (1011:4227)
+ * sm    px-[spacing-6,12px]  py-[spacing-4,8px]    p-[spacing-4,8px]  (1494:14431)
+ *       (1494:14323)
  *
- *  size  padding, Content=Text+Icon (node)         padding, Content=Icon (node)
- *  ────  ───────────────────────────────────────   ────────────────────────────
- *  lg    px-[spacing-10,20px] py-[spacing-6,12px]   p-[spacing-6,12px]  (1494:15895)
- *        (1494:15787)
- *  md    px-[spacing-6,12px]  py-[spacing-5,10px]   p-[spacing-5,10px] (1164:4725)
- *        (1011:4227)
- *  sm    px-[spacing-6,12px]  py-[spacing-4,8px]    p-[spacing-4,8px]  (1494:14431)
- *        (1494:14323)
- *
- * All sizes: gap-[spacing-3,6px] between icon/text, 16px icons,
- * rounded-[md,8px], text-[size-md,14px]/tracking[-0.14px]. The label text
- * sits in its own leading-[0] wrapper with the real line-height (1.16 /
- * 1.4 for the underlined "link" variant, node 1602:8995) applied to the
- * text itself, same nested structure as Badge.
- *
- * Active: fill-primary-active #0753d8 (1011:4255) / fill-error-active
- * #e7000b (1609:8194). Focus-visible: ring 0 0 0 2px rgba(10,10,10,0.1)
- * (1011:4268). Disabled: opacity 0.4, colors unchanged (1011:4294,
- * 1609:8242). Loading: icon replaced by a spinner, colors unchanged
- * (1011:4281).
+ * Focus-visible: ring 0 0 0 2px rgba(10,10,10,0.1) (1011:4268).
+ * Disabled: opacity 0.4, colors unchanged (1011:4294). Loading: icon
+ * replaced by a spinner, colors unchanged (1011:4281).
  */
-const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-[var(--spacing-3,6px)] whitespace-nowrap rounded-[var(--radius-md)] font-medium tracking-[-0.14px] transition-colors disabled:pointer-events-none disabled:opacity-[0.4] focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_rgba(10,10,10,0.1)]",
-  {
-    variants: {
-      variant: {
-        primary:
-          "bg-[var(--fill-primary)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-primary-hover)] active:bg-[var(--fill-primary-active)]",
-        secondary:
-          "bg-[var(--fill-neutral-overlay)] text-[color:var(--foreground-neutral)] hover:bg-[var(--fill-neutral-overlay-hover)]",
-        outline:
-          "border border-solid border-[var(--stroke-neutral)] text-[color:var(--foreground-neutral)] hover:border-[var(--stroke-neutral-subtle)] hover:text-[color:var(--foreground-neutral-subtle)]",
-        ghost:
-          "text-[color:var(--foreground-neutral)] hover:bg-[var(--fill-neutral-overlay-hover)] hover:text-[color:var(--foreground-neutral-subtle)]",
-        destructive:
-          "bg-[var(--fill-error)] text-[color:var(--foreground-inverse)] hover:bg-[var(--fill-error-hover)] active:bg-[var(--fill-error-active)]",
-        link: "!p-0 text-[color:var(--foreground-primary)] underline decoration-solid underline-offset-[from-font] hover:text-[color:var(--foreground-primary-subtle)]",
-      },
-      size: {
-        lg: "text-[length:var(--text-md)] [&_svg]:size-[16px]",
-        md: "text-[length:var(--text-md)] [&_svg]:size-[16px]",
-        sm: "text-[length:var(--text-md)] [&_svg]:size-[16px]",
-      },
-      content: {
-        text: "",
-        icon: "",
-      },
-    },
-    compoundVariants: [
-      // Content=Text+Icon padding (asymmetric px/py)
-      { size: "lg", content: "text", class: "px-[var(--spacing-10,20px)] py-[var(--spacing-6,12px)]" },
-      { size: "md", content: "text", class: "px-[var(--spacing-6,12px)] py-[var(--spacing-5,10px)]" },
-      { size: "sm", content: "text", class: "px-[var(--spacing-6,12px)] py-[var(--spacing-4,8px)]" },
-      // Content=Icon padding (uniform, square button) — nodes 1494:15895 /
-      // 1164:4725 / 1494:14431
-      { size: "lg", content: "icon", class: "p-[var(--spacing-6,12px)]" },
-      { size: "md", content: "icon", class: "p-[var(--spacing-5,10px)]" },
-      { size: "sm", content: "icon", class: "p-[var(--spacing-4,8px)]" },
-    ],
-    defaultVariants: {
-      variant: "primary",
-      size: "md",
-      content: "text",
-    },
-  }
-);
+export type ButtonVariant = "fill" | "light" | "outline" | "ghost" | "link";
+export type ButtonIntent =
+  | "primary"
+  | "neutral"
+  | "success"
+  | "warning"
+  | "error"
+  | "info"
+  | "primary-inverse"
+  | "neutral-inverse";
+export type ButtonSize = "lg" | "md" | "sm";
 
-// node 1011:4190 (text) + its child <p>: same leading-[0] wrapper + real
-// line-height pattern as Badge — see components/ui/badge.tsx BadgeText.
-function ButtonLabel({
-  variant,
-  children,
-}: {
-  variant: ButtonProps["variant"];
-  children: React.ReactNode;
-}) {
-  return (
-    <span className="flex flex-col justify-center leading-[0]">
-      <span className={variant === "link" ? "token-leading-relaxed" : "token-leading-compact"}>
-        {children}
-      </span>
-    </span>
-  );
-}
-
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    Omit<VariantProps<typeof buttonVariants>, "content"> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+  intent?: ButtonIntent;
+  size?: ButtonSize;
   loading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -113,20 +47,46 @@ export interface ButtonProps
   iconOnly?: React.ReactNode;
 }
 
+function ButtonLabel({ variant, children }: { variant: ButtonVariant; children: React.ReactNode }) {
+  return (
+    <span className={styles.label}>
+      <span className={variant === "link" ? styles.leadingRelaxed : styles.leadingCompact}>
+        {children}
+      </span>
+    </span>
+  );
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, variant, size, loading, disabled, leftIcon, rightIcon, iconOnly, children, ...props },
+  {
+    className,
+    variant = "fill",
+    intent = "primary",
+    size = "md",
+    loading,
+    disabled,
+    leftIcon,
+    rightIcon,
+    iconOnly,
+    children,
+    ...props
+  },
   ref
 ) {
   if (iconOnly) {
     return (
       <button
         ref={ref}
-        className={cn(buttonVariants({ variant, size, content: "icon" }), className)}
+        className={clsx(styles.button, className)}
+        data-variant={variant}
+        data-intent={intent}
+        data-size={size}
+        data-content="icon"
         disabled={disabled || loading}
         aria-busy={loading}
         {...props}
       >
-        {loading ? <Loader2 className="animate-spin" /> : iconOnly}
+        {loading ? <Loader2 className={styles.spin} /> : iconOnly}
       </button>
     );
   }
@@ -134,12 +94,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   return (
     <button
       ref={ref}
-      className={cn(buttonVariants({ variant, size, content: "text" }), className)}
+      className={clsx(styles.button, className)}
+      data-variant={variant}
+      data-intent={intent}
+      data-size={size}
+      data-content="text"
       disabled={disabled || loading}
       aria-busy={loading}
       {...props}
     >
-      {loading ? <Loader2 className="animate-spin" /> : leftIcon}
+      {loading ? <Loader2 className={styles.spin} /> : leftIcon}
       <ButtonLabel variant={variant}>{children}</ButtonLabel>
       {!loading && rightIcon}
     </button>

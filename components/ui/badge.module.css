@@ -1,0 +1,158 @@
+/*
+ * Source: Figma "Badge" component set (r2dbmly2FCs307sePH1Z9C, page 903:5385).
+ * Status × Style × Size, Content=Number via [data-shape="number"].
+ * "Badge master" (887:4424) also exposes Dot left/right and Icon
+ * left/right (implemented below) plus Avatar left/right (not
+ * implemented). Same [data-intent] custom-property pattern as
+ * button.module.css.
+ */
+
+.badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  font-weight: 400;
+}
+
+.badge[data-size="medium"] {
+  font-size: var(--text-md);
+  letter-spacing: -0.28px;
+}
+.badge[data-size="small"] {
+  font-size: var(--text-xs);
+  letter-spacing: -0.2px;
+}
+
+/* Outer padding — node 1801:1598 (Medium Text) and 1802:1600 (Medium
+   Number) both use p-[4px]. Node 1802:14198 (Small Text): px-[4px]
+   py-[2px]. Node 1802:14228 (Small Number): h-[18px] min-w-[18px]
+   px-[4px], no vertical padding. The extra ~4px around the text comes
+   from .label below, not from here — that's the gap between icon/dot
+   and text. */
+.badge[data-size="medium"][data-shape="text"] {
+  padding: 4px;
+}
+.badge[data-size="small"][data-shape="text"] {
+  padding: 2px 4px;
+}
+.badge[data-size="medium"][data-shape="number"] {
+  height: 24px;
+  min-width: 24px;
+  padding: 4px;
+  justify-content: center;
+}
+.badge[data-size="small"][data-shape="number"] {
+  height: 18px;
+  min-width: 18px;
+  padding: 0 4px;
+  justify-content: center;
+}
+
+/* ---- Intent palettes ---- */
+.badge[data-intent="neutral"] {
+  --badge-fill: var(--fill-neutral);
+  --badge-overlay: var(--fill-neutral-overlay);
+  --badge-text: var(--foreground-neutral);
+}
+.badge[data-intent="success"] {
+  --badge-fill: var(--fill-success);
+  --badge-overlay: var(--fill-success-overlay);
+  --badge-text: var(--foreground-success);
+}
+.badge[data-intent="warning"] {
+  --badge-fill: var(--fill-warning);
+  --badge-overlay: var(--fill-warning-overlay);
+  --badge-text: var(--foreground-warning);
+}
+.badge[data-intent="error"] {
+  --badge-fill: var(--fill-error);
+  --badge-overlay: var(--fill-error-overlay);
+  --badge-text: var(--foreground-error);
+}
+.badge[data-intent="info"] {
+  --badge-fill: var(--fill-info);
+  --badge-overlay: var(--fill-info-overlay);
+  --badge-text: var(--foreground-info);
+}
+
+/* ---- Style recipes ---- */
+.badge[data-variant="fill"] {
+  background-color: var(--badge-fill);
+  color: var(--foreground-inverse);
+}
+.badge[data-variant="light"] {
+  background-color: var(--badge-overlay);
+  color: var(--badge-text);
+}
+.badge[data-variant="ghost"] {
+  color: var(--badge-text);
+}
+
+/* node 1538:8024 / 1538:8087 (Dot Left / Dot Right): a 4px circle
+   centered in a 10x16 box, hugging the text side — currentColor so it
+   always matches the label text. */
+.dot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: 10px;
+  height: 16px;
+}
+.dotLeft {
+  justify-content: flex-end;
+}
+.dotRight {
+  justify-content: flex-start;
+}
+.dotCircle {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-color: currentColor;
+}
+
+/* node 865:6939 (text) + child <p>: leading-[0] wrapper + real
+   line-height on the text itself. */
+.textWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 0;
+}
+.leadingCompact {
+  line-height: 1.16; /* Medium */
+}
+.leadingRelaxed {
+  line-height: 1.4; /* Small */
+}
+
+/* node 1538:7950 "label": px-[4px] on its own, on top of the outer
+   padding — the gap between icon/dot and the text. */
+.label {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* node 1538:8175 / 1538:8242 (Icon Left / Icon Right): 14px icon slot
+   with 2px of padding on the outer side only. */
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+.icon svg {
+  width: 14px;
+  height: 14px;
+}
+.iconLeft {
+  padding-left: 2px;
+}
+.iconRight {
+  padding-right: 2px;
+}

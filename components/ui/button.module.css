@@ -1,0 +1,250 @@
+/*
+ * Source: Figma "Button" component set (r2dbmly2FCs307sePH1Z9C, page 1:11).
+ * See button.tsx for the full node-by-node source comment.
+ *
+ * Each [data-intent] block defines local custom properties from the
+ * design tokens in app/globals.css; each [data-variant] block consumes
+ * them. That split keeps the color recipe (5 variants) separate from
+ * the palette (8 intents) instead of writing 40 combined rules.
+ */
+
+.button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3, 6px);
+  white-space: nowrap;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  letter-spacing: -0.14px;
+  font-size: var(--text-md);
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.button:disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.button svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Size × Content=Text+Icon padding */
+.button[data-size="lg"][data-content="text"] {
+  padding: var(--spacing-6, 12px) var(--spacing-10, 20px);
+}
+.button[data-size="md"][data-content="text"] {
+  padding: var(--spacing-5, 10px) var(--spacing-6, 12px);
+}
+.button[data-size="sm"][data-content="text"] {
+  padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
+}
+
+/* Size × Content=Icon padding — square button, nodes 1494:15895 /
+   1164:4725 / 1494:14431 */
+.button[data-size="lg"][data-content="icon"] {
+  padding: var(--spacing-6, 12px);
+}
+.button[data-size="md"][data-content="icon"] {
+  padding: var(--spacing-5, 10px);
+}
+.button[data-size="sm"][data-content="icon"] {
+  padding: var(--spacing-4, 8px);
+}
+
+/* ---- Intent palettes ---- */
+
+.button[data-intent="primary"] {
+  --btn-fill: var(--fill-primary);
+  --btn-fill-hover: var(--fill-primary-hover);
+  --btn-fill-active: var(--fill-primary-active);
+  --btn-fill-text: var(--foreground-inverse);
+  --btn-overlay: var(--fill-primary-overlay);
+  --btn-overlay-hover: var(--fill-primary-overlay-hover);
+  --btn-stroke: var(--stroke-primary);
+  --btn-stroke-subtle: var(--stroke-primary-subtle);
+  --btn-text: var(--foreground-primary);
+  --btn-text-subtle: var(--foreground-primary-subtle);
+}
+
+.button[data-intent="neutral"] {
+  --btn-fill: var(--fill-neutral);
+  --btn-fill-hover: var(--fill-neutral-hover);
+  --btn-fill-active: var(--fill-neutral);
+  --btn-fill-text: var(--foreground-inverse);
+  --btn-overlay: var(--fill-neutral-overlay);
+  --btn-overlay-hover: var(--fill-neutral-overlay-hover);
+  --btn-stroke: var(--stroke-neutral);
+  --btn-stroke-subtle: var(--stroke-neutral-subtle);
+  --btn-text: var(--foreground-neutral);
+  --btn-text-subtle: var(--foreground-neutral-subtle);
+}
+
+.button[data-intent="success"] {
+  --btn-fill: var(--fill-success);
+  --btn-fill-hover: var(--fill-success-hover);
+  --btn-fill-active: var(--fill-success-active);
+  --btn-fill-text: var(--foreground-inverse);
+  --btn-overlay: var(--fill-success-overlay);
+  --btn-overlay-hover: var(--fill-success-overlay-hover);
+  --btn-stroke: var(--stroke-success);
+  --btn-stroke-subtle: var(--stroke-success-subtle);
+  --btn-text: var(--foreground-success);
+  --btn-text-subtle: var(--foreground-success-subtle);
+}
+
+.button[data-intent="warning"] {
+  --btn-fill: var(--fill-warning);
+  --btn-fill-hover: var(--fill-warning-hover);
+  --btn-fill-active: var(--fill-warning-active);
+  --btn-fill-text: var(--foreground-inverse);
+  --btn-overlay: var(--fill-warning-overlay);
+  --btn-overlay-hover: var(--fill-warning-overlay-hover);
+  --btn-stroke: var(--stroke-warning);
+  --btn-stroke-subtle: var(--stroke-warning-subtle);
+  --btn-text: var(--foreground-warning);
+  --btn-text-subtle: var(--foreground-warning-subtle);
+}
+
+.button[data-intent="error"] {
+  --btn-fill: var(--fill-error);
+  --btn-fill-hover: var(--fill-error-hover);
+  --btn-fill-active: var(--fill-error-active);
+  --btn-fill-text: var(--foreground-inverse);
+  --btn-overlay: var(--fill-error-overlay);
+  --btn-overlay-hover: var(--fill-error-overlay-hover);
+  --btn-stroke: var(--stroke-error);
+  --btn-stroke-subtle: var(--stroke-error-subtle);
+  --btn-text: var(--foreground-error);
+  --btn-text-subtle: var(--foreground-error-subtle);
+}
+
+.button[data-intent="info"] {
+  --btn-fill: var(--fill-info);
+  --btn-fill-hover: var(--fill-info-hover);
+  --btn-fill-active: var(--fill-info-active);
+  --btn-fill-text: var(--foreground-inverse);
+  --btn-overlay: var(--fill-info-overlay);
+  --btn-overlay-hover: var(--fill-info-overlay-hover);
+  --btn-stroke: var(--stroke-info);
+  --btn-stroke-subtle: var(--stroke-info-subtle);
+  --btn-text: var(--foreground-info);
+  --btn-text-subtle: var(--foreground-info-subtle);
+}
+
+/* Inverse intents — for placing a button on an already-dark surface.
+   Fill flips to a white/near-white background with non-inverse text;
+   every other style stays white/translucent-white so the dark page
+   underneath still reads through. Values read directly from Figma
+   (see button.tsx comment), not extrapolated from the recipe above —
+   Primary-inverse Fill hover is Primary/50, not a neutral-scale step. */
+.button[data-intent="primary-inverse"] {
+  --btn-fill: var(--fill-primary-inverse);
+  --btn-fill-hover: var(--fill-primary-inverse-hover);
+  --btn-fill-active: var(--fill-primary-inverse-active);
+  --btn-fill-text: var(--foreground-primary);
+  --btn-overlay: var(--fill-primary-overlay-inverse);
+  --btn-overlay-hover: var(--fill-primary-overlay-inverse);
+  --btn-stroke: var(--stroke-primary-inverse);
+  --btn-stroke-subtle: var(--stroke-primary-inverse);
+  --btn-text: var(--foreground-inverse);
+  --btn-text-subtle: var(--foreground-inverse);
+}
+
+.button[data-intent="neutral-inverse"] {
+  --btn-fill: var(--fill-neutral-inverse);
+  --btn-fill-hover: var(--fill-neutral-inverse-hover);
+  --btn-fill-active: var(--fill-neutral-inverse-active);
+  --btn-fill-text: var(--foreground-neutral);
+  --btn-overlay: var(--fill-neutral-overlay-inverse);
+  --btn-overlay-hover: var(--fill-neutral-overlay-inverse);
+  --btn-stroke: var(--stroke-neutral-inverse);
+  --btn-stroke-subtle: var(--stroke-neutral-inverse);
+  --btn-text: var(--foreground-inverse);
+  --btn-text-subtle: var(--foreground-inverse);
+}
+
+/* ---- Style recipes (consume the --btn-* custom properties above) ---- */
+
+.button[data-variant="fill"] {
+  background-color: var(--btn-fill);
+  color: var(--btn-fill-text);
+}
+.button[data-variant="fill"]:hover {
+  background-color: var(--btn-fill-hover);
+}
+.button[data-variant="fill"]:active {
+  background-color: var(--btn-fill-active);
+}
+
+.button[data-variant="light"] {
+  background-color: var(--btn-overlay);
+  color: var(--btn-text);
+}
+.button[data-variant="light"]:hover {
+  background-color: var(--btn-overlay-hover);
+}
+
+.button[data-variant="outline"] {
+  border-color: var(--btn-stroke);
+  color: var(--btn-text);
+}
+.button[data-variant="outline"]:hover {
+  border-color: var(--btn-stroke-subtle);
+  color: var(--btn-text-subtle);
+}
+
+.button[data-variant="ghost"] {
+  color: var(--btn-text);
+}
+.button[data-variant="ghost"]:hover {
+  background-color: var(--btn-overlay-hover);
+  color: var(--btn-text-subtle);
+}
+
+.button[data-variant="link"] {
+  color: var(--btn-text);
+  padding: 0 !important;
+}
+.button[data-variant="link"]:hover {
+  color: var(--btn-text-subtle);
+}
+
+/* node 1011:4190 (text) + child <p>: leading-[0] wrapper around the real
+   line-height — same pattern as Badge's .textWrap/.textInner. */
+.label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 0;
+}
+
+.leadingCompact {
+  line-height: 1.16; /* Figma "Label/Large-Compact" */
+}
+
+.leadingRelaxed {
+  line-height: 1.4; /* Figma "Label/Large" / "Large-Underline", used by the link variant */
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
