@@ -4,9 +4,19 @@
 
 /*
  * Design tokens generated from the Figma design system
- * (r2dbmly2FCs307sePH1Z9C). Source of truth: lib/semantic-color-tokens.ts
- * (Surface/Fill/Foreground/Stroke, light + dark), lib/spacing-tokens.ts,
- * lib/border-radius-tokens.ts, lib/typography-tokens.ts.
+ * (r2dbmly2FCs307sePH1Z9C). Source of truth: lib/color-tokens.ts
+ * (primitive palette), lib/semantic-color-tokens.ts (Surface/Fill/
+ * Foreground/Stroke, light + dark — each semantic value is a *reference*
+ * to a primitive, e.g. "Neutral/Solid/950", not a literal color), plus
+ * lib/spacing-tokens.ts, lib/border-radius-tokens.ts,
+ * lib/typography-tokens.ts.
+ *
+ * Two layers, same as the Figma variables themselves: primitives are the
+ * raw palette (--neutral-950, --primary-500, --red-alpha-10, ...);
+ * semantic tokens (--fill-primary, --foreground-error, ...) alias a
+ * primitive via var(--...) rather than repeating its hex/rgba value.
+ * Retinting the palette — e.g. swapping what "primary" means — only
+ * requires editing the primitive, every semantic alias updates with it.
  *
  * "Inverse" color-mode variants (tokens meant for placement on an
  * already-dark/inverse surface, e.g. Primary-inverse, Neutral-inverse)
@@ -16,137 +26,125 @@
  */
 
 :root {
-  /* Legacy names — kept as-is, already referenced by tailwind.config.ts
-     and existing pages. Values match the generated Surface/Stroke tokens
-     of the same meaning (surface-low/subtle/strong, stroke, overlay). */
-  --surface-low: #fefefe;
-  --surface-subtle: #f8f8f8;
-  --surface-strong: #ebebeb;
-  --ink-950: #040404;
-  --ink-700: #4a4a4a;
-  --ink-600: #5f5f5f;
-  --stroke: #ebebeb;
-  --stroke-subtle: #d0d0d0;
-  --overlay: rgba(4, 4, 4, 0.04);
-  --overlay-hover: rgba(4, 4, 4, 0.08);
-  --header-bg: rgba(254, 254, 254, 0.68);
+  /* ---- Primitives ---- */
+  --neutral-50: #fefefe;
+  --neutral-100: #f8f8f8;
+  --neutral-200: #f2f2f2;
+  --neutral-300: #ebebeb;
+  --neutral-400: #d0d0d0;
+  --neutral-500: #b3b3b3;
+  --neutral-600: #5f5f5f;
+  --neutral-700: #4a4a4a;
+  --neutral-800: #1b1b1b;
+  --neutral-900: #0f0f0f;
+  --neutral-950: #040404;
+  --neutral-white-alpha-8: rgba(255, 255, 255, 0.08);
+  --neutral-white-alpha-10: rgba(255, 255, 255, 0.1);
+  --neutral-white-alpha-12: rgba(255, 255, 255, 0.12);
+  --neutral-white-alpha-16: rgba(255, 255, 255, 0.16);
+  --neutral-white-alpha-20: rgba(255, 255, 255, 0.2);
+  --neutral-white-alpha-24: rgba(255, 255, 255, 0.24);
+  --neutral-white-alpha-32: rgba(255, 255, 255, 0.32);
+  --neutral-white-alpha-80: rgba(255, 255, 255, 0.8);
+  --neutral-white-alpha-88: rgba(255, 255, 255, 0.88);
+  --neutral-black-alpha-2: rgba(0, 0, 0, 0.02);
+  --neutral-black-alpha-4: rgba(0, 0, 0, 0.04);
+  --neutral-black-alpha-6: rgba(0, 0, 0, 0.06);
+  --neutral-black-alpha-8: rgba(0, 0, 0, 0.08);
+  --neutral-black-alpha-10: rgba(0, 0, 0, 0.1);
+  --neutral-black-alpha-12: rgba(0, 0, 0, 0.12);
+  --neutral-black-alpha-16: rgba(0, 0, 0, 0.16);
+  --neutral-black-alpha-32: rgba(0, 0, 0, 0.32);
+  --neutral-black-alpha-80: rgba(0, 0, 0, 0.8);
+  --neutral-black-alpha-88: rgba(0, 0, 0, 0.88);
 
-  /* Surface */
-  --surface-muted: #fefefe;
-  --surface-elevated: #fefefe;
-  --surface-subtle-hover: #f2f2f2;
-  --surface-soft: #f2f2f2;
-  --surface-strong-hover: #d0d0d0;
-  --surface-inverse: #040404;
-  --surface-neutral: #040404;
-  --surface-neutral-low: #f8f8f8;
-  --surface-neutral-inverse: #fefefe;
-  --surface-primary-overlay-hover: rgba(10, 97, 249, 0.12);
-  --surface-primary-overlay-active: rgba(10, 97, 249, 0.16);
-  --surface-error: #fd3a36;
-  --surface-error-low: #fee2e2;
-  --surface-error-inverse: #fefefe;
-  --surface-success: #00c754;
-  --surface-success-low: #dcfce7;
-  --surface-success-inverse: #fefefe;
-  --surface-warning: #f0b100;
-  --surface-warning-low: #fef3c6;
-  --surface-warning-inverse: #fefefe;
-  --surface-info: #1672ff;
-  --surface-info-low: #dbeafe;
-  --surface-info-inverse: #fefefe;
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bedbff;
+  --blue-300: #8ec5ff;
+  --blue-400: #3f98ff;
+  --blue-500: #1672ff;
+  --blue-600: #105aff;
+  --blue-700: #1447e6;
+  --blue-800: #193cb8;
+  --blue-900: #1c398e;
+  --blue-950: #03144e;
+  --blue-alpha-10: rgba(22, 114, 255, 0.1);
+  --blue-alpha-12: rgba(22, 114, 255, 0.12);
+  --blue-alpha-16: rgba(22, 114, 255, 0.16);
+  --blue-alpha-20: rgba(22, 114, 255, 0.2);
+  --blue-alpha-24: rgba(22, 114, 255, 0.24);
+  --blue-alpha-28: rgba(22, 114, 255, 0.28);
 
-  /* Fill */
-  --fill-base: #ebebeb;
-  --fill-primary: #0a61f9;
-  --fill-primary-hover: #3967ff;
-  --fill-primary-active: #0753d8;
-  --fill-primary-overlay: rgba(10, 97, 249, 0.1);
-  --fill-primary-overlay-hover: rgba(10, 97, 249, 0.12);
-  --fill-primary-overlay-active: rgba(10, 97, 249, 0.16);
-  --fill-neutral: #040404;
-  --fill-neutral-hover: #0f0f0f;
-  --fill-neutral-active: #040404;
-  --fill-neutral-overlay: rgba(0, 0, 0, 0.04);
-  --fill-neutral-overlay-hover: rgba(0, 0, 0, 0.08);
-  --fill-neutral-overlay-active: rgba(0, 0, 0, 0.04);
-  --fill-error: #fd3a36;
-  --fill-error-hover: #ff6467;
-  --fill-error-active: #e7000b;
-  --fill-error-overlay: rgba(253, 58, 54, 0.1);
-  --fill-error-overlay-hover: rgba(253, 58, 54, 0.12);
-  --fill-error-overlay-active: rgba(253, 58, 54, 0.16);
-  --fill-success: #00c754;
-  --fill-success-hover: #05df72;
-  --fill-success-active: #00b047;
-  --fill-success-overlay: rgba(0, 199, 84, 0.1);
-  --fill-success-overlay-hover: rgba(0, 199, 84, 0.12);
-  --fill-success-overlay-active: rgba(0, 199, 84, 0.16);
-  --fill-warning: #f0b100;
-  --fill-warning-hover: #ffb900;
-  --fill-warning-active: #e17100;
-  --fill-warning-overlay: rgba(240, 177, 0, 0.1);
-  --fill-warning-overlay-hover: rgba(240, 177, 0, 0.12);
-  --fill-warning-overlay-active: rgba(240, 177, 0, 0.16);
-  --fill-info: #1672ff;
-  --fill-info-hover: #3f98ff;
-  --fill-info-active: #105aff;
-  --fill-info-overlay: rgba(22, 114, 255, 0.1);
-  --fill-info-overlay-hover: rgba(22, 114, 255, 0.12);
-  --fill-info-overlay-active: rgba(22, 114, 255, 0.16);
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #b9f8cf;
+  --green-300: #7bf1a8;
+  --green-400: #05df72;
+  --green-500: #00c754;
+  --green-600: #00b047;
+  --green-700: #008236;
+  --green-800: #016630;
+  --green-900: #0d542b;
+  --green-950: #02220f;
+  --green-alpha-10: rgba(0, 199, 84, 0.1);
+  --green-alpha-12: rgba(0, 199, 84, 0.12);
+  --green-alpha-16: rgba(0, 199, 84, 0.16);
+  --green-alpha-20: rgba(0, 199, 84, 0.2);
+  --green-alpha-24: rgba(0, 199, 84, 0.24);
+  --green-alpha-28: rgba(0, 199, 84, 0.28);
 
-  /* Foreground */
-  --foreground: #040404;
-  --foreground-subtle: #4a4a4a;
-  --foreground-muted: #b3b3b3;
-  --foreground-inverse: #fefefe;
-  --foreground-weak: #5f5f5f;
-  --foreground-base-muted: rgba(4, 4, 4, 0.32);
-  --foreground-neutral-strong: #040404;
-  --foreground-neutral: #0f0f0f;
-  --foreground-neutral-subtle: #1b1b1b;
-  --foreground-primary: #0a61f9;
-  --foreground-primary-subtle: #3967ff;
-  --foreground-primary-strong: #0753d8;
-  --foreground-error-inverse: #fefefe;
-  --foreground-error-subtle: #ff6467;
-  --foreground-error: #fd3a36;
-  --foreground-error-strong: #320404;
-  --foreground-success-subtle: #05df72;
-  --foreground-success: #00c754;
-  --foreground-success-inverse: #fefefe;
-  --foreground-success-strong: #02220f;
-  --foreground-warning-subtle: #ffb900;
-  --foreground-warning: #f0b100;
-  --foreground-warning-inverse: #fefefe;
-  --foreground-warning-strong: #2f1203;
-  --foreground-info-inverse: #fefefe;
-  --foreground-info-subtle: #3f98ff;
-  --foreground-info: #1672ff;
-  --foreground-info-strong: #03144e;
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c6;
+  --amber-200: #fee685;
+  --amber-300: #ffd230;
+  --amber-400: #ffb900;
+  --amber-500: #f0b100;
+  --amber-600: #e17100;
+  --amber-700: #bb4d00;
+  --amber-800: #973c00;
+  --amber-900: #7b3306;
+  --amber-950: #2f1203;
+  --amber-alpha-10: rgba(240, 177, 0, 0.1);
+  --amber-alpha-12: rgba(240, 177, 0, 0.12);
+  --amber-alpha-16: rgba(240, 177, 0, 0.16);
+  --amber-alpha-20: rgba(240, 177, 0, 0.2);
+  --amber-alpha-24: rgba(240, 177, 0, 0.24);
+  --amber-alpha-28: rgba(240, 177, 0, 0.28);
 
-  /* Stroke */
-  --stroke-strong: #b3b3b3;
-  --stroke-emphasis: #040404;
-  --stroke-bold: #1b1b1b;
-  --stroke-neutral-strong: #d0d0d0;
-  --stroke-neutral: #ebebeb;
-  --stroke-neutral-subtle: #f2f2f2;
-  --stroke-primary: #0a61f9;
-  --stroke-primary-subtle: #3967ff;
-  --stroke-primary-strong: #0753d8;
-  --stroke-error-strong: #e7000b;
-  --stroke-error: #fd3a36;
-  --stroke-error-subtle: #ff6467;
-  --stroke-success-strong: #00b047;
-  --stroke-success: #00c754;
-  --stroke-success-subtle: #05df72;
-  --stroke-warning-strong: #e17100;
-  --stroke-warning: #f0b100;
-  --stroke-warning-subtle: #ffb900;
-  --stroke-info-strong: #105aff;
-  --stroke-info: #1672ff;
-  --stroke-info-subtle: #3f98ff;
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-200: #ffc9c9;
+  --red-300: #ffa2a2;
+  --red-400: #ff6467;
+  --red-500: #fd3a36;
+  --red-600: #e7000b;
+  --red-700: #c10007;
+  --red-800: #9f0712;
+  --red-900: #82181a;
+  --red-950: #320404;
+  --red-alpha-10: rgba(253, 58, 54, 0.1);
+  --red-alpha-12: rgba(253, 58, 54, 0.12);
+  --red-alpha-16: rgba(253, 58, 54, 0.16);
+  --red-alpha-20: rgba(253, 58, 54, 0.2);
+  --red-alpha-24: rgba(253, 58, 54, 0.24);
+  --red-alpha-28: rgba(253, 58, 54, 0.28);
+
+  --primary-50: #eef0ff;
+  --primary-100: #d3d9ff;
+  --primary-200: #aab7fe;
+  --primary-300: #8299fe;
+  --primary-400: #3967ff;
+  --primary-500: #0a61f9;
+  --primary-600: #0753d8;
+  --primary-700: #0441ac;
+  --primary-800: #022d7d;
+  --primary-900: #01184d;
+  --primary-950: #000e34;
+  --primary-alpha-10: rgba(10, 97, 249, 0.1);
+  --primary-alpha-12: rgba(10, 97, 249, 0.12);
+  --primary-alpha-16: rgba(10, 97, 249, 0.16);
+  --primary-alpha-20: rgba(10, 97, 249, 0.2);
 
   /* Spacing */
   --spacing-0: 0px;
@@ -200,138 +198,272 @@
   --leading-md: 1.24;
   --leading-lg: 1.28;
   --leading-xl: 1.4;
+
+  /* ---- Semantic (light) — every value below is an alias to a primitive above ---- */
+
+  /* Legacy names — kept for tailwind.config.ts / existing pages, now
+     aliased to the matching primitive instead of a repeated literal. */
+  --surface-low: var(--neutral-50);
+  --surface-subtle: var(--neutral-100);
+  --surface-strong: var(--neutral-300);
+  --ink-950: var(--neutral-950);
+  --ink-700: var(--neutral-700);
+  --ink-600: var(--neutral-600);
+  --stroke: var(--neutral-300);
+  --stroke-subtle: var(--neutral-400);
+  --overlay: var(--neutral-black-alpha-4);
+  --overlay-hover: var(--neutral-black-alpha-8);
+  --header-bg: rgba(254, 254, 254, 0.68);
+
+  /* Surface */
+  --surface-muted: var(--neutral-50);
+  --surface-elevated: var(--neutral-50);
+  --surface-subtle-hover: var(--neutral-200);
+  --surface-soft: var(--neutral-200);
+  --surface-strong-hover: var(--neutral-400);
+  --surface-inverse: var(--neutral-950);
+  --surface-neutral: var(--neutral-950);
+  --surface-neutral-low: var(--neutral-100);
+  --surface-neutral-inverse: var(--neutral-50);
+  --surface-primary-overlay-hover: var(--primary-alpha-12);
+  --surface-primary-overlay-active: var(--primary-alpha-16);
+  --surface-error: var(--red-500);
+  --surface-error-low: var(--red-100);
+  --surface-error-inverse: var(--neutral-50);
+  --surface-success: var(--green-500);
+  --surface-success-low: var(--green-100);
+  --surface-success-inverse: var(--neutral-50);
+  --surface-warning: var(--amber-500);
+  --surface-warning-low: var(--amber-100);
+  --surface-warning-inverse: var(--neutral-50);
+  --surface-info: var(--blue-500);
+  --surface-info-low: var(--blue-100);
+  --surface-info-inverse: var(--neutral-50);
+
+  /* Fill */
+  --fill-base: var(--neutral-300);
+  --fill-primary: var(--primary-500);
+  --fill-primary-hover: var(--primary-400);
+  --fill-primary-active: var(--primary-600);
+  --fill-primary-overlay: var(--primary-alpha-10);
+  --fill-primary-overlay-hover: var(--primary-alpha-12);
+  --fill-primary-overlay-active: var(--primary-alpha-16);
+  --fill-neutral: var(--neutral-950);
+  --fill-neutral-hover: var(--neutral-900);
+  --fill-neutral-active: var(--neutral-950);
+  --fill-neutral-overlay: var(--neutral-black-alpha-4);
+  --fill-neutral-overlay-hover: var(--neutral-black-alpha-8);
+  --fill-neutral-overlay-active: var(--neutral-black-alpha-4);
+  --fill-error: var(--red-500);
+  --fill-error-hover: var(--red-400);
+  --fill-error-active: var(--red-600);
+  --fill-error-overlay: var(--red-alpha-10);
+  --fill-error-overlay-hover: var(--red-alpha-12);
+  --fill-error-overlay-active: var(--red-alpha-16);
+  --fill-success: var(--green-500);
+  --fill-success-hover: var(--green-400);
+  --fill-success-active: var(--green-600);
+  --fill-success-overlay: var(--green-alpha-10);
+  --fill-success-overlay-hover: var(--green-alpha-12);
+  --fill-success-overlay-active: var(--green-alpha-16);
+  --fill-warning: var(--amber-500);
+  --fill-warning-hover: var(--amber-400);
+  --fill-warning-active: var(--amber-600);
+  --fill-warning-overlay: var(--amber-alpha-10);
+  --fill-warning-overlay-hover: var(--amber-alpha-12);
+  --fill-warning-overlay-active: var(--amber-alpha-16);
+  --fill-info: var(--blue-500);
+  --fill-info-hover: var(--blue-400);
+  --fill-info-active: var(--blue-600);
+  --fill-info-overlay: var(--blue-alpha-10);
+  --fill-info-overlay-hover: var(--blue-alpha-12);
+  --fill-info-overlay-active: var(--blue-alpha-16);
+
+  /* Foreground */
+  --foreground: var(--neutral-950);
+  --foreground-subtle: var(--neutral-700);
+  --foreground-muted: var(--neutral-500);
+  --foreground-inverse: var(--neutral-50);
+  --foreground-weak: var(--neutral-600);
+  --foreground-base-muted: rgba(4, 4, 4, 0.32);
+  --foreground-neutral-strong: var(--neutral-950);
+  --foreground-neutral: var(--neutral-900);
+  --foreground-neutral-subtle: var(--neutral-800);
+  --foreground-primary: var(--primary-500);
+  --foreground-primary-subtle: var(--primary-400);
+  --foreground-primary-strong: var(--primary-600);
+  --foreground-error-inverse: var(--neutral-50);
+  --foreground-error-subtle: var(--red-400);
+  --foreground-error: var(--red-500);
+  --foreground-error-strong: var(--red-950);
+  --foreground-success-subtle: var(--green-400);
+  --foreground-success: var(--green-500);
+  --foreground-success-inverse: var(--neutral-50);
+  --foreground-success-strong: var(--green-950);
+  --foreground-warning-subtle: var(--amber-400);
+  --foreground-warning: var(--amber-500);
+  --foreground-warning-inverse: var(--neutral-50);
+  --foreground-warning-strong: var(--amber-950);
+  --foreground-info-inverse: var(--neutral-50);
+  --foreground-info-subtle: var(--blue-400);
+  --foreground-info: var(--blue-500);
+  --foreground-info-strong: var(--blue-950);
+
+  /* Stroke */
+  --stroke-strong: var(--neutral-500);
+  --stroke-emphasis: var(--neutral-950);
+  --stroke-bold: var(--neutral-800);
+  --stroke-neutral-strong: var(--neutral-400);
+  --stroke-neutral: var(--neutral-300);
+  --stroke-neutral-subtle: var(--neutral-200);
+  --stroke-primary: var(--primary-500);
+  --stroke-primary-subtle: var(--primary-400);
+  --stroke-primary-strong: var(--primary-600);
+  --stroke-error-strong: var(--red-600);
+  --stroke-error: var(--red-500);
+  --stroke-error-subtle: var(--red-400);
+  --stroke-success-strong: var(--green-600);
+  --stroke-success: var(--green-500);
+  --stroke-success-subtle: var(--green-400);
+  --stroke-warning-strong: var(--amber-600);
+  --stroke-warning: var(--amber-500);
+  --stroke-warning-subtle: var(--amber-400);
+  --stroke-info-strong: var(--blue-600);
+  --stroke-info: var(--blue-500);
+  --stroke-info-subtle: var(--blue-400);
 }
 
 /*
- * Dark-mode token values, gated behind an explicit `.dark` class on
+ * Dark-mode semantic values, gated behind an explicit `.dark` class on
  * <html> — nothing sets that class today, so this block is inert and
  * carries zero risk to the live (light-only) site. Wire up a theme
- * toggle that adds/removes `.dark` on <html> to activate it; every
- * value below already matches the "dark" column in
- * lib/semantic-color-tokens.ts.
+ * toggle that adds/removes `.dark` on <html> to activate it.
+ *
+ * Primitives themselves don't change between light/dark (--neutral-950
+ * is always #040404) — only which primitive each semantic token points
+ * to changes, exactly like re-pointing a Figma variable's mode.
  */
 :root.dark {
-  /* Surface */
-  --surface-low: #040404;
-  --surface-subtle: #1b1b1b;
-  --surface-strong: #5f5f5f;
-  --stroke: #1b1b1b;
-  --stroke-subtle: #4a4a4a;
-  --surface-muted: #040404;
-  --surface-elevated: #040404;
-  --surface-subtle-hover: #4a4a4a;
-  --surface-soft: #4a4a4a;
-  --surface-strong-hover: #b3b3b3;
-  --surface-inverse: #fefefe;
-  --surface-neutral: #fefefe;
-  --surface-neutral-low: #4a4a4a;
-  --surface-neutral-inverse: #040404;
-  --surface-primary-overlay-hover: rgba(10, 97, 249, 0.16);
-  --surface-primary-overlay-active: rgba(10, 97, 249, 0.2);
-  --surface-error: #e7000b;
-  --surface-error-low: #82181a;
-  --surface-error-inverse: #040404;
-  --surface-success: #00b047;
-  --surface-success-low: #0d542b;
-  --surface-success-inverse: #040404;
-  --surface-warning: #e17100;
-  --surface-warning-low: #7b3306;
-  --surface-warning-inverse: #040404;
-  --surface-info: #105aff;
-  --surface-info-low: #1c398e;
-  --surface-info-inverse: #040404;
+  --surface-low: var(--neutral-950);
+  --surface-subtle: var(--neutral-800);
+  --surface-strong: var(--neutral-600);
+  --stroke: var(--neutral-800);
+  --stroke-subtle: var(--neutral-700);
+  --overlay: var(--neutral-white-alpha-8);
+  --overlay-hover: var(--neutral-white-alpha-12);
 
-  /* Fill */
-  --fill-base: #1b1b1b;
-  --fill-primary: #0753d8;
-  --fill-primary-hover: #0a61f9;
-  --fill-primary-active: #0441ac;
-  --fill-primary-overlay: rgba(10, 97, 249, 0.2);
-  --fill-primary-overlay-hover: rgba(10, 97, 249, 0.16);
-  --fill-primary-overlay-active: rgba(10, 97, 249, 0.16);
-  --fill-neutral: #fefefe;
-  --fill-neutral-hover: #f8f8f8;
-  --fill-neutral-active: #f2f2f2;
-  --fill-neutral-overlay: rgba(255, 255, 255, 0.08);
-  --fill-neutral-overlay-hover: rgba(255, 255, 255, 0.12);
-  --fill-neutral-overlay-active: rgba(255, 255, 255, 0.08);
-  --fill-error: #c10007;
-  --fill-error-hover: #e7000b;
-  --fill-error-active: #9f0712;
-  --fill-error-overlay: rgba(253, 58, 54, 0.2);
-  --fill-error-overlay-hover: rgba(253, 58, 54, 0.24);
-  --fill-error-overlay-active: rgba(253, 58, 54, 0.28);
-  --fill-success: #008236;
-  --fill-success-hover: #00b047;
-  --fill-success-active: #016630;
-  --fill-success-overlay: rgba(0, 199, 84, 0.2);
-  --fill-success-overlay-hover: rgba(0, 199, 84, 0.24);
-  --fill-success-overlay-active: rgba(0, 199, 84, 0.28);
-  --fill-warning: #bb4d00;
-  --fill-warning-hover: #e17100;
-  --fill-warning-active: #973c00;
-  --fill-warning-overlay: rgba(240, 177, 0, 0.2);
-  --fill-warning-overlay-hover: rgba(240, 177, 0, 0.24);
-  --fill-warning-overlay-active: rgba(240, 177, 0, 0.28);
-  --fill-info: #105aff;
-  --fill-info-hover: #1672ff;
-  --fill-info-active: #1447e6;
-  --fill-info-overlay: rgba(22, 114, 255, 0.2);
-  --fill-info-overlay-hover: rgba(22, 114, 255, 0.24);
-  --fill-info-overlay-active: rgba(22, 114, 255, 0.28);
+  --surface-muted: var(--neutral-950);
+  --surface-elevated: var(--neutral-950);
+  --surface-subtle-hover: var(--neutral-700);
+  --surface-soft: var(--neutral-700);
+  --surface-strong-hover: var(--neutral-500);
+  --surface-inverse: var(--neutral-50);
+  --surface-neutral: var(--neutral-50);
+  --surface-neutral-low: var(--neutral-700);
+  --surface-neutral-inverse: var(--neutral-950);
+  --surface-primary-overlay-hover: var(--primary-alpha-16);
+  --surface-primary-overlay-active: var(--primary-alpha-20);
+  --surface-error: var(--red-600);
+  --surface-error-low: var(--red-900);
+  --surface-error-inverse: var(--neutral-950);
+  --surface-success: var(--green-600);
+  --surface-success-low: var(--green-900);
+  --surface-success-inverse: var(--neutral-950);
+  --surface-warning: var(--amber-600);
+  --surface-warning-low: var(--amber-900);
+  --surface-warning-inverse: var(--neutral-950);
+  --surface-info: var(--blue-600);
+  --surface-info-low: var(--blue-900);
+  --surface-info-inverse: var(--neutral-950);
 
-  /* Foreground */
-  --foreground: #fefefe;
-  --foreground-subtle: #f2f2f2;
-  --foreground-muted: #d0d0d0;
-  --foreground-inverse: #040404;
-  --foreground-weak: #b3b3b3;
+  --fill-base: var(--neutral-800);
+  --fill-primary: var(--primary-600);
+  --fill-primary-hover: var(--primary-500);
+  --fill-primary-active: var(--primary-700);
+  --fill-primary-overlay: var(--primary-alpha-20);
+  --fill-primary-overlay-hover: var(--primary-alpha-16);
+  --fill-primary-overlay-active: var(--primary-alpha-16);
+  --fill-neutral: var(--neutral-50);
+  --fill-neutral-hover: var(--neutral-100);
+  --fill-neutral-active: var(--neutral-200);
+  --fill-neutral-overlay: var(--neutral-white-alpha-8);
+  --fill-neutral-overlay-hover: var(--neutral-white-alpha-12);
+  --fill-neutral-overlay-active: var(--neutral-white-alpha-8);
+  --fill-error: var(--red-700);
+  --fill-error-hover: var(--red-600);
+  --fill-error-active: var(--red-800);
+  --fill-error-overlay: var(--red-alpha-20);
+  --fill-error-overlay-hover: var(--red-alpha-24);
+  --fill-error-overlay-active: var(--red-alpha-28);
+  --fill-success: var(--green-700);
+  --fill-success-hover: var(--green-600);
+  --fill-success-active: var(--green-800);
+  --fill-success-overlay: var(--green-alpha-20);
+  --fill-success-overlay-hover: var(--green-alpha-24);
+  --fill-success-overlay-active: var(--green-alpha-28);
+  --fill-warning: var(--amber-700);
+  --fill-warning-hover: var(--amber-600);
+  --fill-warning-active: var(--amber-800);
+  --fill-warning-overlay: var(--amber-alpha-20);
+  --fill-warning-overlay-hover: var(--amber-alpha-24);
+  --fill-warning-overlay-active: var(--amber-alpha-28);
+  --fill-info: var(--blue-600);
+  --fill-info-hover: var(--blue-500);
+  --fill-info-active: var(--blue-700);
+  --fill-info-overlay: var(--blue-alpha-20);
+  --fill-info-overlay-hover: var(--blue-alpha-24);
+  --fill-info-overlay-active: var(--blue-alpha-28);
+
+  --foreground: var(--neutral-50);
+  --foreground-subtle: var(--neutral-200);
+  --foreground-muted: var(--neutral-400);
+  --foreground-inverse: var(--neutral-950);
+  --foreground-weak: var(--neutral-500);
   --foreground-base-muted: rgba(255, 255, 255, 0.32);
-  --foreground-neutral-strong: #fefefe;
-  --foreground-neutral: #fefefe;
-  --foreground-neutral-subtle: #f2f2f2;
-  --foreground-primary: #0753d8;
-  --foreground-primary-subtle: #0a61f9;
-  --foreground-primary-strong: #0441ac;
-  --foreground-error-inverse: #fefefe;
-  --foreground-error-subtle: #ff6467;
-  --foreground-error: #e7000b;
-  --foreground-error-strong: #fef2f2;
-  --foreground-success-subtle: #05df72;
-  --foreground-success: #00b047;
-  --foreground-success-inverse: #fefefe;
-  --foreground-success-strong: #f0fdf4;
-  --foreground-warning-subtle: #ffb900;
-  --foreground-warning: #e17100;
-  --foreground-warning-inverse: #fefefe;
-  --foreground-warning-strong: #fffbeb;
-  --foreground-info-inverse: #fefefe;
-  --foreground-info-subtle: #3f98ff;
-  --foreground-info: #105aff;
-  --foreground-info-strong: #eff6ff;
+  --foreground-neutral-strong: var(--neutral-50);
+  --foreground-neutral: var(--neutral-50);
+  --foreground-neutral-subtle: var(--neutral-200);
+  --foreground-primary: var(--primary-600);
+  --foreground-primary-subtle: var(--primary-500);
+  --foreground-primary-strong: var(--primary-700);
+  --foreground-error-inverse: var(--neutral-50);
+  --foreground-error-subtle: var(--red-400);
+  --foreground-error: var(--red-600);
+  --foreground-error-strong: var(--red-50);
+  --foreground-success-subtle: var(--green-400);
+  --foreground-success: var(--green-600);
+  --foreground-success-inverse: var(--neutral-50);
+  --foreground-success-strong: var(--green-50);
+  --foreground-warning-subtle: var(--amber-400);
+  --foreground-warning: var(--amber-600);
+  --foreground-warning-inverse: var(--neutral-50);
+  --foreground-warning-strong: var(--amber-50);
+  --foreground-info-inverse: var(--neutral-50);
+  --foreground-info-subtle: var(--blue-400);
+  --foreground-info: var(--blue-600);
+  --foreground-info-strong: var(--blue-50);
 
-  /* Stroke */
-  --stroke-strong: #5f5f5f;
-  --stroke-emphasis: #fefefe;
-  --stroke-bold: #ebebeb;
-  --stroke-neutral-strong: #1b1b1b;
-  --stroke-neutral: #4a4a4a;
-  --stroke-neutral-subtle: #5f5f5f;
-  --stroke-primary: #0753d8;
-  --stroke-primary-subtle: #0a61f9;
-  --stroke-primary-strong: #0441ac;
-  --stroke-error-strong: #c10007;
-  --stroke-error: #e7000b;
-  --stroke-error-subtle: #fd3a36;
-  --stroke-success-strong: #008236;
-  --stroke-success: #00b047;
-  --stroke-success-subtle: #00c754;
-  --stroke-warning-strong: #bb4d00;
-  --stroke-warning: #e17100;
-  --stroke-warning-subtle: #f0b100;
-  --stroke-info-strong: #1447e6;
-  --stroke-info: #105aff;
-  --stroke-info-subtle: #1672ff;
+  --stroke-strong: var(--neutral-600);
+  --stroke-emphasis: var(--neutral-50);
+  --stroke-bold: var(--neutral-300);
+  --stroke-neutral-strong: var(--neutral-800);
+  --stroke-neutral: var(--neutral-700);
+  --stroke-neutral-subtle: var(--neutral-600);
+  --stroke-primary: var(--primary-600);
+  --stroke-primary-subtle: var(--primary-500);
+  --stroke-primary-strong: var(--primary-700);
+  --stroke-error-strong: var(--red-700);
+  --stroke-error: var(--red-600);
+  --stroke-error-subtle: var(--red-500);
+  --stroke-success-strong: var(--green-700);
+  --stroke-success: var(--green-600);
+  --stroke-success-subtle: var(--green-500);
+  --stroke-warning-strong: var(--amber-700);
+  --stroke-warning: var(--amber-600);
+  --stroke-warning-subtle: var(--amber-500);
+  --stroke-info-strong: var(--blue-700);
+  --stroke-info: var(--blue-600);
+  --stroke-info-subtle: var(--blue-500);
 }
 
 html {
