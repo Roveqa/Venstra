@@ -371,9 +371,9 @@ function KbdDemo() {
 
       <ComponentSection>
         {kbdVariants.map((variant) => (
-          <div key={variant.key} className="flex w-full flex-col gap-3">
+          <div key={variant.key} className="flex w-full flex-col items-center gap-3 text-center">
             <GroupLabel>{variant.label}</GroupLabel>
-            <div className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-wrap items-center justify-center gap-6">
               {shortcuts.map(([mod, key]) => (
                 <div key={key} className="flex items-center gap-1">
                   <Kbd variant={variant.key} icon={showIcon ? <CornerDownLeft /> : undefined}>
