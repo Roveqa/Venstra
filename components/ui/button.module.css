@@ -19,10 +19,17 @@
   font-weight: 500;
   letter-spacing: -0.14px;
   font-size: var(--text-md);
-  border: 1px solid transparent;
+  /* Outline's stroke is a box-shadow (--btn-ring), not a real border —
+     a real border adds its width to the element's rendered size on top
+     of padding, so an Outline button would come out ~2px taller/wider
+     than a same-size Fill/Light button sitting right next to it.
+     box-shadow never affects layout size, so every variant/size stays
+     pixel-identical regardless of which one has a "stroke". */
+  --btn-ring: none;
+  box-shadow: var(--btn-ring);
   transition:
     background-color 0.15s ease,
-    border-color 0.15s ease,
+    box-shadow 0.15s ease,
     color 0.15s ease;
 }
 
@@ -31,9 +38,12 @@
   opacity: 0.4;
 }
 
-.button:focus-visible {
+.button:focus-visible,
+.button[data-force-state="focus"] {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.1);
+  box-shadow:
+    var(--btn-ring),
+    0 0 0 2px rgba(10, 10, 10, 0.1);
 }
 
 .button svg {
@@ -182,10 +192,12 @@
   background-color: var(--btn-fill);
   color: var(--btn-fill-text);
 }
-.button[data-variant="fill"]:hover {
+.button[data-variant="fill"]:hover,
+.button[data-variant="fill"][data-force-state="hover"] {
   background-color: var(--btn-fill-hover);
 }
-.button[data-variant="fill"]:active {
+.button[data-variant="fill"]:active,
+.button[data-variant="fill"][data-force-state="active"] {
   background-color: var(--btn-fill-active);
 }
 
@@ -193,23 +205,26 @@
   background-color: var(--btn-overlay);
   color: var(--btn-text);
 }
-.button[data-variant="light"]:hover {
+.button[data-variant="light"]:hover,
+.button[data-variant="light"][data-force-state="hover"] {
   background-color: var(--btn-overlay-hover);
 }
 
 .button[data-variant="outline"] {
-  border-color: var(--btn-stroke);
+  --btn-ring: inset 0 0 0 1px var(--btn-stroke);
   color: var(--btn-text);
 }
-.button[data-variant="outline"]:hover {
-  border-color: var(--btn-stroke-subtle);
+.button[data-variant="outline"]:hover,
+.button[data-variant="outline"][data-force-state="hover"] {
+  --btn-ring: inset 0 0 0 1px var(--btn-stroke-subtle);
   color: var(--btn-text-subtle);
 }
 
 .button[data-variant="ghost"] {
   color: var(--btn-text);
 }
-.button[data-variant="ghost"]:hover {
+.button[data-variant="ghost"]:hover,
+.button[data-variant="ghost"][data-force-state="hover"] {
   background-color: var(--btn-overlay-hover);
   color: var(--btn-text-subtle);
 }
@@ -218,7 +233,8 @@
   color: var(--btn-text);
   padding: 0 !important;
 }
-.button[data-variant="link"]:hover {
+.button[data-variant="link"]:hover,
+.button[data-variant="link"][data-force-state="hover"] {
   color: var(--btn-text-subtle);
 }
 

@@ -45,6 +45,13 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   rightIcon?: React.ReactNode;
   /** Content=Icon in Figma — square button, icon only, no label. */
   iconOnly?: React.ReactNode;
+  /**
+   * Force-render the Hover/Active/Focus pseudo-state without real pointer
+   * or keyboard interaction — for previewing a State in the playground.
+   * Real interaction (:hover/:active/:focus-visible) still works on top
+   * of this regardless.
+   */
+  forceState?: "hover" | "active" | "focus";
 }
 
 function ButtonLabel({ variant, children }: { variant: ButtonVariant; children: React.ReactNode }) {
@@ -68,6 +75,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     leftIcon,
     rightIcon,
     iconOnly,
+    forceState,
     children,
     ...props
   },
@@ -82,6 +90,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         data-intent={intent}
         data-size={size}
         data-content="icon"
+        data-force-state={forceState}
         disabled={disabled || loading}
         aria-busy={loading}
         {...props}
@@ -99,6 +108,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       data-intent={intent}
       data-size={size}
       data-content="text"
+      data-force-state={forceState}
       disabled={disabled || loading}
       aria-busy={loading}
       {...props}

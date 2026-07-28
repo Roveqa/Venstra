@@ -135,12 +135,32 @@ const dotIconValues = [
   { key: "both", label: "Both" },
 ] as const;
 
-type ButtonStateValue = "default" | "disabled" | "loading";
-const buttonStateValues = [
+const buttonStates = [
   { key: "default", label: "Default" },
+  { key: "hover", label: "Hover" },
+  { key: "active", label: "Active" },
+  { key: "focus", label: "Focus" },
   { key: "disabled", label: "Disabled" },
   { key: "loading", label: "Loading" },
 ] as const;
+
+// Maps a State option to the Button props that produce it. Hover/Active/
+// Focus use `forceState` (rendered via a [data-force-state] CSS selector)
+// since those are normally pointer/keyboard-only pseudo-classes.
+function stateProps(state: (typeof buttonStates)[number]["key"]) {
+  switch (state) {
+    case "hover":
+    case "active":
+    case "focus":
+      return { forceState: state } as const;
+    case "disabled":
+      return { disabled: true } as const;
+    case "loading":
+      return { loading: true } as const;
+    default:
+      return {} as const;
+  }
+}
 
 // Like PlaygroundSelect but no built-in "All" option — for controls that
 // aren't a matrix dimension (Dot/Icon/State are single toggles applied to
@@ -238,17 +258,18 @@ function BadgeDemo() {
 }
 
 function ButtonDemo() {
-  // Default to Fill/Primary/Medium, not "All" — see feedback_playground_defaults.
+  // Default to Fill/Primary/Medium/Default, not "All" — see feedback_playground_defaults.
   const [variant, setVariant] = useState<WithAll<(typeof buttonStyles)[number]["key"]>>("fill");
   const [intent, setIntent] = useState<WithAll<(typeof buttonIntents)[number]["key"]>>("primary");
   const [size, setSize] = useState<WithAll<(typeof buttonSizes)[number]["key"]>>("md");
-  const [state, setState] = useState<ButtonStateValue>("default");
+  const [state, setState] = useState<WithAll<(typeof buttonStates)[number]["key"]>>("default");
   const [icon, setIcon] = useState<DotIconValue>("none");
   const [iconOnly, setIconOnly] = useState(false);
 
   const variants = variant === "all" ? buttonStyles : buttonStyles.filter((v) => v.key === variant);
   const intents = intent === "all" ? buttonIntents : buttonIntents.filter((i) => i.key === intent);
   const sizes = size === "all" ? buttonSizes : buttonSizes.filter((s) => s.key === size);
+  const states = state === "all" ? buttonStates : buttonStates.filter((s) => s.key === state);
 
   const iconLeft = icon === "left" || icon === "both";
   const iconRight = icon === "right" || icon === "both";
@@ -259,53 +280,55 @@ function ButtonDemo() {
         <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={buttonStyles} />
         <PlaygroundSelect label="Type" value={intent} onChange={setIntent} options={buttonIntents} />
         <PlaygroundSelect label="Size" value={size} onChange={setSize} options={buttonSizes} />
-        <TinySelect label="State" value={state} onChange={setState} options={buttonStateValues} />
+        <PlaygroundSelect label="State" value={state} onChange={setState} options={buttonStates} />
         <TinySelect label="Icon" value={icon} onChange={setIcon} options={dotIconValues} />
-        <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] text-ink-600">Icon only</span>
+        <label className="flex items-center gap-2 self-end pb-2.5">
           <input
             type="checkbox"
             checked={iconOnly}
             onChange={(e) => setIconOnly(e.target.checked)}
-            className="h-[38px] w-[38px] cursor-pointer rounded-lg bg-surface-subtle accent-primary"
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
           />
+          <span className="text-[13px] text-ink-600">Icon only</span>
         </label>
       </ControlBar>
 
+      {/* One row per Style, stacked in a column — keeps Fill/Outline/etc.
+          from wrapping together into one jumbled line. */}
       <ComponentSection>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          {variants.map((v) =>
-            intents.map((i) =>
+        {variants.map((v) => (
+          <div key={v.key} className="flex flex-wrap items-center justify-center gap-3">
+            {intents.map((i) =>
               sizes.map((s) =>
-                iconOnly ? (
-                  <Button
-                    key={`${v.key}-${i.key}-${s.key}`}
-                    variant={v.key}
-                    intent={i.key}
-                    size={s.key}
-                    disabled={state === "disabled"}
-                    loading={state === "loading"}
-                    iconOnly={<Check />}
-                    aria-label="Button"
-                  />
-                ) : (
-                  <Button
-                    key={`${v.key}-${i.key}-${s.key}`}
-                    variant={v.key}
-                    intent={i.key}
-                    size={s.key}
-                    disabled={state === "disabled"}
-                    loading={state === "loading"}
-                    leftIcon={iconLeft ? <Check /> : undefined}
-                    rightIcon={iconRight ? <Check /> : undefined}
-                  >
-                    Button
-                  </Button>
+                states.map((st) =>
+                  iconOnly ? (
+                    <Button
+                      key={`${v.key}-${i.key}-${s.key}-${st.key}`}
+                      variant={v.key}
+                      intent={i.key}
+                      size={s.key}
+                      iconOnly={<Check />}
+                      aria-label="Button"
+                      {...stateProps(st.key)}
+                    />
+                  ) : (
+                    <Button
+                      key={`${v.key}-${i.key}-${s.key}-${st.key}`}
+                      variant={v.key}
+                      intent={i.key}
+                      size={s.key}
+                      leftIcon={iconLeft ? <Check /> : undefined}
+                      rightIcon={iconRight ? <Check /> : undefined}
+                      {...stateProps(st.key)}
+                    >
+                      Button
+                    </Button>
+                  )
                 )
               )
-            )
-          )}
-        </div>
+            )}
+          </div>
+        ))}
       </ComponentSection>
     </div>
   );
