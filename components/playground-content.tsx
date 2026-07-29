@@ -39,10 +39,9 @@ const avatarBadgeStatuses = [
   { key: "info", label: "Info" },
 ] as const;
 
-// Self-contained placeholder photo for the Style=Image demo — avoids an
-// external image host dependency for a purely illustrative avatar.
-const AVATAR_PLACEHOLDER_IMG =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23fbbf24'/%3E%3Cstop offset='100%25' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3C/svg%3E";
+// Real face photo placeholder for the Style=Image demo (pravatar.cc —
+// no API key, stable per-id image, no rate limiting for casual use).
+const AVATAR_PLACEHOLDER_IMG = "https://i.pravatar.cc/150?img=12";
 
 const buttonStyles = [
   { key: "fill", label: "Fill" },
