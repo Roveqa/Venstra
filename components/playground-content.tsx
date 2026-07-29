@@ -10,8 +10,39 @@ import { Kbd } from "@/components/ui/kbd";
 import { Divider } from "@/components/ui/divider";
 import { Label } from "@/components/ui/label";
 import { HintText } from "@/components/ui/hint-text";
+import { Avatar, type AvatarSize } from "@/components/ui/avatar";
+import { AvatarGroup } from "@/components/ui/avatar-group";
 
-const sections = ["Badge", "Button", "Kbd", "Divider", "Label"];
+const sections = ["Avatar", "Badge", "Button", "Kbd", "Divider", "Label"];
+
+const avatarVariants = [
+  { key: "text", label: "Text" },
+  { key: "image", label: "Image" },
+  { key: "icon", label: "Icon" },
+] as const;
+
+const avatarSizes = [
+  { key: "14", label: "14" },
+  { key: "16", label: "16" },
+  { key: "24", label: "24" },
+  { key: "32", label: "32" },
+  { key: "40", label: "40" },
+  { key: "48", label: "48" },
+] as const;
+
+const avatarBadgeStatuses = [
+  { key: "none", label: "None" },
+  { key: "neutral", label: "Neutral" },
+  { key: "success", label: "Success" },
+  { key: "warning", label: "Warning" },
+  { key: "error", label: "Error" },
+  { key: "info", label: "Info" },
+] as const;
+
+// Self-contained placeholder photo for the Style=Image demo — avoids an
+// external image host dependency for a purely illustrative avatar.
+const AVATAR_PLACEHOLDER_IMG =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23fbbf24'/%3E%3Cstop offset='100%25' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3C/svg%3E";
 
 const buttonStyles = [
   { key: "fill", label: "Fill" },
@@ -183,6 +214,71 @@ function TinySelect<T extends string>({
         ))}
       </select>
     </label>
+  );
+}
+
+function AvatarDemo() {
+  const [variant, setVariant] = useState<WithAll<(typeof avatarVariants)[number]["key"]>>("text");
+  const [size, setSize] = useState<WithAll<(typeof avatarSizes)[number]["key"]>>("40");
+  const [dotBadge, setDotBadge] = useState(false);
+  const [badgeStatus, setBadgeStatus] = useState<(typeof avatarBadgeStatuses)[number]["key"]>("none");
+
+  const variants = variant === "all" ? avatarVariants : avatarVariants.filter((v) => v.key === variant);
+  const sizes = size === "all" ? avatarSizes : avatarSizes.filter((s) => s.key === size);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={avatarVariants} />
+        <PlaygroundSelect label="Size" value={size} onChange={setSize} options={avatarSizes} />
+        <TinySelect label="Badge" value={badgeStatus} onChange={setBadgeStatus} options={avatarBadgeStatuses} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Dot</span>
+          <input
+            type="checkbox"
+            checked={dotBadge}
+            onChange={(e) => setDotBadge(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        {sizes.map((s) => (
+          <div key={s.key} className="flex w-full flex-wrap items-center justify-center gap-6">
+            {variants.map((v) => (
+              <Avatar
+                key={v.key}
+                size={Number(s.key) as AvatarSize}
+                variant={v.key}
+                src={AVATAR_PLACEHOLDER_IMG}
+                dotBadge={dotBadge}
+                badge={badgeStatus === "none" ? undefined : 8}
+                badgeStatus={badgeStatus === "none" ? "neutral" : badgeStatus}
+              >
+                YB
+              </Avatar>
+            ))}
+          </div>
+        ))}
+
+        <div className="flex w-full flex-col items-center gap-3">
+          <AvatarGroup size={40} max={3}>
+            <Avatar size={40} variant="text">
+              YB
+            </Avatar>
+            <Avatar size={40} variant="image" src={AVATAR_PLACEHOLDER_IMG} />
+            <Avatar size={40} variant="icon" />
+            <Avatar size={40} variant="text">
+              AK
+            </Avatar>
+            <Avatar size={40} variant="text">
+              MP
+            </Avatar>
+          </AvatarGroup>
+        </div>
+      </ComponentSection>
+    </div>
   );
 }
 
@@ -420,6 +516,8 @@ export function PlaygroundContent() {
             <h2 className="text-[20px] font-semibold leading-[1.2] tracking-[-0.6px] text-ink-950">
               {active}
             </h2>
+
+            {active === "Avatar" && <AvatarDemo />}
 
             {active === "Badge" && <BadgeDemo />}
 

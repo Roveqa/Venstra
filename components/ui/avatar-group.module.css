@@ -1,0 +1,81 @@
+/*
+ * Source: Figma "Avatar Group" component set (r2dbmly2FCs307sePH1Z9C,
+ * page 1:10, ComponentSet 2259:4006). See avatar-group.tsx for the
+ * source comment. Overlap amount confirmed at size=32 (-8px) directly
+ * off Figma; the rest come from the registry doc's gap table.
+ */
+
+.group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.avatars {
+  display: flex;
+  align-items: center;
+}
+
+/* Ring separator around each avatar — only present inside a Group, not
+   on a standalone Avatar. Wraps snugly around whatever size Avatar the
+   caller passed in. */
+.item {
+  display: inline-flex;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--surface-low);
+}
+.item:not(:last-child) {
+  margin-right: -8px; /* default = size 32/24 */
+}
+
+.group[data-size="48"] .item:not(:last-child),
+.group[data-size="40"] .item:not(:last-child) {
+  margin-right: -12px;
+}
+.group[data-size="32"] .item:not(:last-child),
+.group[data-size="24"] .item:not(:last-child) {
+  margin-right: -8px;
+}
+.group[data-size="16"] .item:not(:last-child),
+.group[data-size="14"] .item:not(:last-child) {
+  margin-right: -4px;
+}
+
+/* "+N" overflow chip — same circle shape as an Avatar, sized to match
+   the group's size since it doesn't wrap a real Avatar. */
+.more {
+  align-items: center;
+  justify-content: center;
+  background-color: var(--fill-base);
+  color: var(--foreground-weak);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  line-height: 1.16;
+  letter-spacing: -0.12px;
+  white-space: nowrap;
+}
+
+.group[data-size="14"] .more {
+  width: 14px;
+  height: 14px;
+}
+.group[data-size="16"] .more {
+  width: 16px;
+  height: 16px;
+}
+.group[data-size="24"] .more {
+  width: 24px;
+  height: 24px;
+}
+.group[data-size="32"] .more {
+  width: 32px;
+  height: 32px;
+}
+.group[data-size="40"] .more {
+  width: 40px;
+  height: 40px;
+}
+.group[data-size="48"] .more {
+  width: 48px;
+  height: 48px;
+}

@@ -1,0 +1,225 @@
+/*
+ * Source: Figma "Avatar" component set (r2dbmly2FCs307sePH1Z9C, page 1:10,
+ * ComponentSet 1814:15928). See avatar.tsx for the full source comment.
+ * Every size/typography/badge-offset value below was read directly off
+ * the matching Figma node per size (1817:15941, 1814:15929, 1816:15933,
+ * 1817:15945, 1820:16679/16683/16687/16691/16695/16697, 1854:1499...) —
+ * not interpolated.
+ */
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/* Circular clip + background live here, not on .avatar — dotBadge/badge
+   are positioned outside this circle and must not be clipped with it. */
+.content {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background-color: var(--fill-base);
+}
+
+.avatar[data-size="14"] {
+  width: 14px;
+  height: 14px;
+}
+.avatar[data-size="16"] {
+  width: 16px;
+  height: 16px;
+}
+.avatar[data-size="24"] {
+  width: 24px;
+  height: 24px;
+}
+.avatar[data-size="32"] {
+  width: 32px;
+  height: 32px;
+}
+.avatar[data-size="40"] {
+  width: 40px;
+  height: 40px;
+}
+.avatar[data-size="48"] {
+  width: 48px;
+  height: 48px;
+}
+
+/* ---- Initials (Style=Text) ---- */
+.initials {
+  font-weight: 500;
+  color: var(--foreground-subtle);
+  white-space: nowrap;
+}
+.avatar[data-size="14"] .initials,
+.avatar[data-size="16"] .initials {
+  font-size: 6px;
+  line-height: 1.2;
+  letter-spacing: -0.12px;
+}
+.avatar[data-size="24"] .initials {
+  font-size: 8px;
+  line-height: 1.2;
+  letter-spacing: -0.16px;
+}
+.avatar[data-size="32"] .initials {
+  font-size: var(--text-sm);
+  line-height: 1.16;
+  letter-spacing: -0.12px;
+}
+.avatar[data-size="40"] .initials {
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+.avatar[data-size="48"] .initials {
+  font-size: var(--text-lg);
+  line-height: 1.4;
+  letter-spacing: -0.16px;
+}
+
+/* ---- Icon (Style=Icon) — Figma's "user-round" at 10/10/12/16/16/16px ---- */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground-subtle);
+}
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+.avatar[data-size="14"] .icon,
+.avatar[data-size="16"] .icon {
+  width: 10px;
+  height: 10px;
+}
+.avatar[data-size="24"] .icon {
+  width: 12px;
+  height: 12px;
+}
+.avatar[data-size="32"] .icon,
+.avatar[data-size="40"] .icon,
+.avatar[data-size="48"] .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- Photo (Style=Image) ---- */
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- Status dot — bottom-right, 2px ring matching the page background.
+   Figma doesn't expose a color axis for this (always fill-base); only
+   defined at size >= 24. ---- */
+.dot {
+  position: absolute;
+  border-radius: var(--radius-full);
+  background-color: var(--fill-base);
+  border: 2px solid var(--surface-low);
+}
+.avatar[data-size="24"] .dot {
+  width: 6px;
+  height: 6px;
+  bottom: 0;
+  right: 0;
+}
+.avatar[data-size="32"] .dot {
+  width: 8px;
+  height: 8px;
+  bottom: 0;
+  right: 0;
+}
+.avatar[data-size="40"] .dot {
+  width: 8px;
+  height: 8px;
+  bottom: 1px;
+  right: 1px;
+}
+.avatar[data-size="48"] .dot {
+  width: 8px;
+  height: 8px;
+  bottom: 2px;
+  right: 2px;
+}
+
+/* ---- Notification counter — top-right. Uses the "Small" Badge Avatar
+   (18px/10px text) at every size except 48px, which upgrades to
+   "Medium" (24px/14px text) per Figma. Only defined at size >= 24. ---- */
+.badge {
+  position: absolute;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--surface-low);
+  color: var(--foreground-inverse);
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.badge[data-status="neutral"] {
+  background-color: var(--fill-neutral);
+}
+.badge[data-status="error"] {
+  background-color: var(--fill-error);
+}
+.badge[data-status="success"] {
+  background-color: var(--fill-success);
+}
+.badge[data-status="warning"] {
+  background-color: var(--fill-warning);
+}
+.badge[data-status="info"] {
+  background-color: var(--fill-info);
+}
+
+.avatar[data-size="24"] .badge {
+  height: 18px;
+  min-width: 18px;
+  padding: 0 4px;
+  font-size: 10px;
+  letter-spacing: -0.2px;
+  left: 14px;
+  top: -8px;
+}
+.avatar[data-size="32"] .badge {
+  height: 18px;
+  min-width: 18px;
+  padding: 0 4px;
+  font-size: 10px;
+  letter-spacing: -0.2px;
+  left: 20px;
+  top: -6px;
+}
+.avatar[data-size="40"] .badge {
+  height: 18px;
+  min-width: 18px;
+  padding: 0 4px;
+  font-size: 10px;
+  letter-spacing: -0.2px;
+  left: 26px;
+  top: -4px;
+}
+.avatar[data-size="48"] .badge {
+  height: 24px;
+  min-width: 24px;
+  padding: 4px;
+  font-size: var(--text-md);
+  letter-spacing: -0.14px;
+  left: 32px;
+  top: -8px;
+}
