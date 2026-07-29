@@ -5,7 +5,7 @@ import styles from "./badge.module.css";
 /**
  * Source: Figma "Badge" component set (r2dbmly2FCs307sePH1Z9C, page 903:5385).
  * See badge.module.css for the full color recipe and node-by-node source
- * comments. Status × Style × Size — Content=Number uses `shape="number"`.
+ * comments. Status × Style × Size — Content=Number uses `type="number"`.
  * "Badge master" (887:4424) also exposes Dot left/right and Icon
  * left/right (`dotLeft`/`dotRight`/`iconLeft`/`iconRight` below) plus
  * Avatar left/right, which aren't implemented here.
@@ -13,7 +13,7 @@ import styles from "./badge.module.css";
 export type BadgeIntent = "neutral" | "success" | "warning" | "error" | "info";
 export type BadgeVariant = "fill" | "light" | "ghost";
 export type BadgeSize = "medium" | "small";
-export type BadgeShape = "text" | "number";
+export type BadgeType = "text" | "number";
 
 function BadgeDot({ side }: { side: "left" | "right" }) {
   return (
@@ -45,7 +45,7 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, "child
   intent?: BadgeIntent;
   variant?: BadgeVariant;
   size?: BadgeSize;
-  shape?: BadgeShape;
+  type?: BadgeType;
   children?: React.ReactNode;
   dotLeft?: boolean;
   dotRight?: boolean;
@@ -58,7 +58,7 @@ export function Badge({
   intent = "neutral",
   variant = "fill",
   size = "medium",
-  shape = "text",
+  type = "text",
   dotLeft,
   dotRight,
   iconLeft,
@@ -72,12 +72,12 @@ export function Badge({
       data-intent={intent}
       data-variant={variant}
       data-size={size}
-      data-shape={shape}
+      data-type={type}
       {...props}
     >
       {iconLeft && <BadgeIcon side="left">{iconLeft}</BadgeIcon>}
       {dotLeft && <BadgeDot side="left" />}
-      {shape === "number" ? (
+      {type === "number" ? (
         <BadgeText size={size}>{children}</BadgeText>
       ) : (
         <span className={styles.label}>
