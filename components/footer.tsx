@@ -21,6 +21,7 @@ const linkHrefs: Record<string, string> = {
   "Border Radius": "/docs/foundations/border-radius",
   Effects: "/docs/foundations/effects",
   "Browse Components": "/docs/components/alert",
+  "Open in Figma": "https://www.figma.com/community/file/1663641390734733429",
   License: "/docs/license",
 };
 
@@ -61,6 +62,8 @@ export function Footer() {
                   <li key={link}>
                     <Link
                       href={linkHrefs[link] || "#"}
+                      target={link === "Open in Figma" ? "_blank" : undefined}
+                      rel={link === "Open in Figma" ? "noopener noreferrer" : undefined}
                       className="text-[16px] leading-[1.25] tracking-[-0.48px] text-ink-700 transition-colors hover:text-ink-950"
                     >
                       {link}

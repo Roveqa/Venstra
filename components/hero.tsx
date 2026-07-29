@@ -44,7 +44,9 @@ export function Hero() {
         <ScrollReveal delay={200}>
           <div className="flex items-center gap-[8px]">
             <Link
-              href="#"
+              href="https://www.figma.com/community/file/1663641390734733429"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-[6px] rounded-md bg-primary px-5 py-3 text-sm font-medium tracking-[-0.14px] leading-[1.16] text-[#fefefe] transition-opacity hover:opacity-90"
             >
               <Image src="/images/figma-icon.svg" alt="" width={16} height={16} />

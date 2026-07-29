@@ -95,7 +95,9 @@ export function Header() {
             </nav>
 
             <Link
-              href="#"
+              href="https://www.figma.com/community/file/1663641390734733429"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden shrink-0 items-center gap-[6px] whitespace-nowrap rounded-md bg-primary px-3 py-[10px] text-sm font-medium tracking-[-0.14px] leading-[1.16] text-[#fefefe] transition-opacity hover:opacity-90 lg:flex"
             >
               <Image src="/images/figma-icon.svg" alt="" width={16} height={16} />

@@ -80,7 +80,9 @@ export function CtaBanner() {
             </p>
           </div>
           <Link
-            href="#"
+            href="https://www.figma.com/community/file/1663641390734733429"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex w-full items-center justify-center gap-[6px] rounded-md bg-[#fefefe] px-5 py-3 text-sm font-medium tracking-[-0.14px] leading-[1.16] text-primary transition-opacity hover:opacity-90"
           >
             <FigmaIcon />
@@ -103,7 +105,9 @@ export function CtaBanner() {
             In the meantime, the full design system is available in Figma
           </p>
           <Link
-            href="#"
+            href="https://www.figma.com/community/file/1663641390734733429"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-[6px] whitespace-nowrap rounded-md bg-[#fefefe] px-5 py-3 text-sm font-medium tracking-[-0.14px] leading-[1.16] text-primary transition-opacity hover:opacity-90"
           >
             <FigmaIcon />
