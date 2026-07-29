@@ -39,9 +39,13 @@ const avatarBadgeStatuses = [
   { key: "info", label: "Info" },
 ] as const;
 
-// Real face photo placeholder for the Style=Image demo (pravatar.cc —
-// no API key, stable per-id image, no rate limiting for casual use).
-const AVATAR_PLACEHOLDER_IMG = "https://i.pravatar.cc/150?img=12";
+// The actual photo used in Figma's own Avatar Style=Image example
+// (ComponentSet 1814:15928, node 1820:16638), downloaded and pre-cropped
+// to a square centered on the face (source photo was a portrait shot,
+// not square — plain object-fit:cover on the original would have shown
+// the surrounding room since the image has no horizontal overflow to
+// crop away).
+const AVATAR_PLACEHOLDER_IMG = "/images/avatar-photo.png";
 
 const buttonStyles = [
   { key: "fill", label: "Fill" },

@@ -30,6 +30,8 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLDivElement>, "child
   /** Photo URL — used when variant="image". */
   src?: string;
   alt?: string;
+  /** CSS object-position for the photo, e.g. "50% 20%" to favor a face near the top of the frame. Defaults to center. */
+  imagePosition?: string;
   /** Custom icon override — used when variant="icon". Defaults to lucide's UserRound (Figma's "user-round"). */
   icon?: ReactNode;
   /** Status dot, bottom-right corner. Figma doesn't parametrize its color (always fill-base). */
@@ -46,6 +48,7 @@ export function Avatar({
   children,
   src,
   alt = "",
+  imagePosition,
   icon,
   dotBadge,
   badge,
@@ -62,7 +65,12 @@ export function Avatar({
         {variant === "icon" && <span className={styles.icon}>{icon ?? <UserRound />}</span>}
         {variant === "image" && src && (
           // eslint-disable-next-line @next/next/no-img-element -- arbitrary user-supplied avatar URLs, not a known static domain
-          <img src={src} alt={alt} className={styles.image} />
+          <img
+            src={src}
+            alt={alt}
+            className={styles.image}
+            style={imagePosition ? { objectPosition: imagePosition } : undefined}
+          />
         )}
       </div>
       {dotBadge && <span className={styles.dot} />}
