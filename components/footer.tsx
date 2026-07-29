@@ -33,9 +33,14 @@ export function Footer() {
         <div className="flex shrink-0 flex-col items-start gap-3">
           <Logo />
           <div className="flex flex-col items-start gap-2">
-            <span className="whitespace-nowrap text-[16px] leading-[1.25] tracking-[-0.48px] text-ink-700">
+            <a
+              href="https://www.behance.net/YanBogdanov"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whitespace-nowrap text-[16px] leading-[1.25] tracking-[-0.48px] text-ink-700 transition-colors hover:text-ink-950"
+            >
               Made by Yan Bogdanov
-            </span>
+            </a>
             <span className="whitespace-nowrap text-[16px] leading-[1.25] tracking-[-0.48px] text-ink-700 opacity-40">
               Copyright © 2026 Venstra
             </span>
