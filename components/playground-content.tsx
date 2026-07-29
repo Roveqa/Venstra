@@ -344,21 +344,36 @@ function ButtonDemo() {
 }
 
 function KbdDemo() {
+  const [showIcon, setShowIcon] = useState(false);
+
   return (
-    <ComponentSection>
-      {kbdVariants.map((variant) => (
-        <div key={variant.key} className="flex w-full flex-col items-center gap-3 text-center">
-          <div className="flex flex-wrap items-center justify-center gap-6">
-            {shortcuts.map((key) => (
-              <div key={key} className="flex items-center gap-1">
-                <Kbd variant={variant.key} icon={<Command />} aria-label="Command" />
-                <Kbd variant={variant.key}>{key}</Kbd>
-              </div>
-            ))}
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Icon</span>
+          <input
+            type="checkbox"
+            checked={showIcon}
+            onChange={(e) => setShowIcon(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        {kbdVariants.map((variant) => (
+          <div key={variant.key} className="flex w-full flex-col items-center gap-3 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              {shortcuts.map((key) => (
+                <Kbd key={key} variant={variant.key} icon={showIcon ? <Command /> : undefined}>
+                  {key}
+                </Kbd>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-    </ComponentSection>
+        ))}
+      </ComponentSection>
+    </div>
   );
 }
 
