@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
 import { Divider } from "@/components/ui/divider";
 import { Label } from "@/components/ui/label";
+import { HintText } from "@/components/ui/hint-text";
 
 const sections = ["Badge", "Button", "Kbd", "Divider", "Label"];
 
@@ -453,6 +454,12 @@ export function PlaygroundContent() {
                   <Label htmlFor="playground-label-optional" optional>
                     Company name
                   </Label>
+                </div>
+                <div className="flex w-full flex-col items-center gap-6">
+                  <HintText>Hint text</HintText>
+                </div>
+                <div className="flex w-full flex-col items-center gap-6">
+                  <HintText variant="error">Hint text</HintText>
                 </div>
               </ComponentSection>
             )}

@@ -1,0 +1,20 @@
+/*
+ * Source: Figma "Hint text" component set (r2dbmly2FCs307sePH1Z9C, page 1:13,
+ * ComponentSet 1684:2129). Confirmed via get_design_context on nodes
+ * 1684:2128 (Default) / 1684:2130 (Error).
+ */
+
+.hint {
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+
+.default {
+  color: var(--foreground-base-muted);
+}
+
+.error {
+  color: var(--foreground-error);
+}
