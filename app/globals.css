@@ -483,6 +483,11 @@
   --stroke-info-subtle: var(--blue-500);
 }
 
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
 html {
   overflow-x: hidden;
 }
