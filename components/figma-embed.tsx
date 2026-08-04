@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const FIGMA_FILE_KEY = "RIB8DZ9M5Uay7si4mI19Yt";
 
@@ -12,7 +13,8 @@ export function FigmaEmbed({ nodeId }: { nodeId: string }) {
   return (
     <div className="relative h-[400px] w-full overflow-hidden rounded-2xl border border-stroke">
       {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#f8f8f8]">
+        <div className="absolute inset-0 flex items-center justify-center gap-3 bg-[#f8f8f8]">
+          <Loader2 className="h-6 w-6 animate-spin text-[#b3b3b3]" />
           <span className="text-center text-[32px] leading-[1.24] tracking-[-0.64px] text-[#b3b3b3]">
             Figma
           </span>
