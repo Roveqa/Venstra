@@ -17,6 +17,13 @@ import styles from "./alert.module.css";
  * design. Defaults below use conventional semantic icons per type
  * instead, overridable via the `icon` prop.
  *
+ * Alert master is a HORIZONTAL row (re-verified after a design
+ * update): [Icon + Content] -- gap 12px -- [close button], padding a
+ * uniform 8px/10px. The close button is a normal in-flow flex child
+ * now, not absolutely positioned with reserved padding like before —
+ * so omitting it (no onClose) just removes that child and its gap,
+ * no manual width/padding bookkeeping needed.
+ *
  * Close button token differs by style: Fill uses a constant
  * white-80% token (foreground-base-inverse, added to globals.css —
  * Fill's background is always mid/dark-toned regardless of site
