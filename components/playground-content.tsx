@@ -305,8 +305,7 @@ function NotificationDemo() {
                 variant={v.key as NotificationVariant}
                 title="Title"
                 description="Add a short description here to provide additional context for this component"
-                action={showAction ? "Learn More" : undefined}
-                onAction={() => {}}
+                actions={showAction ? [{ label: "Learn More" }, { label: "Dismiss" }] : undefined}
                 onClose={showClose ? () => {} : undefined}
               />
             ))}

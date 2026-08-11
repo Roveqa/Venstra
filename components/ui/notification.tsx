@@ -25,7 +25,7 @@ import styles from "./notification.module.css";
  * ring) — defaults to sensible semantic lucide icons per type,
  * overridable via `icon`.
  *
- * CTA button is a real Button instance (variant=Link): "neutral-
+ * CTA buttons are real Button instances (variant=Link): "neutral-
  * inverse" intent on Fill (white, since Fill's background is always
  * dark/saturated), "neutral" intent on Light/Stroke (near-black) —
  * same fixed-by-Style-not-Type pattern already confirmed on Alert.
@@ -33,6 +33,10 @@ import styles from "./notification.module.css";
  * icons while Light/Stroke's doesn't, but nothing suggests that's a
  * deliberate style-level rule rather than incidental demo content, so
  * left/right icons are just optional props here, not tied to variant.
+ *
+ * The row is named "Buttons" (plural) in Figma and laid out as a flex
+ * row with its own gap — built to hold more than one CTA side by
+ * side, so `actions` takes an array rather than a single button.
  */
 export type NotificationType = "neutral" | "success" | "warning" | "error" | "info";
 export type NotificationVariant = "fill" | "light" | "stroke";
@@ -45,16 +49,20 @@ const DEFAULT_ICONS: Record<NotificationType, ReactNode> = {
   info: <Info />,
 };
 
+export interface NotificationAction {
+  label: ReactNode;
+  onClick?: () => void;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+}
+
 export interface NotificationProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   type?: NotificationType;
   variant?: NotificationVariant;
   icon?: ReactNode;
   title: ReactNode;
   description?: ReactNode;
-  action?: ReactNode;
-  actionLeftIcon?: ReactNode;
-  actionRightIcon?: ReactNode;
-  onAction?: () => void;
+  actions?: NotificationAction[];
   onClose?: () => void;
 }
 
@@ -65,10 +73,7 @@ export function Notification({
   icon,
   title,
   description,
-  action,
-  actionLeftIcon,
-  actionRightIcon,
-  onAction,
+  actions,
   onClose,
   ...props
 }: NotificationProps) {
@@ -81,18 +86,21 @@ export function Notification({
             <p className={styles.title}>{title}</p>
             {description && <p className={styles.description}>{description}</p>}
           </div>
-          {action && (
+          {actions && actions.length > 0 && (
             <div className={styles.buttons}>
-              <Button
-                variant="link"
-                intent={variant === "fill" ? "neutral-inverse" : "neutral"}
-                size="sm"
-                leftIcon={actionLeftIcon}
-                rightIcon={actionRightIcon}
-                onClick={onAction}
-              >
-                {action}
-              </Button>
+              {actions.map((a, i) => (
+                <Button
+                  key={i}
+                  variant="link"
+                  intent={variant === "fill" ? "neutral-inverse" : "neutral"}
+                  size="sm"
+                  leftIcon={a.leftIcon}
+                  rightIcon={a.rightIcon}
+                  onClick={a.onClick}
+                >
+                  {a.label}
+                </Button>
+              ))}
             </div>
           )}
         </div>
