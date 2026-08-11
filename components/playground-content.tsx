@@ -12,8 +12,9 @@ import { Label } from "@/components/ui/label";
 import { HintText } from "@/components/ui/hint-text";
 import { Avatar, type AvatarSize } from "@/components/ui/avatar";
 import { AvatarGroup } from "@/components/ui/avatar-group";
+import { Progress, type ProgressPercentPosition } from "@/components/ui/progress";
 
-const sections = ["Avatar", "Badge", "Button", "Kbd", "Divider", "Label"];
+const sections = ["Avatar", "Badge", "Button", "Kbd", "Divider", "Label", "Progress"];
 
 const avatarVariants = [
   { key: "text", label: "Text" },
@@ -37,6 +38,16 @@ const avatarBadgeStatuses = [
   { key: "warning", label: "Warning" },
   { key: "error", label: "Error" },
   { key: "info", label: "Info" },
+] as const;
+
+const progressPositions = [
+  { key: "top", label: "Top" },
+  { key: "right", label: "Right" },
+] as const;
+
+const progressHintVariants = [
+  { key: "default", label: "Default" },
+  { key: "error", label: "Error" },
 ] as const;
 
 // The actual photo used in Figma's own Avatar Style=Image example
@@ -301,6 +312,70 @@ function AvatarDemo() {
   );
 }
 
+function ProgressDemo() {
+  const [position, setPosition] = useState<(typeof progressPositions)[number]["key"]>("top");
+  const [value, setValue] = useState(50);
+  const [showLabel, setShowLabel] = useState(true);
+  const [showPercent, setShowPercent] = useState(true);
+  const [hintVariant, setHintVariant] = useState<"none" | (typeof progressHintVariants)[number]["key"]>("default");
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Position" value={position} onChange={setPosition} options={progressPositions} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Value</span>
+          <input
+            type="number"
+            min={0}
+            max={100}
+            value={value}
+            onChange={(e) => setValue(Number(e.target.value))}
+            className="w-16 rounded-lg bg-surface-subtle px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:bg-[var(--surface-subtle-hover)]"
+          />
+        </label>
+        <TinySelect
+          label="Hint"
+          value={hintVariant}
+          onChange={setHintVariant}
+          options={[{ key: "none", label: "None" }, ...progressHintVariants]}
+        />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Percent</span>
+          <input
+            type="checkbox"
+            checked={showPercent}
+            onChange={(e) => setShowPercent(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="w-full max-w-[320px]">
+          <Progress
+            value={value}
+            percentPosition={position as ProgressPercentPosition}
+            label={showLabel ? "Uploading file" : undefined}
+            showPercent={showPercent}
+            hint={hintVariant === "none" ? undefined : hintVariant === "error" ? "Something went wrong" : "This may take a few minutes"}
+            hintVariant={hintVariant === "error" ? "error" : "default"}
+          />
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 function BadgeDemo() {
   // Default to a single representative variant (Neutral/Primary, Medium)
   // rather than "All" — same convention for every future playground demo.
@@ -537,6 +612,8 @@ export function PlaygroundContent() {
             </h2>
 
             {active === "Avatar" && <AvatarDemo />}
+
+            {active === "Progress" && <ProgressDemo />}
 
             {active === "Badge" && <BadgeDemo />}
 
