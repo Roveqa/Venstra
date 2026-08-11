@@ -72,7 +72,7 @@ export function Alert({
   ...props
 }: AlertProps) {
   return (
-    <div className={clsx(styles.alert, className)} data-type={type} data-variant={variant} {...props}>
+    <div role="alert" className={clsx(styles.alert, className)} data-type={type} data-variant={variant} {...props}>
       <div className={styles.row}>
         <div className={styles.titleRow}>
           <span className={styles.icon}>{icon ?? DEFAULT_ICONS[type]}</span>
