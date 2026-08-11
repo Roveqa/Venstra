@@ -1,0 +1,161 @@
+/*
+ * Source: Figma "Alert" component set (page 2060:23628, ComponentSet
+ * 2070:12587). See alert.tsx for the full source comment.
+ * Each [data-type] block defines local custom properties; each
+ * [data-variant] block consumes them — same pattern as Button/Badge.
+ */
+
+.alert {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 44px 8px 10px;
+  border-radius: var(--radius-md);
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.titleRow {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  padding: 2px;
+}
+.icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.description {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: inherit;
+}
+
+.action {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- Type palettes ---- */
+
+.alert[data-type="neutral"] {
+  --alert-fill-bg: var(--surface-neutral);
+  --alert-fill-text: var(--foreground-neutral-inverse);
+  --alert-light-bg: var(--surface-neutral-low);
+  --alert-light-text: var(--foreground-neutral);
+  --alert-stroke-bg: var(--surface-neutral-inverse);
+  --alert-stroke-icon: var(--foreground-neutral-strong);
+  --alert-stroke-text: var(--foreground-neutral);
+}
+
+.alert[data-type="error"] {
+  --alert-fill-bg: var(--surface-error);
+  --alert-fill-text: var(--foreground-error-inverse);
+  --alert-light-bg: var(--surface-error-low);
+  --alert-light-text: var(--foreground-error-strong);
+  --alert-stroke-bg: var(--surface-error-inverse);
+  --alert-stroke-icon: var(--foreground-error);
+  --alert-stroke-text: var(--foreground-error-strong);
+}
+
+.alert[data-type="success"] {
+  --alert-fill-bg: var(--surface-success);
+  --alert-fill-text: var(--foreground-success-inverse);
+  --alert-light-bg: var(--surface-success-low);
+  --alert-light-text: var(--foreground-success-strong);
+  --alert-stroke-bg: var(--surface-success-inverse);
+  --alert-stroke-icon: var(--foreground-success);
+  --alert-stroke-text: var(--foreground-success-strong);
+}
+
+.alert[data-type="warning"] {
+  --alert-fill-bg: var(--surface-warning);
+  --alert-fill-text: var(--foreground-warning-inverse);
+  --alert-light-bg: var(--surface-warning-low);
+  --alert-light-text: var(--foreground-warning-strong);
+  --alert-stroke-bg: var(--surface-warning-inverse);
+  --alert-stroke-icon: var(--foreground-warning);
+  --alert-stroke-text: var(--foreground-warning-strong);
+}
+
+.alert[data-type="info"] {
+  --alert-fill-bg: var(--surface-info);
+  --alert-fill-text: var(--foreground-info-inverse);
+  --alert-light-bg: var(--surface-info-low);
+  --alert-light-text: var(--foreground-info-strong);
+  --alert-stroke-bg: var(--surface-info-inverse);
+  --alert-stroke-icon: var(--foreground-info);
+  --alert-stroke-text: var(--foreground-info-strong);
+}
+
+/* ---- Style recipes (consume the --alert-* custom properties above) ---- */
+
+.alert[data-variant="fill"] {
+  background-color: var(--alert-fill-bg);
+  color: var(--alert-fill-text);
+}
+.alert[data-variant="fill"] .close {
+  color: var(--foreground-base-inverse);
+}
+
+.alert[data-variant="light"] {
+  background-color: var(--alert-light-bg);
+  color: var(--alert-light-text);
+}
+.alert[data-variant="light"] .close {
+  color: var(--foreground-base-muted);
+}
+
+.alert[data-variant="stroke"] {
+  background-color: var(--alert-stroke-bg);
+  border: 1px solid var(--stroke-subtle);
+  color: var(--alert-stroke-text);
+}
+.alert[data-variant="stroke"] .icon {
+  color: var(--alert-stroke-icon);
+}
+.alert[data-variant="stroke"] .close {
+  color: var(--foreground-base-muted);
+}

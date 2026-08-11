@@ -13,8 +13,23 @@ import { HintText } from "@/components/ui/hint-text";
 import { Avatar, type AvatarSize } from "@/components/ui/avatar";
 import { AvatarGroup } from "@/components/ui/avatar-group";
 import { Progress, type ProgressPercentPosition } from "@/components/ui/progress";
+import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 
-const sections = ["Avatar", "Badge", "Button", "Kbd", "Divider", "Label", "Progress"];
+const sections = ["Alert", "Avatar", "Badge", "Button", "Kbd", "Divider", "Label", "Progress"];
+
+const alertTypes = [
+  { key: "neutral", label: "Neutral" },
+  { key: "error", label: "Error" },
+  { key: "success", label: "Success" },
+  { key: "warning", label: "Warning" },
+  { key: "info", label: "Info" },
+] as const;
+
+const alertVariants = [
+  { key: "fill", label: "Fill" },
+  { key: "light", label: "Light" },
+  { key: "stroke", label: "Stroke" },
+] as const;
 
 const avatarVariants = [
   { key: "text", label: "Text" },
@@ -228,6 +243,63 @@ function TinySelect<T extends string>({
         ))}
       </select>
     </label>
+  );
+}
+
+function AlertDemo() {
+  const [type, setType] = useState<WithAll<(typeof alertTypes)[number]["key"]>>("neutral");
+  const [variant, setVariant] = useState<WithAll<(typeof alertVariants)[number]["key"]>>("fill");
+  const [showAction, setShowAction] = useState(true);
+  const [showClose, setShowClose] = useState(true);
+
+  const types = type === "all" ? alertTypes : alertTypes.filter((t) => t.key === type);
+  const variants = variant === "all" ? alertVariants : alertVariants.filter((v) => v.key === variant);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <PlaygroundSelect label="Type" value={type} onChange={setType} options={alertTypes} />
+        <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={alertVariants} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Action</span>
+          <input
+            type="checkbox"
+            checked={showAction}
+            onChange={(e) => setShowAction(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Close</span>
+          <input
+            type="checkbox"
+            checked={showClose}
+            onChange={(e) => setShowClose(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        {variants.map((v) => (
+          <div key={v.key} className="flex w-full flex-col items-center gap-3">
+            {types.map((t) => (
+              <div key={t.key} className="w-full max-w-[400px]">
+                <Alert
+                  type={t.key as AlertType}
+                  variant={v.key as AlertVariant}
+                  action={showAction ? "Upgrade" : undefined}
+                  onAction={() => {}}
+                  onClose={showClose ? () => {} : undefined}
+                >
+                  Add a short description here
+                </Alert>
+              </div>
+            ))}
+          </div>
+        ))}
+      </ComponentSection>
+    </div>
   );
 }
 
@@ -622,6 +694,8 @@ export function PlaygroundContent() {
             <h2 className="text-[20px] font-semibold leading-[1.2] tracking-[-0.6px] text-ink-950">
               {active}
             </h2>
+
+            {active === "Alert" && <AlertDemo />}
 
             {active === "Avatar" && <AvatarDemo />}
 

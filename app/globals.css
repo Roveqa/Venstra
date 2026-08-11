@@ -303,9 +303,19 @@
   --foreground-inverse: var(--neutral-50);
   --foreground-weak: var(--neutral-600);
   --foreground-base-muted: rgba(4, 4, 4, 0.32);
+  /* Constant regardless of site theme — used on Alert's Fill style,
+     whose background is always mid/dark-toned (red/green/amber/blue/
+     near-black), same "-inverse" convention as Button's fill-*-inverse
+     tokens. Not redefined in the dark-theme block below on purpose. */
+  --foreground-base-inverse: rgba(255, 255, 255, 0.8);
   --foreground-neutral-strong: var(--neutral-950);
   --foreground-neutral: var(--neutral-900);
   --foreground-neutral-subtle: var(--neutral-800);
+  /* Constant like foreground-error-inverse etc below — Alert's
+     Fill/Neutral background (surface-neutral) is always near-black
+     regardless of site theme, unlike the generic (theme-adaptive)
+     foreground-inverse. */
+  --foreground-neutral-inverse: var(--neutral-50);
   --foreground-primary: var(--primary-500);
   --foreground-primary-subtle: var(--primary-400);
   --foreground-primary-strong: var(--primary-600);
