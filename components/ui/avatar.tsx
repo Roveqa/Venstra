@@ -36,7 +36,7 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLDivElement>, "child
   icon?: ReactNode;
   /** Status dot, bottom-right corner. Figma doesn't parametrize its color (always fill-base). */
   dotBadge?: boolean;
-  /** Notification counter, top-right corner. Omit to hide. */
+  /** Notification counter, top-right corner. Omit to hide. A number > 99 renders as "99+"; non-numeric content (e.g. a custom node) passes through untouched. */
   badge?: ReactNode;
   badgeStatus?: AvatarBadgeStatus;
 }
@@ -60,6 +60,7 @@ export function Avatar({
   // rendering them would produce an unstyled, wrongly-sized element
   // instead of just not showing one.
   const supportsBadge = size >= 24;
+  const badgeContent = typeof badge === "number" && badge > 99 ? "99+" : badge;
 
   return (
     <div className={clsx(styles.avatar, className)} data-size={size} {...props}>
@@ -82,7 +83,7 @@ export function Avatar({
       {dotBadge && supportsBadge && <span className={styles.dot} />}
       {badge !== undefined && supportsBadge && (
         <span className={styles.badge} data-status={badgeStatus}>
-          {badge}
+          {badgeContent}
         </span>
       )}
     </div>

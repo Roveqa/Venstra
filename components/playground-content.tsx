@@ -225,6 +225,7 @@ function AvatarDemo() {
   const [size, setSize] = useState<WithAll<(typeof avatarSizes)[number]["key"]>>("40");
   const [dotBadge, setDotBadge] = useState(false);
   const [badgeStatus, setBadgeStatus] = useState<(typeof avatarBadgeStatuses)[number]["key"]>("none");
+  const [badgeCount, setBadgeCount] = useState(8);
 
   const variants = variant === "all" ? avatarVariants : avatarVariants.filter((v) => v.key === variant);
   const sizes = size === "all" ? avatarSizes : avatarSizes.filter((s) => s.key === size);
@@ -235,6 +236,16 @@ function AvatarDemo() {
         <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={avatarVariants} />
         <PlaygroundSelect label="Size" value={size} onChange={setSize} options={avatarSizes} />
         <TinySelect label="Badge" value={badgeStatus} onChange={setBadgeStatus} options={avatarBadgeStatuses} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Count</span>
+          <input
+            type="number"
+            value={badgeCount}
+            onChange={(e) => setBadgeCount(Number(e.target.value))}
+            disabled={badgeStatus === "none"}
+            className="w-16 rounded-lg bg-surface-subtle px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:bg-[var(--surface-subtle-hover)] disabled:opacity-40"
+          />
+        </label>
         <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Dot</span>
           <input
@@ -256,7 +267,7 @@ function AvatarDemo() {
                 variant={v.key}
                 src={AVATAR_PLACEHOLDER_IMG}
                 dotBadge={dotBadge}
-                badge={badgeStatus === "none" ? undefined : 8}
+                badge={badgeStatus === "none" ? undefined : badgeCount}
                 badgeStatus={badgeStatus === "none" ? "neutral" : badgeStatus}
               >
                 YB
