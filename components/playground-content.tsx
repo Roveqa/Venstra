@@ -14,8 +14,9 @@ import { Avatar, type AvatarSize } from "@/components/ui/avatar";
 import { AvatarGroup } from "@/components/ui/avatar-group";
 import { Progress, type ProgressPercentPosition } from "@/components/ui/progress";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
+import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
 
-const sections = ["Alert", "Avatar", "Badge", "Button", "Kbd", "Divider", "Label", "Progress"];
+const sections = ["Alert", "Avatar", "Badge", "Button", "Kbd", "Divider", "Label", "Notification", "Progress"];
 
 const alertTypes = [
   { key: "neutral", label: "Neutral" },
@@ -26,6 +27,20 @@ const alertTypes = [
 ] as const;
 
 const alertVariants = [
+  { key: "fill", label: "Fill" },
+  { key: "light", label: "Light" },
+  { key: "stroke", label: "Stroke" },
+] as const;
+
+const notificationTypes = [
+  { key: "neutral", label: "Neutral" },
+  { key: "success", label: "Success" },
+  { key: "warning", label: "Warning" },
+  { key: "error", label: "Error" },
+  { key: "info", label: "Info" },
+] as const;
+
+const notificationVariants = [
   { key: "fill", label: "Fill" },
   { key: "light", label: "Light" },
   { key: "stroke", label: "Stroke" },
@@ -243,6 +258,62 @@ function TinySelect<T extends string>({
         ))}
       </select>
     </label>
+  );
+}
+
+function NotificationDemo() {
+  const [type, setType] = useState<WithAll<(typeof notificationTypes)[number]["key"]>>("neutral");
+  const [variant, setVariant] = useState<WithAll<(typeof notificationVariants)[number]["key"]>>("fill");
+  const [showAction, setShowAction] = useState(true);
+  const [showClose, setShowClose] = useState(true);
+
+  const types = type === "all" ? notificationTypes : notificationTypes.filter((t) => t.key === type);
+  const variants = variant === "all" ? notificationVariants : notificationVariants.filter((v) => v.key === variant);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <PlaygroundSelect label="Type" value={type} onChange={setType} options={notificationTypes} />
+        <PlaygroundSelect label="Style" value={variant} onChange={setVariant} options={notificationVariants} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Action</span>
+          <input
+            type="checkbox"
+            checked={showAction}
+            onChange={(e) => setShowAction(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Close</span>
+          <input
+            type="checkbox"
+            checked={showClose}
+            onChange={(e) => setShowClose(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        {variants.map((v) => (
+          <div key={v.key} className="flex w-full flex-col items-center gap-3">
+            {types.map((t) => (
+              <Notification
+                key={t.key}
+                type={t.key as NotificationType}
+                variant={v.key as NotificationVariant}
+                title="Title"
+                description="Add a short description here to provide additional context for this component"
+                action={showAction ? "Learn More" : undefined}
+                onAction={() => {}}
+                onClose={showClose ? () => {} : undefined}
+              />
+            ))}
+          </div>
+        ))}
+      </ComponentSection>
+    </div>
   );
 }
 
@@ -696,6 +767,8 @@ export function PlaygroundContent() {
             </h2>
 
             {active === "Alert" && <AlertDemo />}
+
+            {active === "Notification" && <NotificationDemo />}
 
             {active === "Avatar" && <AvatarDemo />}
 

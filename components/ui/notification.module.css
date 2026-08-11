@@ -1,0 +1,182 @@
+/*
+ * Source: Figma "Notification" component set (page 1:9, ComponentSet
+ * 1963:12590). See notification.tsx for the full source comment.
+ * Same [data-type] custom-property / [data-variant] recipe pattern as
+ * Alert/Button/Badge.
+ */
+
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 400px;
+  max-width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-xl);
+  box-sizing: border-box;
+}
+
+.iconContent {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px;
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  padding: 2px;
+}
+.icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.buttonText {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+}
+
+.title {
+  width: 100%;
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: inherit;
+}
+
+.description {
+  width: 100%;
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: inherit;
+}
+
+.buttons {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.close {
+  display: flex;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- Type palettes ---- */
+
+.notification[data-type="neutral"] {
+  --notif-fill-bg: var(--surface-neutral);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
+  --notif-light-bg: var(--surface-subtle);
+  --notif-light-icon: var(--foreground-neutral-strong);
+  --notif-stroke-icon: var(--foreground-neutral-strong);
+}
+
+.notification[data-type="success"] {
+  --notif-fill-bg: var(--surface-success);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
+  --notif-light-bg: var(--surface-success-low);
+  --notif-light-icon: var(--foreground-success);
+  --notif-stroke-icon: var(--foreground-success);
+}
+
+.notification[data-type="warning"] {
+  --notif-fill-bg: var(--surface-warning);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
+  --notif-light-bg: var(--surface-warning-low);
+  --notif-light-icon: var(--foreground-warning);
+  --notif-stroke-icon: var(--foreground-warning);
+}
+
+.notification[data-type="error"] {
+  --notif-fill-bg: var(--surface-error);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
+  --notif-light-bg: var(--surface-error-low);
+  --notif-light-icon: var(--foreground-error);
+  --notif-stroke-icon: var(--foreground-error);
+}
+
+.notification[data-type="info"] {
+  --notif-fill-bg: var(--surface-info);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
+  --notif-light-bg: var(--surface-info-low);
+  --notif-light-icon: var(--foreground-info);
+  --notif-stroke-icon: var(--foreground-info);
+}
+
+/* ---- Style recipes ---- */
+
+.notification[data-variant="fill"] {
+  background-color: var(--notif-fill-bg);
+  color: var(--notif-fill-title);
+}
+.notification[data-variant="fill"] .icon {
+  color: var(--notif-fill-icon);
+}
+.notification[data-variant="fill"] .description {
+  color: var(--foreground-base-inverse);
+}
+.notification[data-variant="fill"] .close {
+  color: var(--foreground-base-inverse);
+}
+
+.notification[data-variant="light"] {
+  background-color: var(--notif-light-bg);
+  color: var(--foreground);
+}
+.notification[data-variant="light"] .icon {
+  color: var(--notif-light-icon);
+}
+.notification[data-variant="light"] .description {
+  color: var(--foreground-base-muted);
+}
+.notification[data-variant="light"] .close {
+  color: var(--foreground-base-muted);
+}
+
+.notification[data-variant="stroke"] {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--stroke);
+  color: var(--foreground);
+}
+.notification[data-variant="stroke"] .icon {
+  color: var(--notif-stroke-icon);
+}
+.notification[data-variant="stroke"] .description {
+  color: var(--foreground-base-muted);
+}
+.notification[data-variant="stroke"] .close {
+  color: var(--foreground-base-muted);
+}
