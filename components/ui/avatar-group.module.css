@@ -34,8 +34,16 @@
 
 /* Ring separator around each avatar — only present inside a Group, not
    on a standalone Avatar. Wraps snugly around whatever size Avatar the
-   caller passed in. */
+   caller passed in.
+   position:relative is required for correct paint order: the Avatar
+   inside each item is itself position:relative, which makes it a
+   positioned element that paints above any *static* sibling regardless
+   of DOM order — without this, the "+N" chip (a plain static span)
+   would render underneath the overlapping avatars instead of on top
+   of them like Figma. Making every item equally positioned restores
+   normal DOM-order stacking, so "+N" (last) paints on top. */
 .item {
+  position: relative;
   display: inline-flex;
   flex-shrink: 0;
   border-radius: var(--radius-full);
@@ -59,17 +67,43 @@
 }
 
 /* "+N" overflow chip — same circle shape as an Avatar, sized to match
-   the group's size since it doesn't wrap a real Avatar. */
+   the group's size since it doesn't wrap a real Avatar. Text style
+   scales per size exactly like Avatar's own .initials (confirmed off
+   the "More" node at every size: 2259:4489/4449/4391/4339/4071/20278). */
 .more {
   align-items: center;
   justify-content: center;
   background-color: var(--fill-base);
   color: var(--foreground-weak);
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.group[data-size="14"] .more,
+.group[data-size="16"] .more {
+  font-size: 6px;
+  line-height: 1.2;
+  letter-spacing: -0.12px;
+}
+.group[data-size="24"] .more {
+  font-size: 8px;
+  line-height: 1.2;
+  letter-spacing: -0.16px;
+}
+.group[data-size="32"] .more {
   font-size: var(--text-sm);
   line-height: 1.16;
   letter-spacing: -0.12px;
-  white-space: nowrap;
+}
+.group[data-size="40"] .more {
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+.group[data-size="48"] .more {
+  font-size: var(--text-lg);
+  line-height: 1.4;
+  letter-spacing: -0.16px;
 }
 
 .group[data-size="14"] .more {
