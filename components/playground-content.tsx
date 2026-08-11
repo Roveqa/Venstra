@@ -316,6 +316,7 @@ function ProgressDemo() {
   const [position, setPosition] = useState<(typeof progressPositions)[number]["key"]>("top");
   const [value, setValue] = useState(50);
   const [showLabel, setShowLabel] = useState(true);
+  const [labelOptional, setLabelOptional] = useState(true);
   const [showPercent, setShowPercent] = useState(true);
   const [hintVariant, setHintVariant] = useState<"none" | (typeof progressHintVariants)[number]["key"]>("default");
 
@@ -350,6 +351,16 @@ function ProgressDemo() {
           />
         </label>
         <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            disabled={!showLabel}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary disabled:opacity-40"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Percent</span>
           <input
             type="checkbox"
@@ -366,6 +377,7 @@ function ProgressDemo() {
             value={value}
             percentPosition={position as ProgressPercentPosition}
             label={showLabel ? "Uploading file" : undefined}
+            labelOptional={labelOptional}
             showPercent={showPercent}
             hint={hintVariant === "none" ? undefined : hintVariant === "error" ? "Something went wrong" : "This may take a few minutes"}
             hintVariant={hintVariant === "error" ? "error" : "default"}

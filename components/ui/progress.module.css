@@ -7,6 +7,7 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--spacing-3, 6px);
 }
 
@@ -26,7 +27,20 @@
   gap: var(--spacing-4, 8px);
 }
 
+/* Default (Right variant: Label is its own row, a direct column child
+   of .progress) — spans full width, matching Figma's own w-full
+   override on Label there. Inside .headerRow (Top variant, sharing a
+   row with the percent text) it switches to flex:1 0 0 instead — a
+   bare `flex` shorthand on a COLUMN child sizes from flex-basis along
+   the height axis, not width, so applying it unscoped would make
+   Label grow to fill available vertical space in the Right variant
+   instead of just hugging its own line height. */
 .label {
+  width: 100%;
+}
+
+.headerRow .label {
+  width: auto;
   flex: 1 0 0;
   min-width: 0;
 }
