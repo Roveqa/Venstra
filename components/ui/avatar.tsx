@@ -55,6 +55,12 @@ export function Avatar({
   badgeStatus = "neutral",
   ...props
 }: AvatarProps) {
+  // Figma has no dotBadge/badge variant at all at size 14/16 (confirmed
+  // across all three styles) — the CSS has no matching rules there, so
+  // rendering them would produce an unstyled, wrongly-sized element
+  // instead of just not showing one.
+  const supportsBadge = size >= 24;
+
   return (
     <div className={clsx(styles.avatar, className)} data-size={size} {...props}>
       {/* Circular clip lives on this inner wrapper, not the outer element —
@@ -73,8 +79,8 @@ export function Avatar({
           />
         )}
       </div>
-      {dotBadge && <span className={styles.dot} />}
-      {badge !== undefined && (
+      {dotBadge && supportsBadge && <span className={styles.dot} />}
+      {badge !== undefined && supportsBadge && (
         <span className={styles.badge} data-status={badgeStatus}>
           {badge}
         </span>
