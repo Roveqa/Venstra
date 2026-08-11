@@ -265,20 +265,25 @@ function AvatarDemo() {
           </div>
         ))}
 
-        <div className="flex w-full flex-col items-center gap-3">
-          <AvatarGroup size={40} max={3}>
-            <Avatar size={40} variant="text">
-              YB
-            </Avatar>
-            <Avatar size={40} variant="image" src={AVATAR_PLACEHOLDER_IMG} />
-            <Avatar size={40} variant="icon" />
-            <Avatar size={40} variant="text">
-              AK
-            </Avatar>
-            <Avatar size={40} variant="text">
-              MP
-            </Avatar>
-          </AvatarGroup>
+        <div className="flex w-full flex-col items-center gap-6">
+          {sizes.map((s) => {
+            const groupSize = Number(s.key) as AvatarSize;
+            return (
+              <AvatarGroup key={s.key} size={groupSize} max={3}>
+                <Avatar size={groupSize} variant="text">
+                  YB
+                </Avatar>
+                <Avatar size={groupSize} variant="image" src={AVATAR_PLACEHOLDER_IMG} />
+                <Avatar size={groupSize} variant="icon" />
+                <Avatar size={groupSize} variant="text">
+                  AK
+                </Avatar>
+                <Avatar size={groupSize} variant="text">
+                  MP
+                </Avatar>
+              </AvatarGroup>
+            );
+          })}
         </div>
       </ComponentSection>
     </div>

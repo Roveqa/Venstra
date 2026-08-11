@@ -10,9 +10,26 @@
   align-items: center;
 }
 
+/* The whole avatars cluster also carries the same negative margin as
+   each item inside it (confirmed in Figma: the "Avatars" wrapper node
+   itself has mr-[-8px] at size 32) — that's what makes the last avatar
+   overlap into the "+N" chip instead of leaving a gap before it. */
 .avatars {
   display: flex;
   align-items: center;
+  margin-right: -8px; /* default = size 32/24 */
+}
+.group[data-size="48"] .avatars,
+.group[data-size="40"] .avatars {
+  margin-right: -12px;
+}
+.group[data-size="32"] .avatars,
+.group[data-size="24"] .avatars {
+  margin-right: -8px;
+}
+.group[data-size="16"] .avatars,
+.group[data-size="14"] .avatars {
+  margin-right: -4px;
 }
 
 /* Ring separator around each avatar — only present inside a Group, not
