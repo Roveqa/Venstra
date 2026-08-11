@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import * as ProgressPrimitive from "@radix-ui/react-progress";
 import type { HTMLAttributes, ReactNode } from "react";
 import { Label } from "./label";
 import { HintText } from "./hint-text";
@@ -17,6 +18,11 @@ import styles from "./progress.module.css";
  * Figma) — the track's own overflow:hidden + full radius clips the
  * trailing edge automatically at 100%, so this isn't just cosmetic
  * symmetry, it's how Figma actually built it.
+ *
+ * Track/indicator are built on @radix-ui/react-progress (Root/
+ * Indicator) instead of plain divs — gives correct role="progressbar"
+ * + aria-valuenow/min/max/text for free instead of hand-rolling them.
+ * Visuals are unchanged: still styled entirely via progress.module.css.
  */
 export type ProgressPercentPosition = "top" | "right";
 
@@ -46,9 +52,9 @@ export function Progress({
   const percentEl = showPercent && <span className={styles.percent}>{Math.round(clamped)}%</span>;
 
   const track = (
-    <div className={styles.track}>
-      <div className={styles.indicator} style={{ width: `${clamped}%` }} />
-    </div>
+    <ProgressPrimitive.Root className={styles.track} value={clamped}>
+      <ProgressPrimitive.Indicator className={styles.indicator} style={{ width: `${clamped}%` }} />
+    </ProgressPrimitive.Root>
   );
 
   return (
