@@ -55,6 +55,18 @@
   white-space: nowrap;
 }
 
+/* Right variant only: Figma gives this text a fixed 36px box
+   (text-align right within it) instead of hugging content — confirmed
+   via get_design_context on node 2251:3811, which reports size-full
+   (fills a fixed slot) instead of the Top variant's percent node
+   (2184:2837), which reports shrink-0 with no fixed width (hugs
+   content). The fixed slot keeps the track's width constant as the
+   value changes between "5%" and "100%" instead of reflowing it. */
+.trackRow .percent {
+  width: 36px;
+  text-align: right;
+}
+
 /* Track: overflow:hidden + full radius clips the indicator's trailing
    edge automatically, which is why the indicator only needs rounding
    on its leading edge below.
