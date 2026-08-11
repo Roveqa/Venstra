@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
 import type { HTMLAttributes, ReactNode } from "react";
+import { Button } from "./button";
 import styles from "./alert.module.css";
 
 /**
@@ -21,12 +22,15 @@ import styles from "./alert.module.css";
  * Fill's background is always mid/dark-toned regardless of site
  * theme); Light/Stroke reuse the existing foreground-base-muted.
  *
- * Inline action button renders as plain underlined text matching the
- * alert's own text color (confirmed in Figma: its color always
- * equals the description text's color, not a separate Button
- * intent), not the full Button component — avoids trying to map 15
- * Alert combinations onto Button's own intent system for a chunk of
- * UI that Figma always renders identically to the description text.
+ * Inline action IS a real Button instance in Figma (variant=Link),
+ * and its color does NOT track the alert's own text color — checked
+ * Fill/Neutral, Fill/Error, Light/Error and Stroke/Error specifically
+ * (e.g. Light/Error's description is foreground-error-strong #320404,
+ * a dark red, while its Button is plain foreground-neutral #0f0f0f —
+ * different colors, not inherited). It's a fixed intent based only on
+ * Style: "neutral-inverse" for Fill (white, on the always-dark Fill
+ * background), "neutral" for Light/Stroke (near-black) — regardless
+ * of Type.
  */
 export type AlertType = "neutral" | "error" | "success" | "warning" | "info";
 export type AlertVariant = "fill" | "light" | "stroke";
@@ -68,9 +72,15 @@ export function Alert({
           <p className={styles.description}>{children}</p>
         </div>
         {action && (
-          <button type="button" className={styles.action} onClick={onAction}>
+          <Button
+            variant="link"
+            intent={variant === "fill" ? "neutral-inverse" : "neutral"}
+            size="sm"
+            className={styles.action}
+            onClick={onAction}
+          >
             {action}
-          </button>
+          </Button>
         )}
       </div>
       {onClose && (
