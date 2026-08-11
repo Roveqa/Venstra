@@ -372,7 +372,7 @@ function ProgressDemo() {
       </ControlBar>
 
       <ComponentSection>
-        <div className="w-full max-w-[320px]">
+        <div className="mx-auto w-full max-w-[320px]">
           <Progress
             value={value}
             percentPosition={position as ProgressPercentPosition}
