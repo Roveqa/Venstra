@@ -22,12 +22,14 @@ import { SearchInput } from "@/components/ui/search-input";
 import { NumberInput } from "@/components/ui/number-input";
 import { EmailInput } from "@/components/ui/email-input";
 import { DateInput } from "@/components/ui/date-input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const sections = [
   "Alert",
   "Avatar",
   "Badge",
   "Button",
+  "Checkbox",
   "Input",
   "Password",
   "Search",
@@ -1425,6 +1427,89 @@ function KbdDemo() {
   );
 }
 
+const checkboxModes = [
+  { key: "default", label: "Default" },
+  { key: "checked", label: "Checked" },
+  { key: "indeterminate", label: "Indeterminate" },
+] as const;
+
+function CheckboxDemo() {
+  const [mode, setMode] = useState<(typeof checkboxModes)[number]["key"]>("default");
+  const [error, setError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [labelOptional, setLabelOptional] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+
+  const checked = mode === "indeterminate" ? "indeterminate" : mode === "checked";
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Mode" value={mode} onChange={setMode} options={checkboxModes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            disabled={!showLabel}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary disabled:opacity-40"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Hint</span>
+          <input
+            type="checkbox"
+            checked={showHint}
+            onChange={(e) => setShowHint(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Error</span>
+          <input
+            type="checkbox"
+            checked={error}
+            onChange={(e) => setError(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <Checkbox
+          checked={checked}
+          onCheckedChange={(next) => setMode(next === "indeterminate" ? "indeterminate" : next ? "checked" : "default")}
+          label={showLabel ? "Label" : undefined}
+          labelOptional={labelOptional}
+          hint={showHint ? (error ? "Something went wrong" : "Insert check description here") : undefined}
+          error={error}
+          disabled={disabled}
+        />
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -1481,6 +1566,8 @@ export function PlaygroundContent() {
             {active === "Badge" && <BadgeDemo />}
 
             {active === "Button" && <ButtonDemo />}
+
+            {active === "Checkbox" && <CheckboxDemo />}
 
             {active === "Input" && <InputDemo />}
 
