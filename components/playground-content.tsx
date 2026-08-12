@@ -1518,6 +1518,8 @@ function CheckboxCardDemo() {
   const [mode, setMode] = useState<(typeof checkboxModes)[number]["key"]>("default");
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [labelOptional, setLabelOptional] = useState(true);
   const [showHint, setShowHint] = useState(true);
 
   const checked = mode === "indeterminate" ? "indeterminate" : mode === "checked";
@@ -1526,6 +1528,25 @@ function CheckboxCardDemo() {
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
         <TinySelect label="Mode" value={mode} onChange={setMode} options={checkboxModes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            disabled={!showLabel}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary disabled:opacity-40"
+          />
+        </label>
         <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Hint</span>
           <input
@@ -1560,8 +1581,8 @@ function CheckboxCardDemo() {
           <CheckboxCard
             checked={checked}
             onCheckedChange={(next) => setMode(next === "indeterminate" ? "indeterminate" : next ? "checked" : "default")}
-            label="Label"
-            labelOptional
+            label={showLabel ? "Label" : undefined}
+            labelOptional={labelOptional}
             hint={showHint ? (error ? "Something went wrong" : "Insert check description here") : undefined}
             error={error}
             disabled={disabled}
