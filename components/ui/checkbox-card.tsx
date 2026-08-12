@@ -1,9 +1,8 @@
 "use client";
 
 import clsx from "clsx";
-import * as RadixCheckbox from "@radix-ui/react-checkbox";
-import { Check, Minus } from "lucide-react";
-import { useId, type ComponentPropsWithoutRef, type ReactNode } from "react";
+import { useId, type ReactNode } from "react";
+import { CheckboxBox, type CheckboxBoxProps } from "./checkbox";
 import styles from "./checkbox-card.module.css";
 
 /**
@@ -12,36 +11,41 @@ import styles from "./checkbox-card.module.css";
  * (1559:12624). Same States/Modes as the plain Checkbox, wrapped in a
  * card surface (surface-subtle, 16px padding, radius-l).
  *
- * The whole card is the click target (Figma's Hover state wraps the
- * entire card in a button) — implemented as a real `<label
- * htmlFor={checkboxId}>` wrapping the card, with the actual
- * `Checkbox.Root` (the interactive control) inside it as a normal
- * labelable element. This is why it doesn't reuse the standalone
- * Checkbox's Label/HintText components: those render real `<label>`/
- * `<p>` elements, and nesting a `<label>` inside the button that IS
- * the checkbox (or inside another `<label>`) isn't valid — so the
- * label/hint text here are plain spans styled to match instead.
+ * Built on top of the plain Checkbox rather than duplicating it:
+ * reuses the exact same `CheckboxBox` (Root+Indicator+check/minus
+ * marks) from checkbox.tsx, so both variants share one source of
+ * truth for the interactive control. The only per-card differences
+ * are expressed as CSS custom property overrides on `.card`
+ * (checkbox-card.module.css) rather than a second copy of the box's
+ * CSS:
+ * - --cb-border/--cb-border-hover are both set to stroke-strong
+ *   here, vs. the plain Checkbox's stroke-subtle/stroke-strong — the
+ *   card's box border is stroke-strong even at rest, and does NOT
+ *   darken further on hover (the whole card darkens instead; the
+ *   plain Checkbox's box does its own hover-darken since it has no
+ *   card surface around it).
+ * - Checked/indeterminate cards additionally get a permanent blue-
+ *   tinted background (surface-primary-overlay-hover, 12% alpha) at
+ *   rest, darkening to surface-primary-overlay-active (16%) on
+ *   hover — driven by :has() on the card container reading the
+ *   nested box's data-state, not something CheckboxBox itself needs
+ *   to know about.
  *
- * Real differences from the standalone Checkbox, confirmed per-state
- * (not assumed from the standalone variant):
- * - The inner box's resting border is stroke-strong (#b3b3b3), not
- *   stroke-subtle — reads better against the card's surface-subtle
- *   background. It does NOT additionally darken on hover like the
- *   standalone box does; the whole card darkens instead.
- * - Checked/indeterminate cards get a permanent blue-tinted
- *   background (surface-primary-overlay-hover, 12% alpha) even at
- *   rest, not just on hover — darkening further to
- *   surface-primary-overlay-active (16% alpha) on hover while
- *   checked. Unchecked cards use plain surface-subtle / surface-
- *   subtle-hover.
+ * The whole card is the click target, matching Figma's Hover state
+ * (entire card wrapped in a button). Implemented as a real `<label
+ * htmlFor={checkboxId}>` around the card, with CheckboxBox (a real
+ * <button role="checkbox">) inside as a normal labelable element —
+ * native label-click-forwarding covers "click anywhere on the card
+ * toggles it" without nesting a <label> inside a <button> or inside
+ * another <label>, which is why this doesn't reuse the plain
+ * Checkbox's Label/HintText components (plain styled spans instead).
  */
-export interface CheckboxCardProps extends Omit<ComponentPropsWithoutRef<typeof RadixCheckbox.Root>, "className"> {
+export interface CheckboxCardProps extends Omit<CheckboxBoxProps, "className"> {
   className?: string;
   wrapperClassName?: string;
   label?: ReactNode;
   labelOptional?: boolean;
   hint?: ReactNode;
-  error?: boolean;
 }
 
 export function CheckboxCard({
@@ -60,17 +64,7 @@ export function CheckboxCard({
   return (
     <label htmlFor={checkboxId} className={clsx(styles.card, wrapperClassName)}>
       <span className={styles.slot}>
-        <RadixCheckbox.Root
-          id={checkboxId}
-          className={clsx(styles.box, className)}
-          data-error={error || undefined}
-          {...props}
-        >
-          <RadixCheckbox.Indicator className={styles.indicator}>
-            <Check className={styles.check} />
-            <Minus className={styles.minus} />
-          </RadixCheckbox.Indicator>
-        </RadixCheckbox.Root>
+        <CheckboxBox id={checkboxId} error={error} className={className} {...props} />
       </span>
       {(label || hint) && (
         <span className={styles.content}>

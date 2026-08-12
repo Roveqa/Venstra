@@ -24,7 +24,7 @@
   height: 16px;
   box-sizing: border-box;
   border-radius: var(--radius-s);
-  border: 1px solid var(--stroke-subtle);
+  border: 1px solid var(--cb-border, var(--stroke-subtle));
   background-color: transparent;
   cursor: pointer;
   /* Ring lives on box-shadow, not a real border — same reason as
@@ -39,7 +39,7 @@
 }
 
 .box:hover:not(:disabled) {
-  border-color: var(--stroke-strong);
+  border-color: var(--cb-border-hover, var(--stroke-strong));
 }
 
 .box:focus-visible {
@@ -64,10 +64,10 @@
 .box[data-state="checked"]:hover:not(:disabled),
 .box[data-state="indeterminate"]:hover:not(:disabled) {
   /* Overrides the unchecked :hover rule's border-color above — without
-     this, that rule's stroke-strong border still applies here too
-     (data-state isn't part of its selector), showing a stray grey
-     ring around the filled box that Figma's Hover/Active doesn't
-     have (only the bg darkens). */
+     this, that rule's border color still applies here too (data-state
+     isn't part of its selector), showing a stray border around the
+     filled box that Figma's Hover/Active doesn't have (only the bg
+     darkens). */
   border-color: transparent;
   background-color: var(--fill-primary-hover);
 }

@@ -2,8 +2,7 @@
 
 import clsx from "clsx";
 import * as RadixCheckbox from "@radix-ui/react-checkbox";
-import { Check, Minus } from "lucide-react";
-import { useId, type ComponentPropsWithoutRef, type ReactNode } from "react";
+import { forwardRef, useId, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { Label } from "./label";
 import { HintText } from "./hint-text";
 import styles from "./checkbox.module.css";
@@ -32,24 +31,80 @@ import styles from "./checkbox.module.css";
  * since this renders as a real <button>): same box-shadow ring as
  * every other focusable control (0 0 0 2px rgba(10,10,10,0.1)).
  * Error: border stroke-error. Disabled: opacity 0.4 on the whole
- * component (matches Input's disabled treatment).
+ * component (matches Input's disabled treatment). Border/hover-border
+ * colors are read from --cb-border/--cb-border-hover custom
+ * properties (falling back to stroke-subtle/stroke-strong) so
+ * CheckboxCard (checkbox-card.tsx) can override just those two
+ * variables on its own card wrapper instead of duplicating the box.
  *
  * Checked/Indeterminate: bg fill-primary (#0a61f9), border removed.
- * Hover: fill-primary-hover (#3967ff). Focus ring identical to the
- * unchecked case. Disabled: opacity 0.4, same fill-primary (not
- * grayed separately). Check/minus icon is 10x10, confirmed via raw
- * SVG stroke to be #fefefe — matches Button's existing --foreground-
- * inverse token for text-on-Fill/Primary (same semantic case: white
- * icon on the constant primary-blue fill, not meant to flip in dark
- * mode), so reused that token rather than inventing a new one.
+ * Hover: fill-primary-hover (#3967ff), border explicitly kept
+ * transparent (the plain :hover rule above would otherwise reapply
+ * stroke-strong on top of the fill — caught and fixed after it
+ * shipped once already). Focus ring identical to the unchecked case.
+ * Disabled: opacity 0.4, same fill-primary (not grayed separately).
+ *
+ * Check/minus glyphs are NOT lucide's Check/Minus icons — those read
+ * as visually off-center inside the 16x16 box because lucide's Check
+ * glyph isn't symmetric within its own viewBox the way Figma's
+ * custom check_10/minus_10 marks are. Reproduced Figma's exact paths
+ * instead (raw SVG stroke confirmed #fefefe, matching Button's
+ * --foreground-inverse token for text-on-Fill/Primary — same
+ * semantic case, reused rather than inventing a new token).
  */
-export interface CheckboxProps extends Omit<ComponentPropsWithoutRef<typeof RadixCheckbox.Root>, "className"> {
+function CheckMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 10 10" fill="none" className={className} aria-hidden="true">
+      <path
+        d="M8.75 2.917L4.167 7.5L2.083 5.417"
+        stroke="currentColor"
+        strokeWidth="0.833"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function MinusMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 10 10" fill="none" className={className} aria-hidden="true">
+      <path d="M2.083 5H7.917" stroke="currentColor" strokeWidth="0.833" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export type CheckboxBoxProps = Omit<ComponentPropsWithoutRef<typeof RadixCheckbox.Root>, "className"> & {
+  className?: string;
+  error?: boolean;
+};
+
+/** The bare 16x16 box + indicator, with no label/hint — shared by Checkbox and CheckboxCard. */
+export const CheckboxBox = forwardRef<HTMLButtonElement, CheckboxBoxProps>(function CheckboxBox(
+  { className, error, ...props },
+  ref,
+) {
+  return (
+    <RadixCheckbox.Root
+      ref={ref}
+      className={clsx(styles.box, className)}
+      data-error={error || undefined}
+      {...props}
+    >
+      <RadixCheckbox.Indicator className={styles.indicator}>
+        <CheckMark className={styles.check} />
+        <MinusMark className={styles.minus} />
+      </RadixCheckbox.Indicator>
+    </RadixCheckbox.Root>
+  );
+});
+
+export interface CheckboxProps extends Omit<CheckboxBoxProps, "className"> {
   className?: string;
   wrapperClassName?: string;
   label?: ReactNode;
   labelOptional?: boolean;
   hint?: ReactNode;
-  error?: boolean;
 }
 
 export function Checkbox({
@@ -68,17 +123,7 @@ export function Checkbox({
   return (
     <div className={clsx(styles.wrapper, wrapperClassName)}>
       <span className={styles.slot}>
-        <RadixCheckbox.Root
-          id={checkboxId}
-          className={clsx(styles.box, className)}
-          data-error={error || undefined}
-          {...props}
-        >
-          <RadixCheckbox.Indicator className={styles.indicator}>
-            <Check className={styles.check} />
-            <Minus className={styles.minus} />
-          </RadixCheckbox.Indicator>
-        </RadixCheckbox.Root>
+        <CheckboxBox id={checkboxId} error={error} className={className} {...props} />
       </span>
       {(label || hint) && (
         <div className={styles.content}>
