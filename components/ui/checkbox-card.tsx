@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { useId, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { CheckboxBox, type CheckboxBoxProps } from "./checkbox";
 import styles from "./checkbox-card.module.css";
 
@@ -39,6 +39,16 @@ import styles from "./checkbox-card.module.css";
  * toggles it" without nesting a <label> inside a <button> or inside
  * another <label>, which is why this doesn't reuse the plain
  * Checkbox's Label/HintText components (plain styled spans instead).
+ *
+ * The card's own hover background is tracked via onPointerEnter/Leave
+ * into a `data-hover` attribute instead of a plain CSS :hover rule —
+ * same fix applied to SwitchCard after a reported stuck-hover bug
+ * (hovering the nested control then moving the cursor away left the
+ * card's hover background stuck, while the control's own hover
+ * cleared correctly) that couldn't be reproduced through Playwright's
+ * synthetic pointer events — points at real :hover recalculation
+ * quirks across a <label> wrapping a nested native interactive
+ * control, sidestepped by not depending on native :hover here at all.
  */
 export interface CheckboxCardProps extends Omit<CheckboxBoxProps, "className"> {
   className?: string;
@@ -60,9 +70,16 @@ export function CheckboxCard({
 }: CheckboxCardProps) {
   const autoId = useId();
   const checkboxId = id ?? autoId;
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <label htmlFor={checkboxId} className={clsx(styles.card, wrapperClassName)}>
+    <label
+      htmlFor={checkboxId}
+      className={clsx(styles.card, wrapperClassName)}
+      data-hover={hovered || undefined}
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+    >
       <span className={styles.slot}>
         <CheckboxBox id={checkboxId} error={error} className={className} {...props} />
       </span>

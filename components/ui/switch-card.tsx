@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { useId, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { SwitchBox, type SwitchBoxProps } from "./switch";
 import styles from "./switch-card.module.css";
 
@@ -27,6 +27,17 @@ import styles from "./switch-card.module.css";
  * labelable element — avoids nesting a <label> inside a <button> or
  * inside another <label>, which is why this doesn't reuse the plain
  * Switch's Label/HintText components (plain styled spans instead).
+ *
+ * The card's own hover background is tracked via onPointerEnter/Leave
+ * into a `data-hover` attribute instead of a plain CSS :hover rule —
+ * user reported the card's hover getting stuck after hovering the
+ * nested track and moving the cursor away (track's own hover cleared
+ * correctly, only the card's didn't). Couldn't reproduce it through
+ * Playwright's synthetic pointer events, which points at a real
+ * browser's :hover recalculation across a <label> wrapping a nested
+ * native interactive control rather than anything reproducible in
+ * this component's own logic — sidestepped entirely by not depending
+ * on native :hover for the card background at all.
  */
 export interface SwitchCardProps extends Omit<SwitchBoxProps, "className"> {
   className?: string;
@@ -47,9 +58,16 @@ export function SwitchCard({
 }: SwitchCardProps) {
   const autoId = useId();
   const switchId = id ?? autoId;
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <label htmlFor={switchId} className={clsx(styles.card, wrapperClassName)}>
+    <label
+      htmlFor={switchId}
+      className={clsx(styles.card, wrapperClassName)}
+      data-hover={hovered || undefined}
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+    >
       <span className={styles.slot}>
         <SwitchBox id={switchId} className={className} {...props} />
       </span>

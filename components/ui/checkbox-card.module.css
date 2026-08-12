@@ -32,7 +32,9 @@
   --cb-border-hover: var(--stroke-strong);
 }
 
-.card:hover:not(:has(button:disabled)) {
+/* Hover is tracked via a JS-driven [data-hover] attribute rather than
+   native :hover — see checkbox-card.tsx for why. */
+.card[data-hover]:not(:has(button:disabled)) {
   background-color: var(--surface-subtle-hover);
 }
 
@@ -45,8 +47,8 @@
 .card:has(button[data-state="indeterminate"]) {
   background-color: var(--surface-primary-overlay-hover);
 }
-.card:has(button[data-state="checked"]):hover:not(:has(button:disabled)),
-.card:has(button[data-state="indeterminate"]):hover:not(:has(button:disabled)) {
+.card[data-hover]:has(button[data-state="checked"]):not(:has(button:disabled)),
+.card[data-hover]:has(button[data-state="indeterminate"]):not(:has(button:disabled)) {
   background-color: var(--surface-primary-overlay-active);
 }
 

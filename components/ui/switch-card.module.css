@@ -22,7 +22,9 @@
   transition: background-color 0.15s ease;
 }
 
-.card:hover:not(:has(button:disabled)) {
+/* Hover is tracked via a JS-driven [data-hover] attribute rather than
+   native :hover — see switch-card.tsx for why. */
+.card[data-hover]:not(:has(button:disabled)) {
   background-color: var(--surface-subtle-hover);
 }
 
@@ -34,7 +36,7 @@
 .card:has(button[data-state="checked"]) {
   background-color: var(--surface-primary-overlay-hover);
 }
-.card:has(button[data-state="checked"]):hover:not(:has(button:disabled)) {
+.card[data-hover]:has(button[data-state="checked"]):not(:has(button:disabled)) {
   background-color: var(--surface-primary-overlay-active);
 }
 
