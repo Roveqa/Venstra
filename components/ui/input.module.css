@@ -69,6 +69,25 @@
   height: 16px;
 }
 
+/*
+ * --icon-color-hover is opt-in (set by e.g. search-input.module.css /
+ * email-input.module.css) — Input Text/Password never set it, so
+ * they keep their static --icon-color/--foreground-weak everywhere,
+ * unaffected. Scoped to .box (the real field), not .wrapper, so
+ * hovering the label/hint text above/below the field doesn't also
+ * trigger it — matching the placeholder-darken-on-hover rule above,
+ * which is scoped the same way.
+ */
+.box:hover:not(:has(.input:disabled)) .icon,
+.box:has(.input:focus) .icon,
+.box:has(.input:not(:placeholder-shown)) .icon,
+.box:has(.input:disabled) .icon {
+  color: var(--icon-color-hover, var(--icon-color, var(--foreground-weak)));
+}
+.wrapper[data-error] .icon {
+  color: var(--icon-color-hover, var(--icon-color, var(--foreground-weak)));
+}
+
 .input {
   flex: 1 0 0;
   min-width: 0;

@@ -15,9 +15,13 @@ import styles from "./search-input.module.css";
  * foreground-muted (#b3b3b3) only in the bare empty/Placeholder
  * state, and foreground-subtle (#4a4a4a) in every other state
  * (Hover, Focus, Filled, Error, Error focus, Disabled). Implemented
- * in search-input.module.css via a --icon-color custom property that
- * Input's own .icon rule already consumes (with a foreground-weak
- * fallback, so Input Text/Password are unaffected).
+ * via --icon-color/--icon-color-hover custom properties (set in
+ * search-input.module.css) that Input's .icon rule consumes — the
+ * actual hover/focus/filled/disabled/error scoping lives in
+ * input.module.css itself, scoped to .box (the real field), so
+ * hovering the label/hint text doesn't also darken the icon (an
+ * earlier pass scoped this to the whole wrapper instead, which did
+ * trigger on label/hint hover — caught and fixed).
  *
  * The real configurable master (1657:8762, a separate ComponentSet
  * from the 14 state variants — found via the "Input Search" doc

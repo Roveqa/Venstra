@@ -1,23 +1,12 @@
 /*
  * Source: Figma "Input Email" component set (page 1:12, ComponentSet
  * 1753:17527). See email-input.tsx for the source comment. Identical
- * dynamic icon-color technique to search-input.module.css — feeds
- * Input's .icon rule via the shared --icon-color custom property, so
- * Input Text/Password (which never set it) are unaffected.
- *
- * Same hover approximation as Search: "anywhere in the wrapper"
- * rather than literally just the field box, for the same reason
- * (Input's own box class isn't reachable from this module).
+ * technique to search-input.module.css — see that file's comment for
+ * why the state-scoping logic lives in input.module.css instead of
+ * here.
  */
 
 .wrapper {
   --icon-color: var(--foreground-muted);
-}
-
-.wrapper:hover,
-.wrapper:focus-within,
-.wrapper:has(input:not(:placeholder-shown)),
-.wrapper:has(input:disabled),
-.wrapper[data-error] {
-  --icon-color: var(--foreground-subtle);
+  --icon-color-hover: var(--foreground-subtle);
 }

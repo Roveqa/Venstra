@@ -22,8 +22,11 @@ import styles from "./email-input.module.css";
  * stroke across every state: foreground-muted (#b3b3b3) only in the
  * bare empty/Placeholder state, foreground-subtle (#4a4a4a) in every
  * other state (Hover, Focus, Filled, Error, Error focus, Disabled).
- * Implemented the same way as Search, via the shared --icon-color
- * custom property Input's .icon rule already consumes.
+ * Implemented the same way as Search, via --icon-color/
+ * --icon-color-hover custom properties consumed by Input's .icon
+ * rule, with the actual hover/focus/filled/disabled/error scoping
+ * living in input.module.css itself (scoped to .box, the real field)
+ * so hovering the label/hint text doesn't also darken the icon.
  *
  * type="email" is fixed (not in Figma, but the defining native
  * behavior of an email field — browser format validation/autofill),
