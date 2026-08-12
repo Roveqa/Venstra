@@ -1,0 +1,98 @@
+/*
+ * Source: Figma "Input Text" component set (page 1:12, ComponentSet
+ * 1648:13829). See input.tsx for the full source comment.
+ */
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.field {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.box {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: var(--spacing-4, 8px);
+  box-sizing: border-box;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-subtle);
+  /* Ring lives on box-shadow, not a real border — see input.tsx comment. */
+  --in-ring: 0 0 0 0 transparent;
+  box-shadow: var(--in-ring);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.box[data-size="md"] {
+  padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
+}
+.box[data-size="lg"] {
+  padding: var(--spacing-5, 10px) var(--spacing-7, 14px);
+}
+
+.box:hover:not(:has(.input:disabled)) {
+  background-color: var(--surface-subtle-hover);
+}
+
+.box:has(.input:focus) {
+  box-shadow: var(--in-ring), 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--foreground-subtle);
+}
+.icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.input {
+  flex: 1 0 0;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+
+.input::placeholder {
+  color: var(--foreground-muted);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+.box:has(.input:disabled) {
+  opacity: 0.4;
+}
+
+/* Error — real color (not muted) even for the placeholder, per Figma. */
+.wrapper[data-error] .box {
+  --in-ring: inset 0 0 0 1px var(--stroke-error);
+}
+.wrapper[data-error] .input {
+  color: var(--foreground);
+}
+.wrapper[data-error] .input::placeholder {
+  color: var(--foreground);
+}
+.wrapper[data-error] .box:has(.input:focus) {
+  box-shadow: var(--in-ring), 0 0 0 2px rgba(253, 58, 54, 0.1);
+}

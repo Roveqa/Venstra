@@ -5,6 +5,7 @@ const sections = [
   "Avatar",
   "Badge",
   "Button",
+  "Input",
   "Kbd",
   "Divider",
   "Label",
