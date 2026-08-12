@@ -1,12 +1,19 @@
 "use client";
 
-const sections = [
+type SidebarEntry = string | { label: string; children: { key: string; label: string }[] };
+
+const sections: SidebarEntry[] = [
   "Alert",
   "Avatar",
   "Badge",
   "Button",
-  "Input",
-  "Password",
+  {
+    label: "Input",
+    children: [
+      { key: "Input", label: "Text" },
+      { key: "Password", label: "Password" },
+    ],
+  },
   "Kbd",
   "Divider",
   "Label",
@@ -30,18 +37,50 @@ export function PlaygroundSidebar({
             Playground
           </span>
           <div className="flex flex-col gap-1">
-            {sections.map((section) => (
-              <button
-                key={section}
-                type="button"
-                onClick={() => onSelect(section)}
-                className={`rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] text-[#0f0f0f] transition-colors ${
-                  section === active ? "bg-overlay" : "hover:bg-overlay"
-                }`}
-              >
-                {section}
-              </button>
-            ))}
+            {sections.map((entry) => {
+              if (typeof entry === "string") {
+                return (
+                  <button
+                    key={entry}
+                    type="button"
+                    onClick={() => onSelect(entry)}
+                    className={`rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] text-[#0f0f0f] transition-colors ${
+                      entry === active ? "bg-overlay" : "hover:bg-overlay"
+                    }`}
+                  >
+                    {entry}
+                  </button>
+                );
+              }
+
+              const isGroupActive = entry.children.some((c) => c.key === active);
+
+              return (
+                <div key={entry.label} className="flex flex-col gap-1">
+                  <span
+                    className={`rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] ${
+                      isGroupActive ? "text-[#0f0f0f]" : "text-ink-600"
+                    }`}
+                  >
+                    {entry.label}
+                  </span>
+                  <div className="flex flex-col gap-1 border-l border-stroke pl-3">
+                    {entry.children.map((child) => (
+                      <button
+                        key={child.key}
+                        type="button"
+                        onClick={() => onSelect(child.key)}
+                        className={`rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] text-[#0f0f0f] transition-colors ${
+                          child.key === active ? "bg-overlay" : "hover:bg-overlay"
+                        }`}
+                      >
+                        {child.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </aside>
