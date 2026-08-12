@@ -610,7 +610,7 @@ function NumberInputDemo() {
   const [showLabel, setShowLabel] = useState(true);
   const [labelOptional, setLabelOptional] = useState(false);
   const [showHint, setShowHint] = useState(true);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("0");
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
@@ -670,7 +670,6 @@ function NumberInputDemo() {
             size={size as InputSize}
             label={showLabel ? "Label" : undefined}
             labelOptional={labelOptional}
-            placeholder="12"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             hint={showHint ? (error ? "Something went wrong" : "Hint text") : undefined}

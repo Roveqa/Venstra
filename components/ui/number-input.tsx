@@ -29,11 +29,29 @@ import styles from "./number-input.module.css";
  * min/max/step automatically) via a ref threaded through Input's
  * forwardRef, then dispatch a real "input" event so it works for both
  * controlled (value/onChange) and uncontrolled (defaultValue) usage.
+ *
+ * Defaults to a real starting value of 0 (like Chakra/MUI's number
+ * steppers) rather than sitting empty behind a "12" placeholder — a
+ * bare empty number field with centered text has no real value for
+ * +/- to act on, and its caret renders at the box's horizontal center
+ * (since text-align follows the empty/placeholder content), which
+ * visually looks like it's sitting mid-placeholder and can appear to
+ * "jump" once a keystroke is rejected. A real starting value sidesteps
+ * both: only kicks in when the consumer passes neither `value` nor
+ * `defaultValue` themselves.
  */
 export type NumberInputProps = Omit<InputProps, "leftIcon" | "rightIcon" | "kbd" | "type">;
 
-export function NumberInput({ wrapperClassName, className, disabled, ...props }: NumberInputProps) {
+export function NumberInput({
+  wrapperClassName,
+  className,
+  disabled,
+  value,
+  defaultValue,
+  ...props
+}: NumberInputProps) {
   const ref = useRef<HTMLInputElement>(null);
+  const resolvedDefaultValue = value === undefined && defaultValue === undefined ? 0 : defaultValue;
 
   const step = (direction: 1 | -1) => {
     const el = ref.current;
@@ -51,6 +69,8 @@ export function NumberInput({ wrapperClassName, className, disabled, ...props }:
       {...props}
       ref={ref}
       type="number"
+      value={value}
+      defaultValue={resolvedDefaultValue}
       disabled={disabled}
       className={clsx(styles.field, className)}
       wrapperClassName={clsx(styles.wrapper, wrapperClassName)}
