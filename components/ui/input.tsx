@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useId, type InputHTMLAttributes, type ReactNode } from "react";
+import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from "react";
 import { Label } from "./label";
 import { HintText } from "./hint-text";
 import styles from "./input.module.css";
@@ -53,21 +53,24 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   wrapperClassName?: string;
 }
 
-export function Input({
-  className,
-  wrapperClassName,
-  label,
-  labelOptional,
-  hint,
-  error,
-  size = "md",
-  leftIcon,
-  rightIcon,
-  kbd,
-  suffix,
-  id,
-  ...props
-}: InputProps) {
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  {
+    className,
+    wrapperClassName,
+    label,
+    labelOptional,
+    hint,
+    error,
+    size = "md",
+    leftIcon,
+    rightIcon,
+    kbd,
+    suffix,
+    id,
+    ...props
+  },
+  ref,
+) {
   const autoId = useId();
   const inputId = id ?? autoId;
 
@@ -82,7 +85,7 @@ export function Input({
         <div className={styles.box} data-size={size}>
           <div className={styles.content}>
             {leftIcon && <span className={styles.icon}>{leftIcon}</span>}
-            <input id={inputId} className={clsx(styles.input, className)} {...props} />
+            <input ref={ref} id={inputId} className={clsx(styles.input, className)} {...props} />
           </div>
           {rightIcon && <span className={styles.icon}>{rightIcon}</span>}
           {kbd}
@@ -97,4 +100,4 @@ export function Input({
       </div>
     </div>
   );
-}
+});

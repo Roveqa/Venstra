@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input, type InputSize } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { SearchInput } from "@/components/ui/search-input";
+import { NumberInput } from "@/components/ui/number-input";
 
 const sections = [
   "Alert",
@@ -28,6 +29,7 @@ const sections = [
   "Input",
   "Password",
   "Search",
+  "Number",
   "Kbd",
   "Divider",
   "Label",
@@ -594,6 +596,86 @@ function SearchInputDemo() {
               ) : undefined
             }
             suffix={showSuffix ? "USD" : undefined}
+          />
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
+function NumberInputDemo() {
+  const [size, setSize] = useState<(typeof inputSizes)[number]["key"]>("md");
+  const [error, setError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [labelOptional, setLabelOptional] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Size" value={size} onChange={setSize} options={inputSizes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            disabled={!showLabel}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary disabled:opacity-40"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Hint</span>
+          <input
+            type="checkbox"
+            checked={showHint}
+            onChange={(e) => setShowHint(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Error</span>
+          <input
+            type="checkbox"
+            checked={error}
+            onChange={(e) => setError(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-full max-w-[280px]">
+          <NumberInput
+            size={size as InputSize}
+            label={showLabel ? "Label" : undefined}
+            labelOptional={labelOptional}
+            placeholder="12"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            hint={showHint ? (error ? "Something went wrong" : "Hint text") : undefined}
+            error={error}
+            disabled={disabled}
           />
         </div>
       </ComponentSection>
@@ -1198,6 +1280,8 @@ export function PlaygroundContent() {
             {active === "Password" && <PasswordInputDemo />}
 
             {active === "Search" && <SearchInputDemo />}
+
+            {active === "Number" && <NumberInputDemo />}
 
             {active === "Kbd" && <KbdDemo />}
 
