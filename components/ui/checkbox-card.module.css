@@ -12,7 +12,13 @@
 .card {
   display: flex;
   width: 100%;
-  align-items: center;
+  /* Figma: the outer master row is items-center, but it has a single
+     flex-1 child so that's a no-op — the row that actually matters
+     (box + content) is items-start, same as the standalone
+     Checkbox's .wrapper. Was wrongly items-center here, vertically
+     centering the box against the whole label+hint block instead of
+     pinning it to the label's top line. */
+  align-items: flex-start;
   gap: 8px;
   box-sizing: border-box;
   padding: 16px;
