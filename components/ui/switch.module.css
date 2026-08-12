@@ -19,6 +19,12 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  /* Figma's "Switch container" wraps the track in its own 2px hit-slot
+     padding, separate from the track's own 2px internal padding
+     (which insets the thumb) — a distinct value that happens to
+     match. Missing this made the track sit 2px closer to the label
+     text on each side than Figma intends. */
+  padding: 2px;
 }
 
 .track {
