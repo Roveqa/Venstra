@@ -1,0 +1,26 @@
+/*
+ * Source: Figma "Input Search" component set (page 1:12, ComponentSet
+ * 1657:8786). See search-input.tsx for the source comment. Feeds
+ * Input's .icon rule (input.module.css) via the shared --icon-color
+ * custom property, so Input Text/Password (which never set it) keep
+ * their existing static foreground-weak icon color unchanged.
+ *
+ * The hover trigger is approximated as "anywhere in the wrapper"
+ * (label included) rather than Figma's literal "hover the field box
+ * only" — Input's own box class isn't reachable from this module
+ * (CSS Modules scope class names per-file), and the practical
+ * difference is negligible since users don't hover the label
+ * separately from the field.
+ */
+
+.wrapper {
+  --icon-color: var(--foreground-muted);
+}
+
+.wrapper:hover,
+.wrapper:focus-within,
+.wrapper:has(input:not(:placeholder-shown)),
+.wrapper:has(input:disabled),
+.wrapper[data-error] {
+  --icon-color: var(--foreground-subtle);
+}

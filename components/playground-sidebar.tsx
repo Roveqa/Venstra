@@ -15,6 +15,7 @@ const sections: SidebarEntry[] = [
     children: [
       { key: "Input", label: "Text" },
       { key: "Password", label: "Password" },
+      { key: "Search", label: "Search" },
     ],
   },
   "Kbd",

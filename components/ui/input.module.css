@@ -62,7 +62,7 @@
 .icon {
   display: flex;
   flex-shrink: 0;
-  color: var(--foreground-weak);
+  color: var(--icon-color, var(--foreground-weak));
 }
 .icon svg {
   width: 16px;
