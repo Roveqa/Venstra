@@ -500,12 +500,32 @@ function SearchInputDemo() {
   const [showLabel, setShowLabel] = useState(true);
   const [labelOptional, setLabelOptional] = useState(false);
   const [showHint, setShowHint] = useState(true);
+  const [showKbd, setShowKbd] = useState(false);
+  const [showSuffix, setShowSuffix] = useState(false);
   const [value, setValue] = useState("");
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
         <TinySelect label="Size" value={size} onChange={setSize} options={inputSizes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Kbd</span>
+          <input
+            type="checkbox"
+            checked={showKbd}
+            onChange={(e) => setShowKbd(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Suffix</span>
+          <input
+            type="checkbox"
+            checked={showSuffix}
+            onChange={(e) => setShowSuffix(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
         <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Label</span>
           <input
@@ -566,6 +586,14 @@ function SearchInputDemo() {
             hint={showHint ? (error ? "Something went wrong" : "Hint text") : undefined}
             error={error}
             disabled={disabled}
+            kbd={
+              showKbd ? (
+                <Kbd variant="outline" icon={<Command />}>
+                  K
+                </Kbd>
+              ) : undefined
+            }
+            suffix={showSuffix ? "USD" : undefined}
           />
         </div>
       </ComponentSection>

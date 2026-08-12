@@ -30,6 +30,13 @@ import styles from "./input.module.css";
  * (stroke, matches the Divider component) + 12px Medium text
  * (foreground-muted). leftIcon sits inside the same flex:1 row as the
  * input; rightIcon/suffix are separate siblings in the outer row.
+ *
+ * kbd is a generic addition (not in Input Text's own master) added
+ * for Input Search's master (1657:8762), which has a dedicated `kbd`
+ * boolean rendering a Kbd/Outline chip between the field text and
+ * suffix. Rendered raw (no wrapping `.icon` span, unlike rightIcon) —
+ * the Kbd component already owns its full chip styling, and `.icon
+ * svg` would otherwise force-resize Kbd's own inner icon.
  */
 export type InputSize = "md" | "lg";
 
@@ -41,6 +48,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   size?: InputSize;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  kbd?: ReactNode;
   suffix?: ReactNode;
   wrapperClassName?: string;
 }
@@ -55,6 +63,7 @@ export function Input({
   size = "md",
   leftIcon,
   rightIcon,
+  kbd,
   suffix,
   id,
   ...props
@@ -76,6 +85,7 @@ export function Input({
             <input id={inputId} className={clsx(styles.input, className)} {...props} />
           </div>
           {rightIcon && <span className={styles.icon}>{rightIcon}</span>}
+          {kbd}
           {suffix && (
             <div className={styles.suffix}>
               <span className={styles.suffixDivider} />

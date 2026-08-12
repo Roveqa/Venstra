@@ -7,10 +7,8 @@ import styles from "./search-input.module.css";
  * Source: Figma "Input Search" component set (r2dbmly2FCs307sePH1Z9C /
  * RIB8DZ9M5Uay7si4mI19Yt, page 1:12, ComponentSet 1657:8786). Same
  * 7-state x 2-size anatomy as Input Text — it's structurally an Input
- * Text instance with a permanently-on search icon in the left slot
- * (no separate master/boolean props; every one of the 14 state
- * variants has the icon baked in), so this wraps Input and fixes
- * leftIcon to the lucide Search glyph.
+ * Text instance with a search icon in the left slot, so this wraps
+ * Input and fixes leftIcon to the lucide Search glyph.
  *
  * The icon's color is NOT static like Input Text/Password's icon
  * slots: verified via raw SVG stroke across every state — it's
@@ -20,6 +18,18 @@ import styles from "./search-input.module.css";
  * in search-input.module.css via a --icon-color custom property that
  * Input's own .icon rule already consumes (with a foreground-weak
  * fallback, so Input Text/Password are unaffected).
+ *
+ * The real configurable master (1657:8762, a separate ComponentSet
+ * from the 14 state variants — found via the "Input Search" doc
+ * instance's applied master, same pattern as Input Text's 1648:13446)
+ * exposes iconLeft/kbd/suffix/label/hintText booleans. suffix reuses
+ * Input's existing suffix prop as-is (identical anatomy/tokens to
+ * Input Text's). kbd is new — not present on Input Text/Password's
+ * masters at all — and renders a Kbd/Outline chip (e.g. `<Kbd
+ * variant="outline" icon={<Command />}>K</Kbd>`, matching the
+ * existing Kbd component/playground convention for the ⌘ modifier)
+ * between the field text and suffix; added as a dedicated `kbd` prop
+ * on Input itself (input.tsx) since it needs to render unwrapped.
  */
 export type SearchInputProps = Omit<InputProps, "leftIcon">;
 
