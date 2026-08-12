@@ -1,0 +1,82 @@
+/*
+ * Source: Figma "Switch card" component set (page 1898:6461,
+ * ComponentSet 1914:40533). See switch-card.tsx for the full source
+ * comment. The track+thumb itself is entirely owned by
+ * switch.module.css via the shared SwitchBox — this file only sets
+ * the card surface and text styling. `button[role="switch"]` (not a
+ * class selector) is used to target the nested track's state, since
+ * its real class name is scoped to switch.module.css and unreachable
+ * here.
+ */
+
+.card {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+  padding: 16px;
+  border-radius: var(--radius-l);
+  background-color: var(--surface-subtle);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.card:hover:not(:has(button:disabled)) {
+  background-color: var(--surface-subtle-hover);
+}
+
+.card:has(button:disabled) {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.card:has(button[data-state="checked"]) {
+  background-color: var(--surface-primary-overlay-hover);
+}
+.card:has(button[data-state="checked"]):hover:not(:has(button:disabled)) {
+  background-color: var(--surface-primary-overlay-active);
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.content {
+  display: flex;
+  min-width: 0;
+  flex: 1 0 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-2, 4px);
+  text-align: left;
+}
+
+.label {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: var(--foreground);
+}
+
+.optional {
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.16;
+  color: var(--foreground-base-muted);
+}
+
+.hint {
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: var(--foreground-base-muted);
+}

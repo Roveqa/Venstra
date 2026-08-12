@@ -9,6 +9,14 @@
   gap: 8px;
 }
 
+/* Figma dims the whole component (box + label/hint text) to 40% when
+   disabled, not just the box — CheckboxCard already got this right
+   (via .card:has(button:disabled)) since it dims its own outer card
+   wrapper; the standalone Checkbox only dimmed .box itself. */
+.wrapper:has(.box:disabled) {
+  opacity: 0.4;
+}
+
 .slot {
   display: flex;
   align-items: center;
@@ -53,7 +61,6 @@
 
 .box:disabled {
   cursor: not-allowed;
-  opacity: 0.4;
 }
 
 .box[data-state="checked"],

@@ -1,0 +1,82 @@
+/*
+ * Source: Figma "Switch" component set (page 1898:6461, ComponentSet
+ * 1914:40289). See switch.tsx for the full source comment.
+ */
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Figma dims the whole component (track + label/hint text) to 40% when
+   disabled, not just the track. */
+.wrapper:has(.track:disabled) {
+  opacity: 0.4;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 28px;
+  height: 16px;
+  box-sizing: border-box;
+  padding: 2px;
+  border-radius: 9999px;
+  border: none;
+  background-color: var(--surface-strong);
+  cursor: pointer;
+  --sw-ring: 0 0 0 0 transparent;
+  box-shadow: var(--sw-ring);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.track:hover:not(:disabled) {
+  background-color: var(--surface-strong-hover);
+}
+
+.track:focus-visible {
+  outline: none;
+  --sw-ring: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.track:disabled {
+  cursor: not-allowed;
+}
+
+.track[data-state="checked"] {
+  background-color: var(--fill-primary);
+}
+.track[data-state="checked"]:hover:not(:disabled) {
+  background-color: var(--fill-primary-hover);
+}
+
+.thumb {
+  display: block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background-color: var(--foreground-inverse);
+  transform: translateX(0);
+  transition: transform 0.15s ease;
+}
+.thumb[data-state="checked"] {
+  transform: translateX(12px);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-2, 4px);
+}
