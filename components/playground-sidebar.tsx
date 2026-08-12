@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { ChevronRight } from "lucide-react";
+
 type SidebarEntry = string | { label: string; children: { key: string; label: string }[] };
 
 const sections: SidebarEntry[] = [
@@ -29,6 +32,8 @@ export function PlaygroundSidebar({
   active: string;
   onSelect: (section: string) => void;
 }) {
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+
   return (
     <div className="sticky top-[140px] hidden w-[228px] shrink-0 lg:block">
       <aside className="scrollbar-hide flex max-h-[calc(100vh_-_140px)] w-full flex-col gap-5 overflow-y-auto pb-10">
@@ -54,30 +59,40 @@ export function PlaygroundSidebar({
               }
 
               const isGroupActive = entry.children.some((c) => c.key === active);
+              const isOpen = openGroups[entry.label] ?? true;
 
               return (
                 <div key={entry.label} className="flex flex-col gap-1">
-                  <span
-                    className={`rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] ${
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenGroups((prev) => ({ ...prev, [entry.label]: !isOpen }))
+                    }
+                    className={`flex items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] transition-colors hover:bg-overlay ${
                       isGroupActive ? "text-[#0f0f0f]" : "text-ink-600"
                     }`}
                   >
                     {entry.label}
-                  </span>
-                  <div className="flex flex-col gap-1 border-l border-stroke pl-3">
-                    {entry.children.map((child) => (
-                      <button
-                        key={child.key}
-                        type="button"
-                        onClick={() => onSelect(child.key)}
-                        className={`rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] text-[#0f0f0f] transition-colors ${
-                          child.key === active ? "bg-overlay" : "hover:bg-overlay"
-                        }`}
-                      >
-                        {child.label}
-                      </button>
-                    ))}
-                  </div>
+                    <ChevronRight
+                      className={`h-3.5 w-3.5 shrink-0 transition-transform ${isOpen ? "rotate-90" : ""}`}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className="flex flex-col gap-1 border-l border-stroke pl-3">
+                      {entry.children.map((child) => (
+                        <button
+                          key={child.key}
+                          type="button"
+                          onClick={() => onSelect(child.key)}
+                          className={`rounded-md px-3 py-2 text-left text-sm font-medium leading-[1.16] tracking-[-0.14px] text-[#0f0f0f] transition-colors ${
+                            child.key === active ? "bg-overlay" : "hover:bg-overlay"
+                          }`}
+                        >
+                          {child.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             })}
