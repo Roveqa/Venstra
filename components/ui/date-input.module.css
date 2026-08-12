@@ -1,0 +1,13 @@
+/*
+ * Source: Figma "Input Date" component set (page 1:12, ComponentSet
+ * 1774:8926). See date-input.tsx for the source comment. Same
+ * --icon-color/--icon-color-hover technique as search-input.module.css/
+ * email-input.module.css, plus --icon-color-disabled since Date's
+ * disabled icon stays muted instead of going subtle like theirs.
+ */
+
+.wrapper {
+  --icon-color: var(--foreground-muted);
+  --icon-color-hover: var(--foreground-subtle);
+  --icon-color-disabled: var(--foreground-muted);
+}

@@ -18,6 +18,7 @@ const sections: SidebarEntry[] = [
       { key: "Search", label: "Search" },
       { key: "Number", label: "Number" },
       { key: "Email", label: "Email" },
+      { key: "Date", label: "Date" },
     ],
   },
   "Kbd",
