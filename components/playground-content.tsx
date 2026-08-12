@@ -1496,15 +1496,17 @@ function CheckboxDemo() {
       </ControlBar>
 
       <ComponentSection>
-        <Checkbox
-          checked={checked}
-          onCheckedChange={(next) => setMode(next === "indeterminate" ? "indeterminate" : next ? "checked" : "default")}
-          label={showLabel ? "Label" : undefined}
-          labelOptional={labelOptional}
-          hint={showHint ? (error ? "Something went wrong" : "Insert check description here") : undefined}
-          error={error}
-          disabled={disabled}
-        />
+        <div className="mx-auto w-fit">
+          <Checkbox
+            checked={checked}
+            onCheckedChange={(next) => setMode(next === "indeterminate" ? "indeterminate" : next ? "checked" : "default")}
+            label={showLabel ? "Label" : undefined}
+            labelOptional={labelOptional}
+            hint={showHint ? (error ? "Something went wrong" : "Insert check description here") : undefined}
+            error={error}
+            disabled={disabled}
+          />
+        </div>
       </ComponentSection>
     </div>
   );
