@@ -1,0 +1,141 @@
+/*
+ * Source: Figma "Checkbox card" component set (page 254:17986,
+ * ComponentSet 1559:12640). See checkbox-card.tsx for the full source
+ * comment.
+ */
+
+.card {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  padding: 16px;
+  border-radius: var(--radius-l);
+  background-color: var(--surface-subtle);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.card:hover:not(:has(.box:disabled)) {
+  background-color: var(--surface-subtle-hover);
+}
+
+.card:has(.box:disabled) {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.card:has(.box[data-state="checked"]),
+.card:has(.box[data-state="indeterminate"]) {
+  background-color: var(--surface-primary-overlay-hover);
+}
+.card:has(.box[data-state="checked"]):hover:not(:has(.box:disabled)),
+.card:has(.box[data-state="indeterminate"]):hover:not(:has(.box:disabled)) {
+  background-color: var(--surface-primary-overlay-active);
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 2px;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--stroke-strong);
+  background-color: transparent;
+  cursor: pointer;
+  --cb-ring: 0 0 0 0 transparent;
+  box-shadow: var(--cb-ring);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.box:focus-visible {
+  outline: none;
+  --cb-ring: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.box[data-error] {
+  border-color: var(--stroke-error);
+}
+
+.box:disabled {
+  cursor: not-allowed;
+}
+
+.box[data-state="checked"],
+.box[data-state="indeterminate"] {
+  border-color: transparent;
+  background-color: var(--fill-primary);
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check,
+.minus {
+  display: none;
+  width: 10px;
+  height: 10px;
+  color: var(--foreground-inverse);
+}
+.box[data-state="checked"] .check {
+  display: block;
+}
+.box[data-state="indeterminate"] .minus {
+  display: block;
+}
+
+.content {
+  display: flex;
+  min-width: 0;
+  flex: 1 0 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-2, 4px);
+  text-align: left;
+}
+
+.label {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: var(--foreground);
+}
+
+.optional {
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.16;
+  color: var(--foreground-base-muted);
+}
+
+.hint {
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: var(--foreground-base-muted);
+}
+
+.hintError {
+  color: var(--foreground-error);
+}

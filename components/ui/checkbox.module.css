@@ -63,6 +63,12 @@
 }
 .box[data-state="checked"]:hover:not(:disabled),
 .box[data-state="indeterminate"]:hover:not(:disabled) {
+  /* Overrides the unchecked :hover rule's border-color above — without
+     this, that rule's stroke-strong border still applies here too
+     (data-state isn't part of its selector), showing a stray grey
+     ring around the filled box that Figma's Hover/Active doesn't
+     have (only the bg darkens). */
+  border-color: transparent;
   background-color: var(--fill-primary-hover);
 }
 
