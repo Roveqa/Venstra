@@ -287,18 +287,38 @@ function InputDemo() {
   const [showLabel, setShowLabel] = useState(true);
   const [labelOptional, setLabelOptional] = useState(false);
   const [showHint, setShowHint] = useState(true);
-  const [showIcon, setShowIcon] = useState(false);
+  const [showLeftIcon, setShowLeftIcon] = useState(false);
+  const [showRightIcon, setShowRightIcon] = useState(false);
+  const [showSuffix, setShowSuffix] = useState(false);
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
         <TinySelect label="Size" value={size} onChange={setSize} options={inputSizes} />
         <label className="flex flex-col items-start gap-1.5">
-          <span className="text-[13px] text-ink-600">Icon</span>
+          <span className="text-[13px] text-ink-600">Left icon</span>
           <input
             type="checkbox"
-            checked={showIcon}
-            onChange={(e) => setShowIcon(e.target.checked)}
+            checked={showLeftIcon}
+            onChange={(e) => setShowLeftIcon(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Right icon</span>
+          <input
+            type="checkbox"
+            checked={showRightIcon}
+            onChange={(e) => setShowRightIcon(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Suffix</span>
+          <input
+            type="checkbox"
+            checked={showSuffix}
+            onChange={(e) => setShowSuffix(e.target.checked)}
             className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
           />
         </label>
@@ -360,7 +380,9 @@ function InputDemo() {
             hint={showHint ? (error ? "Something went wrong" : "Hint text") : undefined}
             error={error}
             disabled={disabled}
-            leftIcon={showIcon ? <Search /> : undefined}
+            leftIcon={showLeftIcon ? <Search /> : undefined}
+            rightIcon={showRightIcon ? <Check /> : undefined}
+            suffix={showSuffix ? "USD" : undefined}
           />
         </div>
       </ComponentSection>

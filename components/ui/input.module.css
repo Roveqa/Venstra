@@ -43,15 +43,26 @@
 .box:hover:not(:has(.input:disabled)) {
   background-color: var(--surface-subtle-hover);
 }
+.box:hover:not(:has(.input:disabled)) .input::placeholder {
+  color: var(--foreground-subtle);
+}
 
 .box:has(.input:focus) {
   box-shadow: var(--in-ring), 0 0 0 2px rgba(10, 10, 10, 0.1);
 }
 
+.content {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+}
+
 .icon {
   display: flex;
   flex-shrink: 0;
-  color: var(--foreground-subtle);
+  color: var(--foreground-weak);
 }
 .icon svg {
   width: 16px;
@@ -81,6 +92,30 @@
 }
 .box:has(.input:disabled) {
   opacity: 0.4;
+}
+
+.suffix {
+  display: flex;
+  align-self: stretch;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--spacing-4, 8px);
+}
+
+.suffixDivider {
+  align-self: stretch;
+  width: 1px;
+  background-color: var(--stroke);
+}
+
+.suffixText {
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -0.12px;
+  color: var(--foreground-muted);
+  white-space: nowrap;
 }
 
 /* Error — real color (not muted) even for the placeholder, per Figma. */

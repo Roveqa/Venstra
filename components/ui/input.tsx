@@ -20,11 +20,16 @@ import styles from "./input.module.css";
  * (foreground-muted) vs the input's own typed-text color (foreground)
  * is handled natively by the browser.
  *
- * None of the 14 scanned instances render the optional left/right
- * icon or suffix slots shown in the doc's anatomy (every default
- * demo is icon-less) — kept as optional props with the doc's
- * previously-recorded tokens (foreground-subtle for icons), not
- * independently re-verified since no live instance had one to check.
+ * leftIcon/rightIcon/suffix aren't shown in any of the 14 State×Size
+ * demo instances (all icon-less) — found via the actual master
+ * component instead (1648:13446), which exposes them as real boolean
+ * properties (iconLeft/iconRight/suffix) with a screenshot showing
+ * each: icon color is foreground-weak (#5f5f5f, confirmed from the
+ * icon's own SVG stroke), not foreground-subtle like an earlier pass
+ * of this component assumed. Suffix is a vertical divider
+ * (stroke, matches the Divider component) + 12px Medium text
+ * (foreground-muted). leftIcon sits inside the same flex:1 row as the
+ * input; rightIcon/suffix are separate siblings in the outer row.
  */
 export type InputSize = "md" | "lg";
 
@@ -36,6 +41,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   size?: InputSize;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  suffix?: ReactNode;
   wrapperClassName?: string;
 }
 
@@ -49,6 +55,7 @@ export function Input({
   size = "md",
   leftIcon,
   rightIcon,
+  suffix,
   id,
   ...props
 }: InputProps) {
@@ -64,9 +71,17 @@ export function Input({
       )}
       <div className={styles.field}>
         <div className={styles.box} data-size={size}>
-          {leftIcon && <span className={styles.icon}>{leftIcon}</span>}
-          <input id={inputId} className={clsx(styles.input, className)} {...props} />
+          <div className={styles.content}>
+            {leftIcon && <span className={styles.icon}>{leftIcon}</span>}
+            <input id={inputId} className={clsx(styles.input, className)} {...props} />
+          </div>
           {rightIcon && <span className={styles.icon}>{rightIcon}</span>}
+          {suffix && (
+            <div className={styles.suffix}>
+              <span className={styles.suffixDivider} />
+              <span className={styles.suffixText}>{suffix}</span>
+            </div>
+          )}
         </div>
         {hint && <HintText variant={error ? "error" : "default"}>{hint}</HintText>}
       </div>
