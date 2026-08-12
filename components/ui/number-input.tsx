@@ -38,7 +38,11 @@ export function NumberInput({ wrapperClassName, className, disabled, ...props }:
   const step = (direction: 1 | -1) => {
     const el = ref.current;
     if (!el) return;
-    direction === 1 ? el.stepUp() : el.stepDown();
+    if (direction === 1) {
+      el.stepUp();
+    } else {
+      el.stepDown();
+    }
     el.dispatchEvent(new Event("input", { bubbles: true }));
   };
 
