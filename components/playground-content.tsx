@@ -15,8 +15,20 @@ import { AvatarGroup } from "@/components/ui/avatar-group";
 import { Progress, type ProgressPercentPosition } from "@/components/ui/progress";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
+import { Textarea } from "@/components/ui/textarea";
 
-const sections = ["Alert", "Avatar", "Badge", "Button", "Kbd", "Divider", "Label", "Notification", "Progress"];
+const sections = [
+  "Alert",
+  "Avatar",
+  "Badge",
+  "Button",
+  "Kbd",
+  "Divider",
+  "Label",
+  "Notification",
+  "Progress",
+  "Textarea",
+];
 
 const alertTypes = [
   { key: "neutral", label: "Neutral" },
@@ -258,6 +270,59 @@ function TinySelect<T extends string>({
         ))}
       </select>
     </label>
+  );
+}
+
+function TextareaDemo() {
+  const [error, setError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [labelOptional, setLabelOptional] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Error</span>
+          <input
+            type="checkbox"
+            checked={error}
+            onChange={(e) => setError(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="w-full max-w-[280px]">
+          <Textarea
+            label="Label"
+            labelOptional={labelOptional}
+            placeholder="Placeholder"
+            hint={error ? "Something went wrong" : "Hint text"}
+            error={error}
+            disabled={disabled}
+          />
+        </div>
+      </ComponentSection>
+    </div>
   );
 }
 
@@ -768,6 +833,8 @@ export function PlaygroundContent() {
             {active === "Alert" && <AlertDemo />}
 
             {active === "Notification" && <NotificationDemo />}
+
+            {active === "Textarea" && <TextareaDemo />}
 
             {active === "Avatar" && <AvatarDemo />}
 

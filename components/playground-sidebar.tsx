@@ -1,6 +1,17 @@
 "use client";
 
-const sections = ["Alert", "Avatar", "Badge", "Button", "Kbd", "Divider", "Label", "Notification", "Progress"];
+const sections = [
+  "Alert",
+  "Avatar",
+  "Badge",
+  "Button",
+  "Kbd",
+  "Divider",
+  "Label",
+  "Notification",
+  "Progress",
+  "Textarea",
+];
 
 export function PlaygroundSidebar({
   active,

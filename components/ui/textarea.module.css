@@ -1,0 +1,73 @@
+/*
+ * Source: Figma "Textarea" component set (page 2067:2939, ComponentSet
+ * 2088:14314). See textarea.tsx for the full source comment.
+ */
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.field {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  box-sizing: border-box;
+  padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-subtle);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  /* Ring lives on box-shadow, not a real border — see textarea.tsx comment. */
+  --ta-ring: 0 0 0 0 transparent;
+  box-shadow: var(--ta-ring);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    color 0.15s ease;
+}
+
+.textarea::placeholder {
+  color: var(--foreground-muted);
+}
+
+.textarea:hover:not(:disabled) {
+  background-color: var(--surface-subtle-hover);
+}
+.textarea:hover:not(:disabled)::placeholder {
+  color: var(--foreground-subtle);
+}
+
+.textarea:focus {
+  outline: none;
+  box-shadow: var(--ta-ring), 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.textarea:disabled {
+  opacity: 0.4;
+}
+
+/* Error — real color (not muted) even for the placeholder, per Figma. */
+.wrapper[data-error] .textarea {
+  --ta-ring: inset 0 0 0 1px var(--stroke-error);
+  color: var(--foreground);
+}
+.wrapper[data-error] .textarea::placeholder {
+  color: var(--foreground);
+}
+.wrapper[data-error] .textarea:focus {
+  box-shadow: var(--ta-ring), 0 0 0 2px rgba(253, 58, 54, 0.1);
+}
