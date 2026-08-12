@@ -17,6 +17,7 @@ import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert"
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
 import { Textarea } from "@/components/ui/textarea";
 import { Input, type InputSize } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 
 const sections = [
   "Alert",
@@ -24,6 +25,7 @@ const sections = [
   "Badge",
   "Button",
   "Input",
+  "Password",
   "Kbd",
   "Divider",
   "Label",
@@ -382,6 +384,105 @@ function InputDemo() {
             disabled={disabled}
             leftIcon={showLeftIcon ? <Search /> : undefined}
             rightIcon={showRightIcon ? <Check /> : undefined}
+            suffix={showSuffix ? "USD" : undefined}
+          />
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
+function PasswordInputDemo() {
+  const [size, setSize] = useState<(typeof inputSizes)[number]["key"]>("md");
+  const [error, setError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [labelOptional, setLabelOptional] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+  const [showLeftIcon, setShowLeftIcon] = useState(false);
+  const [showSuffix, setShowSuffix] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Size" value={size} onChange={setSize} options={inputSizes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Left icon</span>
+          <input
+            type="checkbox"
+            checked={showLeftIcon}
+            onChange={(e) => setShowLeftIcon(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Suffix</span>
+          <input
+            type="checkbox"
+            checked={showSuffix}
+            onChange={(e) => setShowSuffix(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            disabled={!showLabel}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary disabled:opacity-40"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Hint</span>
+          <input
+            type="checkbox"
+            checked={showHint}
+            onChange={(e) => setShowHint(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Error</span>
+          <input
+            type="checkbox"
+            checked={error}
+            onChange={(e) => setError(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-full max-w-[280px]">
+          <PasswordInput
+            size={size as InputSize}
+            label={showLabel ? "Label" : undefined}
+            labelOptional={labelOptional}
+            placeholder="Placeholder"
+            hint={showHint ? (error ? "Something went wrong" : "Hint text") : undefined}
+            error={error}
+            disabled={disabled}
+            leftIcon={showLeftIcon ? <Search /> : undefined}
             suffix={showSuffix ? "USD" : undefined}
           />
         </div>
@@ -983,6 +1084,8 @@ export function PlaygroundContent() {
             {active === "Button" && <ButtonDemo />}
 
             {active === "Input" && <InputDemo />}
+
+            {active === "Password" && <PasswordInputDemo />}
 
             {active === "Kbd" && <KbdDemo />}
 
