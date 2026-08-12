@@ -507,15 +507,6 @@ function SearchInputDemo() {
       <ControlBar>
         <TinySelect label="Size" value={size} onChange={setSize} options={inputSizes} />
         <label className="flex flex-col items-start gap-1.5">
-          <span className="text-[13px] text-ink-600">Filled</span>
-          <input
-            type="checkbox"
-            checked={value.length > 0}
-            onChange={(e) => setValue(e.target.checked ? "Sneakers" : "")}
-            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
-          />
-        </label>
-        <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Label</span>
           <input
             type="checkbox"
