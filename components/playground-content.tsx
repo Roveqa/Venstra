@@ -29,6 +29,7 @@ import { SwitchCard } from "@/components/ui/switch-card";
 import { RadioGroup, RadioButton } from "@/components/ui/radio-button";
 import { RadioButtonCard } from "@/components/ui/radio-button-card";
 import { Slider } from "@/components/ui/slider";
+import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
 
 const sections = [
   "Alert",
@@ -54,6 +55,7 @@ const sections = [
   "Switch",
   "SwitchCard",
   "Textarea",
+  "Tooltip",
 ];
 
 const inputSizes = [
@@ -2017,6 +2019,47 @@ function SliderDemo() {
   );
 }
 
+const tooltipSides = [
+  { key: "bottom", label: "Bottom" },
+  { key: "top", label: "Top" },
+  { key: "left", label: "Left" },
+  { key: "right", label: "Right" },
+] as const;
+
+function TooltipDemo() {
+  const [side, setSide] = useState<(typeof tooltipSides)[number]["key"]>("bottom");
+  const [text, setText] = useState("Tooltip");
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Position" value={side} onChange={setSide} options={tooltipSides} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Text</span>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-40 rounded-lg bg-surface-subtle px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:bg-[var(--surface-subtle-hover)]"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="flex w-full items-center justify-center py-10">
+          <TooltipProvider delayDuration={0}>
+            <Tooltip content={text} side={side} open>
+              <Button variant="fill" intent="primary">
+                Hover me
+              </Button>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -2075,6 +2118,8 @@ export function PlaygroundContent() {
             {active === "SwitchCard" && <SwitchCardDemo />}
 
             {active === "Textarea" && <TextareaDemo />}
+
+            {active === "Tooltip" && <TooltipDemo />}
 
             {active === "Avatar" && <AvatarDemo />}
 

@@ -49,6 +49,7 @@ const sections: SidebarEntry[] = [
     ],
   },
   "Textarea",
+  "Tooltip",
 ];
 
 export function PlaygroundSidebar({
