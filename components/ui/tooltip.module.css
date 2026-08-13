@@ -52,8 +52,33 @@
   }
 }
 
+/* Figma's container is an auto-layout column with gap: -4 between the
+   bubble and this arrow slot (i.e. they overlap by 4px) — Radix's Arrow
+   has no equivalent gap concept (it's positioned via a floating-ui
+   transform, not normal flex flow), so the same 4px overlap is
+   reproduced here as a negative margin pulling the slot up into the
+   bubble. Only ~5px of the arrow's 9px height ends up visible below the
+   bubble as a result — this is the actual source of the earlier "arrow
+   looks too big" mismatch, not the path shape itself. */
+.arrowSlot {
+  position: relative;
+  width: 18px;
+  height: 9px;
+  margin-top: -4px;
+}
+
+/* Figma's own inset on the artwork within its slot: inset(-5.56% 5.06%
+   -0.95% 5.06%) — the art bleeds slightly past the slot's top/bottom
+   and is inset from the sides, so it renders at its native size
+   (16.1776x9.58579) without stretching. */
+.arrowInset {
+  position: absolute;
+  inset: -5.56% 5.06% -0.95% 5.06%;
+}
+
 .arrow {
   display: block;
-  margin-top: -1px;
+  width: 100%;
+  height: 100%;
   fill: var(--surface-inverse);
 }
