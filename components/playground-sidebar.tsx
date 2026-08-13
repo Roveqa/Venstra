@@ -50,6 +50,7 @@ const sections: SidebarEntry[] = [
   },
   "Tabs",
   "Textarea",
+  "Toggle",
   "Tooltip",
 ];
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Command, Search } from "lucide-react";
+import { Check, Command, Search, Bold } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +31,7 @@ import { RadioButtonCard } from "@/components/ui/radio-button-card";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
 import { TabsRoot, TabsList, Tab, TabsContent, type TabsStyle } from "@/components/ui/tabs";
+import { Toggle, type ToggleStyle, type ToggleSize } from "@/components/ui/toggle";
 
 const sections = [
   "Alert",
@@ -57,6 +58,7 @@ const sections = [
   "SwitchCard",
   "Tabs",
   "Textarea",
+  "Toggle",
   "Tooltip",
 ];
 
@@ -2124,6 +2126,77 @@ function TabsDemo() {
   );
 }
 
+const toggleStyles = [
+  { key: "fill", label: "Fill" },
+  { key: "outline", label: "Outline" },
+  { key: "ghost", label: "Ghost" },
+] as const;
+
+const toggleSizes = [
+  { key: "sm", label: "Small" },
+  { key: "md", label: "Medium" },
+  { key: "lg", label: "Large" },
+] as const;
+
+function ToggleDemo() {
+  const [toggleStyle, setToggleStyle] = useState<ToggleStyle>("fill");
+  const [size, setSize] = useState<ToggleSize>("md");
+  const [showIcon, setShowIcon] = useState(true);
+  const [pressed, setPressed] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Style" value={toggleStyle} onChange={setToggleStyle} options={toggleStyles} />
+        <TinySelect label="Size" value={size} onChange={setSize} options={toggleSizes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Icon</span>
+          <input
+            type="checkbox"
+            checked={showIcon}
+            onChange={(e) => setShowIcon(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Pressed</span>
+          <input
+            type="checkbox"
+            checked={pressed}
+            onChange={(e) => setPressed(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-fit">
+          <Toggle
+            toggleStyle={toggleStyle}
+            size={size}
+            icon={showIcon ? <Bold /> : undefined}
+            pressed={pressed}
+            onPressedChange={setPressed}
+            disabled={disabled}
+          >
+            Toggle
+          </Toggle>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -2184,6 +2257,8 @@ export function PlaygroundContent() {
             {active === "Tabs" && <TabsDemo />}
 
             {active === "Textarea" && <TextareaDemo />}
+
+            {active === "Toggle" && <ToggleDemo />}
 
             {active === "Tooltip" && <TooltipDemo />}
 
