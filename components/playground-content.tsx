@@ -2047,9 +2047,9 @@ function TooltipDemo() {
 
       <ComponentSection>
         <div className="flex w-full items-center justify-center py-10">
-          <TooltipProvider delayDuration={0}>
-            <Tooltip content={text} side={side} open>
-              <Button variant="fill" intent="primary">
+          <TooltipProvider delayDuration={200}>
+            <Tooltip content={text} side={side}>
+              <Button variant="light" intent="neutral">
                 Hover me
               </Button>
             </Tooltip>

@@ -80,11 +80,16 @@ export function Tooltip({
           className={clsx(styles.content, contentProps?.className)}
         >
           {content}
-          <RadixTooltip.Arrow asChild width={18} height={9}>
-            {/* viewBox trimmed to the path's actual ink (raw asset has ~0.5
-                units of dead space above the flat top edge) so the shape
-                sits flush against the bubble with no seam. */}
-            <svg viewBox="0 0.5 16.1776 9.08579" preserveAspectRatio="none" fill="none" className={styles.arrow}>
+          {/* width/height must match the (trimmed) viewBox's own aspect
+              ratio exactly — passing the nominal 18x9 Figma "slot" size
+              here (rather than the path's true 16.1776x9.08579) forced a
+              ~12% horizontal stretch, visibly fattening the tail compared
+              to the real asset. viewBox is trimmed to the path's actual
+              ink (raw asset has ~0.5 units of dead space above the flat
+              top edge) so the shape sits flush against the bubble with no
+              seam. */}
+          <RadixTooltip.Arrow asChild width={16.1776} height={9.08579}>
+            <svg viewBox="0 0.5 16.1776 9.08579" fill="none" className={styles.arrow}>
               <path d="M7.38169 8.79289L0.7959 2.20711C0.165936 1.57714 0.612102 0.5 1.50301 0.5H14.6746C15.5655 0.5 16.0117 1.57714 15.3817 2.2071L8.7959 8.79289C8.40538 9.18342 7.77221 9.18342 7.38169 8.79289Z" />
             </svg>
           </RadixTooltip.Arrow>
