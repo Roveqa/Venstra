@@ -30,6 +30,7 @@ import { RadioGroup, RadioButton } from "@/components/ui/radio-button";
 import { RadioButtonCard } from "@/components/ui/radio-button-card";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
+import { TabsRoot, TabsList, Tab, TabsContent, type TabsStyle } from "@/components/ui/tabs";
 
 const sections = [
   "Alert",
@@ -54,6 +55,7 @@ const sections = [
   "Slider",
   "Switch",
   "SwitchCard",
+  "Tabs",
   "Textarea",
   "Tooltip",
 ];
@@ -2060,6 +2062,68 @@ function TooltipDemo() {
   );
 }
 
+const tabsStyles = [
+  { key: "fill", label: "Fill" },
+  { key: "line", label: "Line" },
+] as const;
+
+function TabsDemo() {
+  const [tabsStyle, setTabsStyle] = useState<TabsStyle>("fill");
+  const [showBadge, setShowBadge] = useState(true);
+  const [disabledThird, setDisabledThird] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Style" value={tabsStyle} onChange={setTabsStyle} options={tabsStyles} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Badge</span>
+          <input
+            type="checkbox"
+            checked={showBadge}
+            onChange={(e) => setShowBadge(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">3rd Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabledThird}
+            onChange={(e) => setDisabledThird(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-fit">
+          <TabsRoot defaultValue="one">
+            <TabsList tabsStyle={tabsStyle}>
+              <Tab value="one" badge={showBadge ? "8" : undefined}>
+                Tab Item
+              </Tab>
+              <Tab value="two">Tab Item</Tab>
+              <Tab value="three" disabled={disabledThird}>
+                Tab Item
+              </Tab>
+            </TabsList>
+            <TabsContent value="one" className="pt-4 text-[14px] text-ink-600">
+              Content for the first tab.
+            </TabsContent>
+            <TabsContent value="two" className="pt-4 text-[14px] text-ink-600">
+              Content for the second tab.
+            </TabsContent>
+            <TabsContent value="three" className="pt-4 text-[14px] text-ink-600">
+              Content for the third tab.
+            </TabsContent>
+          </TabsRoot>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -2116,6 +2180,8 @@ export function PlaygroundContent() {
             {active === "Switch" && <SwitchDemo />}
 
             {active === "SwitchCard" && <SwitchCardDemo />}
+
+            {active === "Tabs" && <TabsDemo />}
 
             {active === "Textarea" && <TextareaDemo />}
 
