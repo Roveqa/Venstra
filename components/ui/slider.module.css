@@ -1,0 +1,116 @@
+/*
+ * Source: Figma "Slider" component set (page 2067:2937, ComponentSet
+ * 2128:4666) + thumb "Slider Item" component set (2128:4661). See
+ * slider.tsx for the full source comment.
+ */
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-3, 6px);
+}
+
+.wrapper[data-disabled] {
+  opacity: 0.4;
+}
+
+.label {
+  width: 100%;
+}
+
+/* Root: standard Radix Slider recipe — position:relative + flex lets
+   Track grow to fill the row while Thumbs are positioned absolutely
+   within it. Height 20px (> the 12px thumb) gives the thumb room to
+   overhang the 4px track without clipping, matching the vertical
+   hit-slot the other controls in this set all get (Checkbox/Switch/
+   Radio's own 2px slot padding, same idea). */
+.root {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 20px;
+  touch-action: none;
+  user-select: none;
+}
+
+.track {
+  position: relative;
+  flex-grow: 1;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-subtle);
+}
+
+.range {
+  position: absolute;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-color: var(--fill-primary);
+}
+
+.thumb {
+  display: block;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--stroke-subtle);
+  background-color: var(--foreground-inverse);
+  cursor: pointer;
+  --sl-ring: 0 0 0 0 transparent;
+  box-shadow: var(--sl-ring);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.thumb:hover:not([data-disabled]) {
+  border-color: var(--stroke-strong);
+}
+
+.thumb:focus-visible {
+  outline: none;
+  --sl-ring: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.thumb[data-disabled] {
+  cursor: not-allowed;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  min-width: 32px;
+  padding: var(--spacing-3, 6px) var(--spacing-4, 8px);
+  border-radius: var(--radius-sm, 6px);
+  background-color: var(--surface-inverse);
+  box-shadow:
+    0px 1px 2px 0px rgba(0, 0, 0, 0.08),
+    0px 1px 10px 2px rgba(0, 0, 0, 0.1);
+  color: var(--foreground-inverse);
+  font-size: var(--text-sm, 12px);
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -0.12px;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* CSS-triangle tail instead of the exported SVG asset — a plain
+   geometric pointer shape, not a hand-drawn icon. */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--surface-inverse);
+}
