@@ -2027,7 +2027,7 @@ const tooltipSides = [
 ] as const;
 
 function TooltipDemo() {
-  const [side, setSide] = useState<(typeof tooltipSides)[number]["key"]>("bottom");
+  const [side, setSide] = useState<(typeof tooltipSides)[number]["key"]>("top");
   const [text, setText] = useState("Tooltip");
 
   return (

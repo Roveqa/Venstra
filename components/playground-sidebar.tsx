@@ -86,7 +86,7 @@ export function PlaygroundSidebar({
               }
 
               const isGroupActive = entry.children.some((c) => c.key === active);
-              const isOpen = openGroups[entry.label] ?? true;
+              const isOpen = openGroups[entry.label] ?? false;
 
               return (
                 <div key={entry.label} className="flex flex-col gap-1">
