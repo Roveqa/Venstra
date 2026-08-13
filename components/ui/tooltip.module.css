@@ -53,5 +53,6 @@
 }
 
 .arrow {
+  display: block;
   fill: var(--surface-inverse);
 }
