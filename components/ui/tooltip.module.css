@@ -54,5 +54,6 @@
 
 .arrow {
   display: block;
+  margin-top: -1px;
   fill: var(--surface-inverse);
 }
