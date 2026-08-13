@@ -68,6 +68,13 @@
   border-color: transparent;
   background-color: var(--fill-primary);
 }
+/* --cb-checked-hover-bg lets CheckboxCard neutralize this (set to the
+   resting checked color) — browsers forward :hover from a <label> onto
+   its associated nested control, so without this override, hovering
+   ANYWHERE on the card would darken the box even though Figma's
+   CheckboxCard Hover/Active state confirms the box stays constant
+   (only the card surface darkens). Same issue as RadioButtonCard's
+   ring/dot. */
 .box[data-state="checked"]:hover:not(:disabled),
 .box[data-state="indeterminate"]:hover:not(:disabled) {
   /* Overrides the unchecked :hover rule's border-color above — without
@@ -76,7 +83,7 @@
      filled box that Figma's Hover/Active doesn't have (only the bg
      darkens). */
   border-color: transparent;
-  background-color: var(--fill-primary-hover);
+  background-color: var(--cb-checked-hover-bg, var(--fill-primary-hover));
 }
 
 .indicator {

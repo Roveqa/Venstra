@@ -34,6 +34,13 @@ const sections: SidebarEntry[] = [
   "Notification",
   "Progress",
   {
+    label: "Radio",
+    children: [
+      { key: "Radio", label: "Default" },
+      { key: "RadioCard", label: "Card" },
+    ],
+  },
+  {
     label: "Switch",
     children: [
       { key: "Switch", label: "Default" },

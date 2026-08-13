@@ -30,6 +30,7 @@
      darken further on hover — the whole card darkens instead. */
   --cb-border: var(--stroke-strong);
   --cb-border-hover: var(--stroke-strong);
+  --cb-checked-hover-bg: var(--fill-primary);
 }
 
 /* Hover is tracked via a JS-driven [data-hover] attribute rather than

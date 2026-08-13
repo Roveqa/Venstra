@@ -26,6 +26,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { CheckboxCard } from "@/components/ui/checkbox-card";
 import { Switch } from "@/components/ui/switch";
 import { SwitchCard } from "@/components/ui/switch-card";
+import { RadioGroup, RadioButton } from "@/components/ui/radio-button";
+import { RadioButtonCard } from "@/components/ui/radio-button-card";
 
 const sections = [
   "Alert",
@@ -45,6 +47,8 @@ const sections = [
   "Label",
   "Notification",
   "Progress",
+  "Radio",
+  "RadioCard",
   "Switch",
   "SwitchCard",
   "Textarea",
@@ -1745,6 +1749,178 @@ function SwitchCardDemo() {
   );
 }
 
+function RadioDemo() {
+  const [checked, setChecked] = useState(false);
+  const [error, setError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [labelOptional, setLabelOptional] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Active</span>
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => setChecked(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            disabled={!showLabel}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary disabled:opacity-40"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Hint</span>
+          <input
+            type="checkbox"
+            checked={showHint}
+            onChange={(e) => setShowHint(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Error</span>
+          <input
+            type="checkbox"
+            checked={error}
+            onChange={(e) => setError(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-fit">
+          <RadioGroup value={checked ? "option" : ""} onValueChange={(v) => setChecked(v === "option")}>
+            <RadioButton
+              value="option"
+              label={showLabel ? "Label" : undefined}
+              labelOptional={labelOptional}
+              hint={showHint ? (error ? "Something went wrong" : "Insert radio description here") : undefined}
+              error={error}
+              disabled={disabled}
+            />
+          </RadioGroup>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
+function RadioCardDemo() {
+  const [checked, setChecked] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [labelOptional, setLabelOptional] = useState(true);
+  const [showHint, setShowHint] = useState(true);
+  const [error, setError] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Active</span>
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => setChecked(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Optional</span>
+          <input
+            type="checkbox"
+            checked={labelOptional}
+            disabled={!showLabel}
+            onChange={(e) => setLabelOptional(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary disabled:opacity-40"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Hint</span>
+          <input
+            type="checkbox"
+            checked={showHint}
+            onChange={(e) => setShowHint(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Error</span>
+          <input
+            type="checkbox"
+            checked={error}
+            onChange={(e) => setError(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-full max-w-[244px]">
+          <RadioGroup value={checked ? "option" : ""} onValueChange={(v) => setChecked(v === "option")}>
+            <RadioButtonCard
+              value="option"
+              label={showLabel ? "Label" : undefined}
+              labelOptional={labelOptional}
+              hint={showHint ? (error ? "Something went wrong" : "Insert radio description here") : undefined}
+              error={error}
+              disabled={disabled}
+            />
+          </RadioGroup>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -1791,6 +1967,10 @@ export function PlaygroundContent() {
             {active === "Alert" && <AlertDemo />}
 
             {active === "Notification" && <NotificationDemo />}
+
+            {active === "Radio" && <RadioDemo />}
+
+            {active === "RadioCard" && <RadioCardDemo />}
 
             {active === "Switch" && <SwitchDemo />}
 

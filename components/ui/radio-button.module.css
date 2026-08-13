@@ -1,0 +1,93 @@
+/*
+ * Source: Figma "Radio Button" component set (page 1563:8187,
+ * ComponentSet 1563:8210). See radio-button.tsx for the full source
+ * comment.
+ */
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Figma dims the whole component (ring + label/hint text) to 40% when
+   disabled, not just the ring — same lesson learned from Checkbox. */
+.wrapper:has(.ring:disabled) {
+  opacity: 0.4;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 2px;
+}
+
+.ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  padding: 2px;
+  border-radius: 9999px;
+  border: 1px solid var(--rb-border, var(--stroke-subtle));
+  background-color: transparent;
+  cursor: pointer;
+  --rb-ring: 0 0 0 0 transparent;
+  box-shadow: var(--rb-ring);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ring:hover:not(:disabled) {
+  border-color: var(--rb-border-hover, var(--stroke-strong));
+}
+
+.ring:focus-visible {
+  outline: none;
+  --rb-ring: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.ring[data-error] {
+  border-color: var(--stroke-error);
+}
+
+.ring:disabled {
+  cursor: not-allowed;
+}
+
+.ring[data-state="checked"] {
+  border-color: var(--stroke-primary);
+}
+/* --rb-checked-border-hover/--rb-checked-dot-hover let RadioButtonCard
+   neutralize this (set both to the resting checked color) — browsers
+   forward :hover from a <label> onto its associated nested control,
+   so without this override, hovering ANYWHERE on the card would
+   change the ring's color even though Figma's Hover+Active card state
+   confirms it should stay constant (unlike Checkbox's border, whose
+   card variant simply never had a hover rule to begin with, this one
+   needs to be actively cancelled). */
+.ring[data-state="checked"]:hover:not(:disabled) {
+  border-color: var(--rb-checked-border-hover, var(--stroke-primary-subtle));
+}
+
+.dot {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background-color: var(--fill-primary);
+}
+.ring[data-state="checked"]:hover:not(:disabled) .dot {
+  background-color: var(--rb-checked-dot-hover, var(--fill-primary-hover));
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-2, 4px);
+}
