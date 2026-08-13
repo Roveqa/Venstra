@@ -4,6 +4,7 @@ import clsx from "clsx";
 import * as RadixSlider from "@radix-ui/react-slider";
 import { useId, useState, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { Label } from "./label";
+import { Tooltip, TooltipProvider } from "./tooltip";
 import styles from "./slider.module.css";
 
 /**
@@ -26,8 +27,10 @@ import styles from "./slider.module.css";
  * the asymmetric radius.
  *
  * Tooltip: Figma's Focus+Tooltip thumb variant shows the current value
- * in a small bubble above the thumb. Modeled as `showValue`, shown
- * while a thumb is hovered, focused, or actively being dragged.
+ * in a small bubble above the thumb. Modeled as `showValue`, shown while
+ * a thumb is hovered, focused, or actively being dragged — built on the
+ * shared Tooltip component (side="top", controlled `open`) instead of
+ * the hand-rolled bubble this used before that component existed.
  */
 export type SliderProps = Omit<ComponentPropsWithoutRef<typeof RadixSlider.Root>, "className"> & {
   className?: string;
@@ -78,16 +81,17 @@ export function Slider({
           <RadixSlider.Range className={styles.range} />
         </RadixSlider.Track>
         {values.map((v, i) => (
-          <RadixSlider.Thumb
-            key={i}
-            className={styles.thumb}
-            onPointerEnter={() => setActiveThumb(i)}
-            onPointerLeave={() => setActiveThumb((cur) => (cur === i ? null : cur))}
-            onFocus={() => setActiveThumb(i)}
-            onBlur={() => setActiveThumb((cur) => (cur === i ? null : cur))}
-          >
-            {showValue && activeThumb === i && <span className={styles.tooltip}>{v}</span>}
-          </RadixSlider.Thumb>
+          <TooltipProvider key={i}>
+            <Tooltip content={v} side="top" open={showValue && activeThumb === i}>
+              <RadixSlider.Thumb
+                className={styles.thumb}
+                onPointerEnter={() => setActiveThumb(i)}
+                onPointerLeave={() => setActiveThumb((cur) => (cur === i ? null : cur))}
+                onFocus={() => setActiveThumb(i)}
+                onBlur={() => setActiveThumb((cur) => (cur === i ? null : cur))}
+              />
+            </Tooltip>
+          </TooltipProvider>
         ))}
       </RadixSlider.Root>
     </div>
