@@ -40,6 +40,29 @@
   background-color: var(--surface-primary-overlay-active);
 }
 
+/*
+ * Figma's "Hover" state for Switch card is a single unified state:
+ * the card background AND the track color change together, the
+ * moment the cursor is anywhere on the card — not two independently
+ * triggered hovers. The track's own native :hover (switch.module.css,
+ * needed for the standalone Switch, which has no card around it)
+ * only activates when the cursor is precisely over the small 28x16
+ * track — moving off the track but staying within the card cleared
+ * it, while the card's own [data-hover] stayed set, so the track
+ * visually fell out of sync with the rest of the card. Overriding it
+ * here — keyed off the card's own [data-hover] rather than the
+ * track's :hover — makes the track's color follow the same ambient
+ * "is the card hovered" state as the background. Specificity here
+ * (class+attr+type+attr+:not = 0,4,1) already beats switch.module.css's
+ * .track:hover:not(:disabled) (0,3,0) regardless of source order.
+ */
+.card[data-hover] button[role="switch"]:not(:disabled) {
+  background-color: var(--surface-strong-hover);
+}
+.card[data-hover] button[role="switch"][data-state="checked"]:not(:disabled) {
+  background-color: var(--fill-primary-hover);
+}
+
 .slot {
   display: flex;
   align-items: center;
