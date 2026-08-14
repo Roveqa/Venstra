@@ -2142,6 +2142,7 @@ function ToggleDemo() {
   const [toggleStyle, setToggleStyle] = useState<ToggleStyle>("fill");
   const [size, setSize] = useState<ToggleSize>("md");
   const [showIcon, setShowIcon] = useState(true);
+  const [showText, setShowText] = useState(true);
   const [pressed, setPressed] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
@@ -2156,6 +2157,15 @@ function ToggleDemo() {
             type="checkbox"
             checked={showIcon}
             onChange={(e) => setShowIcon(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Text</span>
+          <input
+            type="checkbox"
+            checked={showText}
+            onChange={(e) => setShowText(e.target.checked)}
             className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
           />
         </label>
@@ -2189,7 +2199,7 @@ function ToggleDemo() {
             onPressedChange={setPressed}
             disabled={disabled}
           >
-            Toggle
+            {showText ? "Toggle" : undefined}
           </Toggle>
         </div>
       </ComponentSection>
