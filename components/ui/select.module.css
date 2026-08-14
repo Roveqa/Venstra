@@ -116,11 +116,14 @@
   z-index: 50;
   display: flex;
   min-width: var(--radix-select-trigger-width);
-  max-height: var(--radix-select-content-available-height);
+  /* Cap at a fixed comfortable height (~7-8 items) instead of letting a
+     long list stretch the panel to fill the whole viewport — still
+     shrinks further near a screen edge via Radix's available-height var. */
+  max-height: min(320px, var(--radix-select-content-available-height));
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-1, 2px);
-  padding: var(--spacing-1, 2px) 0;
+  padding: var(--spacing-2, 4px) 0;
   overflow: hidden;
   border-radius: var(--radius-md, 8px);
   background-color: var(--surface-low);
