@@ -14,6 +14,7 @@ import { HintText } from "@/components/ui/hint-text";
 import { Avatar, type AvatarSize } from "@/components/ui/avatar";
 import { AvatarGroup } from "@/components/ui/avatar-group";
 import { Progress, type ProgressPercentPosition } from "@/components/ui/progress";
+import { Pagination } from "@/components/ui/pagination";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
 import { Textarea } from "@/components/ui/textarea";
@@ -78,6 +79,7 @@ const sections = [
   "Dropdown",
   "Label",
   "Notification",
+  "Pagination",
   "Progress",
   "Radio",
   "RadioCard",
@@ -1289,6 +1291,68 @@ function AvatarDemo() {
               </AvatarGroup>
             );
           })}
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
+function PaginationDemo() {
+  const [page, setPage] = useState(2);
+  const [totalItems, setTotalItems] = useState(117);
+  const [pageSize, setPageSize] = useState(10);
+  const [showHint, setShowHint] = useState(true);
+  const [showPageSize, setShowPageSize] = useState(true);
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Total items</span>
+          <input
+            type="number"
+            min={1}
+            value={totalItems}
+            onChange={(e) => setTotalItems(Math.max(1, Number(e.target.value)))}
+            className="w-20 rounded-lg bg-surface-subtle px-3 py-2 text-[14px] text-ink-950 outline-none transition-colors hover:bg-[var(--surface-subtle-hover)]"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Hint</span>
+          <input
+            type="checkbox"
+            checked={showHint}
+            onChange={(e) => setShowHint(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Rows per page</span>
+          <input
+            type="checkbox"
+            checked={showPageSize}
+            onChange={(e) => setShowPageSize(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-full max-w-[900px]">
+          <Pagination
+            page={Math.min(page, totalPages)}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            totalItems={totalItems}
+            pageSize={pageSize}
+            onPageSizeChange={(size) => {
+              setPageSize(size);
+              setPage(1);
+            }}
+            showHint={showHint}
+            showPageSize={showPageSize}
+          />
         </div>
       </ComponentSection>
     </div>
@@ -2711,6 +2775,7 @@ export function PlaygroundContent() {
 
             {active === "Avatar" && <AvatarDemo />}
 
+            {active === "Pagination" && <PaginationDemo />}
             {active === "Progress" && <ProgressDemo />}
 
             {active === "Badge" && <BadgeDemo />}

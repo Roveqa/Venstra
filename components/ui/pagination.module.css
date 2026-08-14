@@ -1,0 +1,140 @@
+/*
+ * Source: Figma "Pagination" component (page 2067:1176, node 2422:2732).
+ * See pagination.tsx for the full source comment.
+ */
+
+.root {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8, 16px);
+}
+
+.hint {
+  color: var(--foreground-weak);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  white-space: nowrap;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-15, 40px);
+}
+
+.pageSize {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 8px);
+}
+
+.pageSizeLabel {
+  color: var(--foreground-subtle);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  white-space: nowrap;
+}
+
+.pageSizeTrigger {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1, 2px);
+  box-sizing: border-box;
+  padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background-color: var(--surface-subtle);
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  appearance: none;
+  cursor: pointer;
+}
+.pageSizeTrigger:hover:not([data-disabled]) {
+  background-color: var(--surface-subtle-hover);
+}
+.pageSizeTrigger:focus-visible,
+.pageSizeTrigger[data-state="open"] {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.pageSizeIcon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--foreground-weak);
+  transition: transform 0.15s ease;
+}
+.pageSizeIcon svg {
+  width: 16px;
+  height: 16px;
+}
+.pageSizeTrigger[data-state="open"] .pageSizeIcon {
+  transform: rotate(180deg);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6, 12px);
+}
+
+.navGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 6px);
+}
+
+.cells {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 4px);
+}
+
+.cell {
+  display: flex;
+  box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2, 4px);
+  border: none;
+  border-radius: var(--radius-l, 10px);
+  background: none;
+  color: var(--foreground-subtle);
+  font: inherit;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.cell:hover:not([data-disabled]) {
+  background-color: var(--surface-subtle);
+  color: var(--foreground);
+}
+.cell:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.cell[data-active] {
+  background-color: var(--surface-soft);
+  color: var(--foreground);
+}
+.cell[data-active]:hover {
+  background-color: var(--surface-subtle);
+}
+
+.cell[data-disabled] {
+  cursor: default;
+  opacity: 0.4;
+}

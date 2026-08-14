@@ -34,6 +34,7 @@ const sections: SidebarEntry[] = [
   "Dropdown",
   "Label",
   "Notification",
+  "Pagination",
   "Progress",
   {
     label: "Radio",
