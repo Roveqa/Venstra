@@ -24,6 +24,13 @@
   align-items: center;
   gap: var(--spacing-4, 8px);
   box-sizing: border-box;
+  /* This is a real <button> (the combobox a11y pattern needs one), so it
+     ships default browser chrome — appearance/font/outline aren't reset
+     by `border: none` alone. Without this it can visually read as "a
+     button" instead of the same flat custom box Input uses. */
+  appearance: none;
+  font: inherit;
+  text-align: left;
   border: none;
   border-radius: var(--radius-md);
   background-color: var(--surface-subtle);

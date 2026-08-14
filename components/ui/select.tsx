@@ -28,6 +28,17 @@ import styles from "./select.module.css";
  * shadow ring for focus/error rather than a real border, same
  * size/padding scale) since the ComponentSet's own token values are
  * identical to Input Text's — confirmed side by side, not assumed.
+ * Unlike Input's plain <div>, Trigger renders a real <button> (required
+ * for the combobox a11y pattern), which ships default browser button
+ * chrome (`appearance: button`) — reset explicitly in CSS so it reads
+ * as the same flat custom box as Input, not a native button underneath.
+ *
+ * Content uses position="popper" + sideOffset (like Dropdown), matching
+ * Figma's literal structure: the "Wrapper" slot sits at a fixed offset
+ * directly below the trigger, not aligned to the currently-selected
+ * item the way a native <select> would be (Radix's actual default,
+ * position="item-aligned" — tried first, incorrectly assumed it matched
+ * Figma's intent without checking, corrected after review).
  *
  * Menu panel: surface-low bg (NOT surface-elevated, unlike Dropdown/
  * Tooltip — a real, confirmed difference, not an inconsistency),
@@ -72,7 +83,14 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(f
           data-size={size}
           {...props}
         >
-          <RadixSelect.Value placeholder={placeholder} className={styles.value} />
+          {/* RadixSelect.Value doesn't forward its className onto the
+              placeholder text specifically (only onto an actual selected
+              value) — wrapping it in a real span we control means the
+              placeholder-muted-color rule below always has something to
+              target, regardless of that Radix quirk. */}
+          <span className={styles.value}>
+            <RadixSelect.Value placeholder={placeholder} />
+          </span>
           <RadixSelect.Icon className={styles.icon}>
             <ChevronDown />
           </RadixSelect.Icon>
@@ -85,10 +103,15 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(f
 
 export type SelectContentProps = ComponentPropsWithoutRef<typeof RadixSelect.Content>;
 
-export function SelectContent({ className, children, ...props }: SelectContentProps) {
+export function SelectContent({ className, children, position = "popper", sideOffset = 4, ...props }: SelectContentProps) {
   return (
     <RadixSelect.Portal>
-      <RadixSelect.Content className={clsx(styles.content, className)} {...props}>
+      <RadixSelect.Content
+        className={clsx(styles.content, className)}
+        position={position}
+        sideOffset={sideOffset}
+        {...props}
+      >
         <RadixSelect.ScrollUpButton className={styles.scrollButton}>
           <ChevronUp />
         </RadixSelect.ScrollUpButton>
