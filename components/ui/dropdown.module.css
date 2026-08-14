@@ -19,6 +19,14 @@
   animation: dropdown-in 0.12s ease-out;
 }
 
+/* Figma's 2px panel padding only reads correctly with a Label present
+   (its own pt-8/pb-4 supplies the real spacing above the first item) —
+   without one, 2px alone crowds the items against the panel border. */
+.content:not(:has(.label)) {
+  padding-top: var(--spacing-4, 8px);
+  padding-bottom: var(--spacing-4, 8px);
+}
+
 .content[data-state="closed"] {
   animation: dropdown-out 0.1s ease-in;
 }
