@@ -1,0 +1,170 @@
+/*
+ * Source: Figma "Input Phone" component set (page 1:12, ComponentSet
+ * 1753:17890). See input-phone.tsx for the full source comment.
+ */
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.field {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.box {
+  display: flex;
+  width: 100%;
+  min-width: 100px;
+  align-items: stretch;
+  box-sizing: border-box;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-subtle);
+  overflow: hidden;
+  /* Ring lives on box-shadow, not a real border — matches Input Text. */
+  --ip-ring: 0 0 0 0 transparent;
+  box-shadow: var(--ip-ring);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.box:hover:not([data-disabled]) {
+  background-color: var(--surface-subtle-hover);
+}
+
+.box:focus-within,
+.box:has(.prefix[data-state="open"]) {
+  box-shadow: var(--ip-ring), 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.box[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.prefix {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  box-sizing: border-box;
+  appearance: none;
+  font: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+.prefix[data-size="md"] {
+  padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
+}
+.prefix[data-size="lg"] {
+  padding: var(--spacing-5, 10px) var(--spacing-7, 14px);
+}
+.prefix[data-disabled] {
+  cursor: not-allowed;
+}
+
+.prefixContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 8px);
+}
+
+.flag {
+  display: flex;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.codeGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1, 2px);
+}
+
+.code {
+  color: var(--foreground);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  white-space: nowrap;
+}
+
+.chevron {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--foreground-weak);
+}
+.chevron svg {
+  width: 16px;
+  height: 16px;
+}
+
+.inputSegment {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  box-sizing: border-box;
+  border-left: 1px solid var(--stroke);
+}
+.inputSegment[data-size="md"] {
+  padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
+}
+.inputSegment[data-size="lg"] {
+  padding: var(--spacing-5, 10px) var(--spacing-7, 14px);
+}
+
+.input {
+  flex: 1 0 0;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+.input::placeholder {
+  color: var(--foreground-muted);
+}
+.input:disabled {
+  cursor: not-allowed;
+}
+
+.itemFlag {
+  display: flex;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* Error — real color even for the placeholder, matching Input Text. */
+.wrapper[data-error] .box {
+  --ip-ring: inset 0 0 0 1px var(--stroke-error);
+}
+.wrapper[data-error] .input::placeholder {
+  color: var(--foreground);
+}
+.wrapper[data-error] .box:focus-within,
+.wrapper[data-error] .box:has(.prefix[data-state="open"]) {
+  box-shadow: var(--ip-ring), 0 0 0 2px rgba(253, 58, 54, 0.1);
+}
