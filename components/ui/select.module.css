@@ -82,10 +82,14 @@
   display: flex;
   flex-shrink: 0;
   color: var(--foreground-weak);
+  transition: transform 0.15s ease;
 }
 .icon svg {
   width: 16px;
   height: 16px;
+}
+.box[data-state="open"] .icon {
+  transform: rotate(180deg);
 }
 
 /* Error — real color even for the placeholder, matching Input. */
@@ -150,6 +154,21 @@
   width: 100%;
   flex-direction: column;
   gap: var(--spacing-1, 2px);
+  /* Figma shows a persistent 4px scrollbar thumb (surface-strong,
+     rounded-full) rather than relying on the OS/browser default, which
+     is often auto-hiding and reads as "no scrollbar" on a long list. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-strong) transparent;
+}
+.viewport::-webkit-scrollbar {
+  width: 4px;
+}
+.viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+.viewport::-webkit-scrollbar-thumb {
+  background-color: var(--surface-strong);
+  border-radius: var(--radius-full);
 }
 
 .scrollButton {
@@ -160,6 +179,22 @@
   padding: 0 var(--spacing-4, 8px);
   color: var(--foreground);
   cursor: default;
+  /* Radix fully unmounts this button when scrolling reaches the edge —
+     there's no intermediate DOM state a plain CSS transition can play
+     on the way OUT, only a fresh mount to animate IN. So appearing
+     fades in smoothly; disappearing is still instant (a real fade-out
+     would need swapping to manual scroll-position tracking instead of
+     Radix's built-in ScrollUpButton/ScrollDownButton auto-mounting). */
+  animation: scroll-button-in 0.15s ease;
+}
+
+@keyframes scroll-button-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .scrollButton svg {
   width: 16px;

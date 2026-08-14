@@ -85,15 +85,10 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(f
 
 export type SelectContentProps = ComponentPropsWithoutRef<typeof RadixSelect.Content>;
 
-export function SelectContent({ className, children, position = "popper", sideOffset = 4, ...props }: SelectContentProps) {
+export function SelectContent({ className, children, ...props }: SelectContentProps) {
   return (
     <RadixSelect.Portal>
-      <RadixSelect.Content
-        className={clsx(styles.content, className)}
-        position={position}
-        sideOffset={sideOffset}
-        {...props}
-      >
+      <RadixSelect.Content className={clsx(styles.content, className)} {...props}>
         <RadixSelect.ScrollUpButton className={styles.scrollButton}>
           <ChevronUp />
         </RadixSelect.ScrollUpButton>
