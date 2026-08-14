@@ -29,13 +29,13 @@ import styles from "./dropdown.module.css";
  * bg) — note the sic spelling is Figma's own typo, not repeated here.
  *
  * Panel: surface-elevated bg, 1px stroke border, radius-xl (12px),
- * Shadow/lg (two-layer drop shadow), 220px default width, 2px vertical
- * padding — that 2px is Figma's literal panel-level py, but it only
- * reads correctly when a Label is present (the Label's own pt-8/pb-4
- * supplies the real visual breathing room above the first item); with
- * no Label, 2px alone looks cramped against the panel border, so
- * dropdown.module.css bumps it to 4px when `.content` has no `.label`
- * child.
+ * Shadow/lg (two-layer drop shadow), 220px default width. Bottom padding
+ * is a constant 4px either way; top padding is 2px when a Label is
+ * present (its own pt-8/pb-4 supplies the real breathing room above the
+ * first item) and 4px — matching the bottom — when there's no Label to
+ * do that job, so the panel doesn't crowd the first item against its
+ * border. See the `.content:not(:has(.label))` rule in
+ * dropdown.module.css.
  *
  * Positioning: `align="start"` by default (Radix's own default is
  * "center") so the panel hugs the trigger's near edge, combined with

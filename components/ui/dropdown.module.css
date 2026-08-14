@@ -9,7 +9,7 @@
   min-width: 220px;
   flex-direction: column;
   gap: var(--spacing-1, 2px);
-  padding: var(--spacing-1, 2px) 0;
+  padding: var(--spacing-1, 2px) 0 var(--spacing-2, 4px);
   border: 1px solid var(--stroke);
   border-radius: var(--radius-xl, 12px);
   background-color: var(--surface-elevated);
@@ -19,12 +19,13 @@
   animation: dropdown-in 0.12s ease-out;
 }
 
-/* Figma's 2px panel padding only reads correctly with a Label present
-   (its own pt-8/pb-4 supplies the real spacing above the first item) —
-   without one, 2px alone crowds the items against the panel border. */
+/* Bottom padding (4px) is constant either way — only the top varies:
+   with a Label, its own pt-8/pb-4 supplies the real spacing above the
+   first item, so the panel only needs its own 2px on top; without one,
+   that 2px alone crowds the first item against the panel border, so it
+   matches the bottom at 4px instead. */
 .content:not(:has(.label)) {
   padding-top: var(--spacing-2, 4px);
-  padding-bottom: var(--spacing-2, 4px);
 }
 
 .content[data-state="closed"] {
