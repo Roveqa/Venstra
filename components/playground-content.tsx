@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Command, Search, Bold, Italic, Underline } from "lucide-react";
+import { Check, Command, Search, Bold, Italic, Underline, User, Settings, LogOut, CreditCard, Trash2 } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -38,6 +38,17 @@ import {
   type ToggleGroupStyle,
   type ToggleGroupSize,
 } from "@/components/ui/toggle-group";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownContent,
+  DropdownLabel,
+  DropdownSeparator,
+  DropdownItem,
+  DropdownSub,
+  DropdownSubTrigger,
+  DropdownSubContent,
+} from "@/components/ui/dropdown";
 
 const sections = [
   "Alert",
@@ -54,6 +65,7 @@ const sections = [
   "Date",
   "Kbd",
   "Divider",
+  "Dropdown",
   "Label",
   "Notification",
   "Progress",
@@ -2306,6 +2318,88 @@ function ToggleGroupDemo() {
   );
 }
 
+function DropdownDemo() {
+  const [showLabel, setShowLabel] = useState(true);
+  const [showShortcuts, setShowShortcuts] = useState(true);
+  const [showIcons, setShowIcons] = useState(true);
+  const [checked, setChecked] = useState(true);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Icons</span>
+          <input
+            type="checkbox"
+            checked={showIcons}
+            onChange={(e) => setShowIcons(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Shortcuts</span>
+          <input
+            type="checkbox"
+            checked={showShortcuts}
+            onChange={(e) => setShowShortcuts(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="flex w-full items-center justify-center py-16">
+          <Dropdown>
+            <DropdownTrigger asChild>
+              <Button variant="outline" intent="neutral">
+                Open Dropdown
+              </Button>
+            </DropdownTrigger>
+            <DropdownContent>
+              {showLabel && <DropdownLabel>Label</DropdownLabel>}
+              <DropdownItem
+                icon={showIcons ? <User /> : undefined}
+                shortcut={showShortcuts ? "P" : undefined}
+                checked={checked}
+                onSelect={() => setChecked((v) => !v)}
+              >
+                Profile
+              </DropdownItem>
+              <DropdownItem icon={showIcons ? <Settings /> : undefined} shortcut={showShortcuts ? "S" : undefined}>
+                Settings
+              </DropdownItem>
+              <DropdownSub>
+                <DropdownSubTrigger icon={showIcons ? <CreditCard /> : undefined}>Billing</DropdownSubTrigger>
+                <DropdownSubContent>
+                  <DropdownItem>Invoices</DropdownItem>
+                  <DropdownItem>Payment methods</DropdownItem>
+                  <DropdownItem>Plans</DropdownItem>
+                </DropdownSubContent>
+              </DropdownSub>
+              <DropdownSeparator />
+              <DropdownItem icon={showIcons ? <LogOut /> : undefined} shortcut={showShortcuts ? "Q" : undefined}>
+                Log out
+              </DropdownItem>
+              <DropdownItem icon={showIcons ? <Trash2 /> : undefined} destructive>
+                Delete account
+              </DropdownItem>
+            </DropdownContent>
+          </Dropdown>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -2416,6 +2510,8 @@ export function PlaygroundContent() {
                 )}
               </ComponentSection>
             )}
+
+            {active === "Dropdown" && <DropdownDemo />}
 
             {active === "Label" && (
               <ComponentSection>

@@ -30,6 +30,7 @@ const sections: SidebarEntry[] = [
   },
   "Kbd",
   "Divider",
+  "Dropdown",
   "Label",
   "Notification",
   "Progress",
