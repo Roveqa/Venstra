@@ -23,15 +23,8 @@
 }
 
 .outline {
-  /* outline instead of a real border — a real border adds its width on
-     top of padding/height, so Outline would render ~2px taller/wider
-     than Background at the same padding. outline never affects layout
-     size (same reason box-shadow doesn't), and outline-offset: -1px
-     pulls it inward flush with the edge instead of sitting outside it.
-     Modern browsers clip outline to border-radius, so corners still
-     round correctly. */
-  outline: 1px solid var(--stroke-subtle);
-  outline-offset: -1px;
+  box-sizing: border-box;
+  border: 1px solid var(--stroke-subtle);
   padding: 4px 6px;
   font-size: 12px;
   letter-spacing: -0.24px;
