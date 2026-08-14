@@ -110,12 +110,29 @@
 }
 
 .inputSegment {
+  position: relative;
   display: flex;
   flex: 1 0 0;
   min-width: 0;
   align-items: center;
   box-sizing: border-box;
-  border-left: 1px solid var(--stroke);
+}
+/*
+ * A real border-left (instead of this inset pseudo-element) sits flush
+ * against the segment's full stretched height, touching the box's own
+ * top/bottom edge — which cuts a notch through the box-shadow ring
+ * (error/focus) exactly where the two lines cross, since the divider
+ * (a real child) paints over the parent's box-shadow. Insetting the
+ * line 1px top/bottom clears the ring without visibly shortening it.
+ */
+.inputSegment::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 1px;
+  width: 1px;
+  background-color: var(--stroke);
 }
 .inputSegment[data-size="md"] {
   padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
