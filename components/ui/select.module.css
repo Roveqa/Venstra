@@ -105,8 +105,11 @@
   z-index: 50;
   display: flex;
   min-width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
   flex-direction: column;
   align-items: center;
+  gap: var(--spacing-1, 2px);
+  padding: var(--spacing-1, 2px) 0;
   overflow: hidden;
   border-radius: var(--radius-md, 8px);
   background-color: var(--surface-low);
@@ -147,7 +150,6 @@
   width: 100%;
   flex-direction: column;
   gap: var(--spacing-1, 2px);
-  padding: var(--spacing-1, 2px) 0;
 }
 
 .scrollButton {
@@ -155,7 +157,7 @@
   width: 100%;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-4, 8px);
+  padding: 0 var(--spacing-4, 8px);
   color: var(--foreground);
   cursor: default;
 }
@@ -167,7 +169,7 @@
 .item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-4, 8px);
+  gap: var(--spacing-2, 4px);
   margin: 0 var(--spacing-2, 4px);
   padding: var(--spacing-2, 4px) var(--spacing-4, 8px);
   border-radius: var(--radius-md, 8px);

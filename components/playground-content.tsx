@@ -2413,18 +2413,65 @@ const selectSizes = [
   { key: "lg", label: "Large" },
 ] as const;
 
+const selectManyItems = [
+  "Apple",
+  "Apricot",
+  "Banana",
+  "Blackberry",
+  "Blueberry",
+  "Cherry",
+  "Cranberry",
+  "Durian",
+  "Elderberry",
+  "Fig",
+  "Grape",
+  "Grapefruit",
+  "Guava",
+  "Honeydew",
+  "Kiwi",
+  "Lemon",
+  "Lime",
+  "Lychee",
+  "Mango",
+  "Melon",
+  "Nectarine",
+  "Orange",
+  "Papaya",
+  "Passionfruit",
+  "Peach",
+  "Pear",
+  "Persimmon",
+  "Pineapple",
+  "Plum",
+  "Pomegranate",
+  "Raspberry",
+  "Strawberry",
+  "Tangerine",
+  "Watermelon",
+] as const;
+
 function SelectDemo() {
   const [size, setSize] = useState<SelectFieldSize>("md");
   const [showLabel, setShowLabel] = useState(true);
   const [showHint, setShowHint] = useState(true);
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [manyItems, setManyItems] = useState(false);
   const [value, setValue] = useState<string | undefined>(undefined);
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
         <TinySelect label="Size" value={size} onChange={setSize} options={selectSizes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Many items</span>
+          <input
+            type="checkbox"
+            checked={manyItems}
+            onChange={(e) => setManyItems(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
         <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Label</span>
           <input
@@ -2475,15 +2522,25 @@ function SelectDemo() {
               placeholder="Placeholder"
             />
             <SelectContent>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="cherry">Cherry</SelectItem>
-              <SelectItem value="durian" disabled>
-                Durian
-              </SelectItem>
-              <SelectItem value="elderberry">Elderberry</SelectItem>
-              <SelectItem value="fig">Fig</SelectItem>
-              <SelectItem value="grape">Grape</SelectItem>
+              {manyItems ? (
+                selectManyItems.map((fruit) => (
+                  <SelectItem key={fruit} value={fruit.toLowerCase()} disabled={fruit === "Durian"}>
+                    {fruit}
+                  </SelectItem>
+                ))
+              ) : (
+                <>
+                  <SelectItem value="apple">Apple</SelectItem>
+                  <SelectItem value="banana">Banana</SelectItem>
+                  <SelectItem value="cherry">Cherry</SelectItem>
+                  <SelectItem value="durian" disabled>
+                    Durian
+                  </SelectItem>
+                  <SelectItem value="elderberry">Elderberry</SelectItem>
+                  <SelectItem value="fig">Fig</SelectItem>
+                  <SelectItem value="grape">Grape</SelectItem>
+                </>
+              )}
             </SelectContent>
           </Select>
         </div>

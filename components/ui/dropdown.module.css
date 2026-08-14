@@ -73,7 +73,7 @@
 .item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-4, 8px);
+  gap: var(--spacing-2, 4px);
   margin: 0 var(--spacing-2, 4px);
   padding: var(--spacing-2, 4px) var(--spacing-4, 8px);
   border-radius: var(--radius-md, 8px);
