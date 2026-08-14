@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Check, Command, Search, Bold, Italic, Underline, User, Settings, LogOut, CreditCard, Trash2 } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
@@ -941,9 +942,9 @@ function DateInputDemo() {
 
 const phoneDemoCountries = [
   ...defaultPhoneCountries,
-  { value: "gb", label: "United Kingdom", dialCode: "+44", flag: <span aria-hidden="true">🇬🇧</span> },
-  { value: "de", label: "Germany", dialCode: "+49", flag: <span aria-hidden="true">🇩🇪</span> },
-  { value: "jp", label: "Japan", dialCode: "+81", flag: <span aria-hidden="true">🇯🇵</span> },
+  { value: "gb", label: "United Kingdom", dialCode: "+44", flag: <Image src="/flags/gb.svg" alt="" width={16} height={16} /> },
+  { value: "de", label: "Germany", dialCode: "+49", flag: <Image src="/flags/de.svg" alt="" width={16} height={16} /> },
+  { value: "jp", label: "Japan", dialCode: "+81", flag: <Image src="/flags/jp.svg" alt="" width={16} height={16} /> },
 ];
 
 function PhoneInputDemo() {

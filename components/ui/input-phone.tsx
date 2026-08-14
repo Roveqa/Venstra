@@ -31,11 +31,13 @@ import styles from "./input-phone.module.css";
  * matching Figma's "Input select for input master", not Select's own
  * "Select master".
  *
- * Figma's spec only defines one flag (US, exported and committed at
- * public/flags/us.svg) — no other countries were designed. `countries`
- * is a prop so a consuming app supplies its own real flag assets/data;
- * shipping fabricated flag icons for countries Figma never specified
- * would misrepresent the design system's source of truth.
+ * Input Phone's own spec only shows one country (US). The design system
+ * separately has a full ISO-country "Flag" set (page 1756:18167) with a
+ * real exported icon per country — used for the playground demo's extra
+ * countries (GB/DE/JP, public/flags/{gb,de,jp}.svg) instead of emoji.
+ * `defaultPhoneCountries` still ships with just US, matching Input
+ * Phone's own default value; `countries` is a prop so a consuming app
+ * picks whichever real flags it needs from that page.
  *
  * The number field auto-formats as (999) 999-9999 while typing — same
  * strip-to-digits/reformat/restore-caret-by-digit-count technique as
