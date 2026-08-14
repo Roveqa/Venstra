@@ -23,8 +23,8 @@
    (its own pt-8/pb-4 supplies the real spacing above the first item) —
    without one, 2px alone crowds the items against the panel border. */
 .content:not(:has(.label)) {
-  padding-top: var(--spacing-4, 8px);
-  padding-bottom: var(--spacing-4, 8px);
+  padding-top: var(--spacing-2, 4px);
+  padding-bottom: var(--spacing-2, 4px);
 }
 
 .content[data-state="closed"] {

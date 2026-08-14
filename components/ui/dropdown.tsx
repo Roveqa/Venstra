@@ -34,16 +34,23 @@ import styles from "./dropdown.module.css";
  * reads correctly when a Label is present (the Label's own pt-8/pb-4
  * supplies the real visual breathing room above the first item); with
  * no Label, 2px alone looks cramped against the panel border, so
- * dropdown.module.css bumps it to 8px when `.content` has no `.label`
+ * dropdown.module.css bumps it to 4px when `.content` has no `.label`
  * child.
  *
  * Positioning: `align="start"` by default (Radix's own default is
  * "center") so the panel hugs the trigger's near edge, combined with
  * Radix's `avoidCollisions` (on by default) to flip start↔end — i.e.
  * left- or right-aligned, whichever side actually has room — instead of
- * Radix's default centered placement. Sub-menus open with a 2px
- * `sideOffset` (Radix's own default is 0) so they sit slightly clear of
- * the trigger item instead of touching it edge-to-edge.
+ * Radix's default centered placement.
+ *
+ * Sub-menus should sit 2px clear of the PARENT PANEL's edge, but Radix's
+ * `sideOffset` on SubContent is measured from the SubTrigger item's own
+ * edge — and each item is already inset ~5px from the panel edge (its
+ * `margin: 0 4px` plus the panel's 1px border). So sideOffset=7 (not 2)
+ * is what actually produces a 2px gap from the panel; confirmed by
+ * measuring both boxes directly via Playwright rather than trusting the
+ * arithmetic alone; a naive sideOffset=2 (measuring only from the item)
+ * comes out overlapping the panel by ~3px in practice.
  */
 export const Dropdown = RadixDropdownMenu.Root;
 export const DropdownTrigger = RadixDropdownMenu.Trigger;
@@ -67,7 +74,7 @@ export function DropdownContent({ className, sideOffset = 4, align = "start", ..
 
 export type DropdownSubContentProps = ComponentPropsWithoutRef<typeof RadixDropdownMenu.SubContent>;
 
-export function DropdownSubContent({ className, sideOffset = 2, ...props }: DropdownSubContentProps) {
+export function DropdownSubContent({ className, sideOffset = 7, ...props }: DropdownSubContentProps) {
   return (
     <RadixDropdownMenu.Portal>
       <RadixDropdownMenu.SubContent className={clsx(styles.content, className)} sideOffset={sideOffset} {...props} />
