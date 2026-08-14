@@ -36,6 +36,15 @@ import styles from "./input-phone.module.css";
  * is a prop so a consuming app supplies its own real flag assets/data;
  * shipping fabricated flag icons for countries Figma never specified
  * would misrepresent the design system's source of truth.
+ *
+ * The number field auto-formats as (999) 999-9999 while typing — same
+ * strip-to-digits/reformat/restore-caret-by-digit-count technique as
+ * DateInput's DD/MM/YYYY mask (see that file's comment), and matching
+ * the exact placeholder Figma specifies. Deliberately US-shaped
+ * regardless of the selected country: Figma only specifies this one
+ * mask, and a real per-country mask table is a much bigger, separately
+ * scoped feature (libphonenumber-style formatting), not something to
+ * half-implement here.
  */
 export type InputPhoneSize = "md" | "lg";
 
@@ -49,6 +58,14 @@ export interface PhoneCountry {
 export const defaultPhoneCountries: PhoneCountry[] = [
   { value: "us", label: "United States", dialCode: "+1", flag: <Image src="/flags/us.svg" alt="" width={16} height={16} /> },
 ];
+
+function formatPhone(raw: string) {
+  const digits = raw.replace(/\D/g, "").slice(0, 10);
+  if (digits.length > 6) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  if (digits.length > 3) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  if (digits.length > 0) return `(${digits}`;
+  return digits;
+}
 
 export interface InputPhoneProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: ReactNode;
@@ -78,6 +95,8 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(function
     onCountryChange,
     id,
     disabled,
+    onKeyDown,
+    onChange,
     ...props
   },
   ref,
@@ -93,6 +112,34 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(function
     if (countryValue === undefined) setUncontrolledCountry(value);
     onCountryChange?.(value);
   }
+
+  const handleKeyDown: InputPhoneProps["onKeyDown"] = (e) => {
+    onKeyDown?.(e);
+    if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+    const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Tab", "Home", "End", "Enter"];
+    if (allowed.includes(e.key)) return;
+    if (/^[0-9]$/.test(e.key)) return;
+    e.preventDefault();
+  };
+
+  const handleChange: InputPhoneProps["onChange"] = (e) => {
+    const el = e.target;
+    const cursorPos = el.selectionStart ?? el.value.length;
+    const digitsBeforeCursor = el.value.slice(0, cursorPos).replace(/\D/g, "").length;
+
+    const formatted = formatPhone(el.value);
+    el.value = formatted;
+
+    let pos = 0;
+    let seen = 0;
+    while (pos < formatted.length && seen < digitsBeforeCursor) {
+      if (/\d/.test(formatted[pos])) seen++;
+      pos++;
+    }
+    requestAnimationFrame(() => el.setSelectionRange(pos, pos));
+
+    onChange?.(e);
+  };
 
   return (
     <div className={clsx(styles.wrapper, wrapperClassName)} data-error={error || undefined}>
@@ -132,8 +179,11 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(function
               ref={ref}
               id={inputId}
               type="tel"
+              inputMode="tel"
               disabled={disabled}
               className={clsx(styles.input, className)}
+              onKeyDown={handleKeyDown}
+              onChange={handleChange}
               {...props}
             />
           </div>
