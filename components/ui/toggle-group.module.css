@@ -83,20 +83,33 @@
 }
 
 /* --- Outline --- */
+/* A REAL border here, not the box-shadow-based --toggle-stroke every
+   other style/state in this set uses — box-shadow doesn't occupy layout
+   space, so the standard margin-right:-1px border-collapse trick below
+   doesn't actually make two adjacent shadows land on the same pixel; it
+   just shifts each item's shadow independently, leaving two parallel
+   1px lines a pixel apart instead of one merged line (confirmed
+   visually: a double stripe between every pair of items). A real border
+   IS part of the box's layout, so shifting it by -1px makes the next
+   item's border physically overlap the previous item's by exactly 1px,
+   and whichever paints later (DOM order) wins that shared pixel — the
+   classic, correct way to collapse adjacent borders. This also matches
+   Figma's own markup, which used a real `border` on these items (unlike
+   the standalone Toggle/Button, which use box-shadow deliberately to
+   avoid a size mismatch against sibling variants shown side by side —
+   not a concern here since a group is always one style at a time). */
 .group[data-style="outline"] .item {
-  --toggle-stroke: 0 0 0 1px var(--stroke);
-  /* Adjacent 1px strokes would double up at each shared edge — collapse
-     them into a single line, same as Figma's own mr-[-1px] items. */
+  border: 1px solid var(--stroke);
   margin-right: -1px;
 }
 .group[data-style="outline"] .item:last-child {
   margin-right: 0;
 }
 .group[data-style="outline"] .item:hover:not(:disabled) {
-  --toggle-stroke: 0 0 0 1px var(--stroke-subtle);
+  border-color: var(--stroke-subtle);
 }
 .group[data-style="outline"] .item[data-state="on"] {
-  --toggle-stroke: 0 0 0 1px var(--stroke);
+  border-color: var(--stroke);
   background-color: var(--fill-neutral-overlay);
 }
 
