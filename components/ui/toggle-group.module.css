@@ -1,0 +1,109 @@
+/*
+ * Source: Figma "Toggle Group" component set (page 2067:2993). See
+ * toggle-group.tsx for the full source comment.
+ */
+
+.group {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3, 6px);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -0.14px;
+  color: var(--foreground);
+  white-space: nowrap;
+  --toggle-stroke: 0 0 0 0 transparent;
+  --toggle-ring: 0 0 0 0 transparent;
+  box-shadow: var(--toggle-stroke), var(--toggle-ring);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.item:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.group[data-size="sm"] .item {
+  padding: var(--spacing-4, 8px);
+}
+.group[data-size="md"] .item {
+  padding: var(--spacing-5, 10px);
+}
+.group[data-size="lg"] .item {
+  padding: var(--spacing-6, 12px);
+}
+
+.item:focus-visible {
+  outline: none;
+  z-index: 1;
+  --toggle-ring: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+/* --- Fill --- */
+.group[data-style="fill"] .item {
+  background-color: var(--fill-neutral-overlay);
+}
+.group[data-style="fill"] .item:hover:not(:disabled) {
+  background-color: var(--fill-neutral-overlay-hover);
+}
+.group[data-style="fill"] .item[data-state="on"] {
+  background-color: var(--fill-neutral-overlay-hover);
+}
+
+/* --- Outline --- */
+.group[data-style="outline"] .item {
+  --toggle-stroke: 0 0 0 1px var(--stroke);
+  /* Adjacent 1px strokes would double up at each shared edge — collapse
+     them into a single line, same as Figma's own mr-[-1px] items. */
+  margin-right: -1px;
+}
+.group[data-style="outline"] .item:last-child {
+  margin-right: 0;
+}
+.group[data-style="outline"] .item:hover:not(:disabled) {
+  --toggle-stroke: 0 0 0 1px var(--stroke-subtle);
+}
+.group[data-style="outline"] .item[data-state="on"] {
+  --toggle-stroke: 0 0 0 1px var(--stroke);
+  background-color: var(--fill-neutral-overlay);
+}
+
+/* --- Ghost --- */
+.group[data-style="ghost"] .item:hover:not(:disabled) {
+  background-color: var(--fill-neutral-overlay);
+  color: var(--foreground-subtle);
+}
+.group[data-style="ghost"] .item[data-state="on"] {
+  background-color: var(--fill-neutral-overlay);
+  color: var(--foreground);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+}

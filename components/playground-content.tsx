@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Command, Search, Bold } from "lucide-react";
+import { Check, Command, Search, Bold, Italic, Underline } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,12 @@ import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
 import { TabsRoot, TabsList, Tab, TabsContent, type TabsStyle } from "@/components/ui/tabs";
 import { Toggle, type ToggleStyle, type ToggleSize } from "@/components/ui/toggle";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+  type ToggleGroupStyle,
+  type ToggleGroupSize,
+} from "@/components/ui/toggle-group";
 
 const sections = [
   "Alert",
@@ -59,6 +65,7 @@ const sections = [
   "Tabs",
   "Textarea",
   "Toggle",
+  "ToggleGroup",
   "Tooltip",
 ];
 
@@ -2198,6 +2205,107 @@ function ToggleDemo() {
   );
 }
 
+const toggleGroupStyles = [
+  { key: "fill", label: "Fill" },
+  { key: "outline", label: "Outline" },
+  { key: "ghost", label: "Ghost" },
+] as const;
+
+const toggleGroupSizes = [
+  { key: "sm", label: "Small" },
+  { key: "md", label: "Medium" },
+  { key: "lg", label: "Large" },
+] as const;
+
+const toggleGroupContents = [
+  { key: "icon", label: "Icon" },
+  { key: "text", label: "Text" },
+  { key: "both", label: "Icon + Text" },
+] as const;
+
+function ToggleGroupDemo() {
+  const [toggleStyle, setToggleStyle] = useState<ToggleGroupStyle>("fill");
+  const [size, setSize] = useState<ToggleGroupSize>("md");
+  const [content, setContent] = useState<(typeof toggleGroupContents)[number]["key"]>("icon");
+  const [multiple, setMultiple] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [single, setSingle] = useState("bold");
+  const [many, setMany] = useState<string[]>(["bold"]);
+
+  const showIcon = content === "icon" || content === "both";
+  const showText = content === "text" || content === "both";
+
+  const items = [
+    { value: "bold", label: "Bold", icon: <Bold /> },
+    { value: "italic", label: "Italic", icon: <Italic /> },
+    { value: "underline", label: "Underline", icon: <Underline /> },
+  ];
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Style" value={toggleStyle} onChange={setToggleStyle} options={toggleGroupStyles} />
+        <TinySelect label="Size" value={size} onChange={setSize} options={toggleGroupSizes} />
+        <TinySelect label="Content" value={content} onChange={setContent} options={toggleGroupContents} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Multiple</span>
+          <input
+            type="checkbox"
+            checked={multiple}
+            onChange={(e) => setMultiple(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-fit">
+          {multiple ? (
+            <ToggleGroup
+              type="multiple"
+              toggleStyle={toggleStyle}
+              size={size}
+              value={many}
+              onValueChange={setMany}
+              disabled={disabled}
+            >
+              {items.map((item) => (
+                <ToggleGroupItem key={item.value} value={item.value} icon={showIcon ? item.icon : undefined}>
+                  {showText ? item.label : undefined}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          ) : (
+            <ToggleGroup
+              type="single"
+              toggleStyle={toggleStyle}
+              size={size}
+              value={single}
+              onValueChange={(v) => v && setSingle(v)}
+              disabled={disabled}
+            >
+              {items.map((item) => (
+                <ToggleGroupItem key={item.value} value={item.value} icon={showIcon ? item.icon : undefined}>
+                  {showText ? item.label : undefined}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          )}
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -2260,6 +2368,8 @@ export function PlaygroundContent() {
             {active === "Textarea" && <TextareaDemo />}
 
             {active === "Toggle" && <ToggleDemo />}
+
+            {active === "ToggleGroup" && <ToggleGroupDemo />}
 
             {active === "Tooltip" && <TooltipDemo />}
 
