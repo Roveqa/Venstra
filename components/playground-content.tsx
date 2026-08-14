@@ -2138,37 +2138,28 @@ const toggleSizes = [
   { key: "lg", label: "Large" },
 ] as const;
 
+const toggleContents = [
+  { key: "icon", label: "Icon" },
+  { key: "text", label: "Text" },
+  { key: "both", label: "Icon + Text" },
+] as const;
+
 function ToggleDemo() {
   const [toggleStyle, setToggleStyle] = useState<ToggleStyle>("fill");
   const [size, setSize] = useState<ToggleSize>("md");
-  const [showIcon, setShowIcon] = useState(true);
-  const [showText, setShowText] = useState(true);
+  const [content, setContent] = useState<(typeof toggleContents)[number]["key"]>("both");
   const [pressed, setPressed] = useState(false);
   const [disabled, setDisabled] = useState(false);
+
+  const showIcon = content === "icon" || content === "both";
+  const showText = content === "text" || content === "both";
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
         <TinySelect label="Style" value={toggleStyle} onChange={setToggleStyle} options={toggleStyles} />
         <TinySelect label="Size" value={size} onChange={setSize} options={toggleSizes} />
-        <label className="flex flex-col items-start gap-1.5">
-          <span className="text-[13px] text-ink-600">Icon</span>
-          <input
-            type="checkbox"
-            checked={showIcon}
-            onChange={(e) => setShowIcon(e.target.checked)}
-            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
-          />
-        </label>
-        <label className="flex flex-col items-start gap-1.5">
-          <span className="text-[13px] text-ink-600">Text</span>
-          <input
-            type="checkbox"
-            checked={showText}
-            onChange={(e) => setShowText(e.target.checked)}
-            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
-          />
-        </label>
+        <TinySelect label="Content" value={content} onChange={setContent} options={toggleContents} />
         <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Pressed</span>
           <input
