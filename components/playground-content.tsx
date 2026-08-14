@@ -49,6 +49,13 @@ import {
   DropdownSubTrigger,
   DropdownSubContent,
 } from "@/components/ui/dropdown";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  type SelectFieldSize,
+} from "@/components/ui/select";
 
 const sections = [
   "Alert",
@@ -71,6 +78,7 @@ const sections = [
   "Progress",
   "Radio",
   "RadioCard",
+  "Select",
   "Slider",
   "Switch",
   "SwitchCard",
@@ -2400,6 +2408,90 @@ function DropdownDemo() {
   );
 }
 
+const selectSizes = [
+  { key: "md", label: "Medium" },
+  { key: "lg", label: "Large" },
+] as const;
+
+function SelectDemo() {
+  const [size, setSize] = useState<SelectFieldSize>("md");
+  const [showLabel, setShowLabel] = useState(true);
+  const [showHint, setShowHint] = useState(true);
+  const [error, setError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [value, setValue] = useState<string | undefined>(undefined);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Size" value={size} onChange={setSize} options={selectSizes} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Label</span>
+          <input
+            type="checkbox"
+            checked={showLabel}
+            onChange={(e) => setShowLabel(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Hint</span>
+          <input
+            type="checkbox"
+            checked={showHint}
+            onChange={(e) => setShowHint(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Error</span>
+          <input
+            type="checkbox"
+            checked={error}
+            onChange={(e) => setError(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Disabled</span>
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto w-full max-w-[280px]">
+          <Select value={value} onValueChange={setValue} disabled={disabled}>
+            <SelectTrigger
+              label={showLabel ? "Label" : undefined}
+              labelOptional
+              hint={showHint ? (error ? "Something went wrong" : "Insert select description here") : undefined}
+              error={error}
+              size={size}
+              placeholder="Placeholder"
+            />
+            <SelectContent>
+              <SelectItem value="apple">Apple</SelectItem>
+              <SelectItem value="banana">Banana</SelectItem>
+              <SelectItem value="cherry">Cherry</SelectItem>
+              <SelectItem value="durian" disabled>
+                Durian
+              </SelectItem>
+              <SelectItem value="elderberry">Elderberry</SelectItem>
+              <SelectItem value="fig">Fig</SelectItem>
+              <SelectItem value="grape">Grape</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const ACTIVE_TAB_STORAGE_KEY = "playground-active-tab";
 
 export function PlaygroundContent() {
@@ -2450,6 +2542,8 @@ export function PlaygroundContent() {
             {active === "Radio" && <RadioDemo />}
 
             {active === "RadioCard" && <RadioCardDemo />}
+
+            {active === "Select" && <SelectDemo />}
 
             {active === "Slider" && <SliderDemo />}
 

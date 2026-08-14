@@ -1,0 +1,218 @@
+/*
+ * Source: Figma "Select" component set (page 1774:9310). See select.tsx
+ * for the full source comment.
+ */
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.field {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-3, 6px);
+}
+
+.box {
+  display: flex;
+  width: 100%;
+  min-width: 100px;
+  align-items: center;
+  gap: var(--spacing-4, 8px);
+  box-sizing: border-box;
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-subtle);
+  cursor: pointer;
+  --sel-ring: 0 0 0 0 transparent;
+  box-shadow: var(--sel-ring);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.box[data-size="md"] {
+  padding: var(--spacing-4, 8px) var(--spacing-6, 12px);
+}
+.box[data-size="lg"] {
+  padding: var(--spacing-5, 10px) var(--spacing-7, 14px);
+}
+
+.box:hover:not([data-disabled]) {
+  background-color: var(--surface-subtle-hover);
+}
+
+.box:focus-visible {
+  outline: none;
+  box-shadow: var(--sel-ring), 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.box[data-state="open"] {
+  background-color: var(--surface-subtle);
+  box-shadow: var(--sel-ring), 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+
+.box[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.value {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.box[data-placeholder] .value {
+  color: var(--foreground-muted);
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--foreground-weak);
+}
+.icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Error — real color even for the placeholder, matching Input. */
+.wrapper[data-error] .box {
+  --sel-ring: inset 0 0 0 1px var(--stroke-error);
+}
+.wrapper[data-error] .value,
+.wrapper[data-error] .box[data-placeholder] .value {
+  color: var(--foreground);
+}
+.wrapper[data-error] .box:focus-visible,
+.wrapper[data-error] .box[data-state="open"] {
+  box-shadow: var(--sel-ring), 0 0 0 2px rgba(253, 58, 54, 0.1);
+}
+
+.content {
+  z-index: 50;
+  display: flex;
+  min-width: var(--radix-select-trigger-width);
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  border-radius: var(--radius-md, 8px);
+  background-color: var(--surface-low);
+  box-shadow:
+    0px 12px 32px -12px rgba(0, 0, 0, 0.12),
+    0px 2px 4px 0px rgba(0, 0, 0, 0.04);
+  animation: select-in 0.12s ease-out;
+}
+
+.content[data-state="closed"] {
+  animation: select-out 0.1s ease-in;
+}
+
+@keyframes select-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes select-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+.viewport {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--spacing-1, 2px);
+  padding: var(--spacing-1, 2px) 0;
+}
+
+.scrollButton {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-4, 8px);
+  color: var(--foreground);
+  cursor: default;
+}
+.scrollButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 8px);
+  margin: 0 var(--spacing-2, 4px);
+  padding: var(--spacing-2, 4px) var(--spacing-4, 8px);
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  outline: none;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+  color: var(--foreground);
+  transition: background-color 0.1s ease;
+}
+
+.item[data-highlighted] {
+  background-color: var(--surface-subtle);
+}
+
+.item[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.itemMain {
+  display: flex;
+  min-width: 0;
+  flex: 1 0 0;
+  align-items: center;
+  gap: var(--spacing-2, 4px);
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.itemIcon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--foreground);
+}

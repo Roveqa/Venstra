@@ -41,6 +41,7 @@ const sections: SidebarEntry[] = [
       { key: "RadioCard", label: "Card" },
     ],
   },
+  "Select",
   "Slider",
   {
     label: "Switch",
