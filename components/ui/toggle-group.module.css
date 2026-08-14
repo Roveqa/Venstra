@@ -7,8 +7,24 @@
   display: flex;
   align-items: stretch;
   gap: 0;
+}
+
+/* The outer rounded silhouette comes from each end item's OWN
+   border-radius, not a clip on .group — an earlier version relied on
+   .group { border-radius; overflow: hidden } instead, which broke two
+   things: the outline stroke (a box-shadow, drawn OUTSIDE the item's
+   border-box) got clipped away entirely on the left/top/bottom edges of
+   the first item and the right/top/bottom edges of the last item, since
+   those edges sit flush with the group's own clip boundary; the same
+   clipping would have cut off the focus ring on either end item too. */
+.item:first-child {
+  border-radius: var(--radius-md, 8px) 0 0 var(--radius-md, 8px);
+}
+.item:last-child {
+  border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+}
+.item:first-child:last-child {
   border-radius: var(--radius-md, 8px);
-  overflow: hidden;
 }
 
 .item {
