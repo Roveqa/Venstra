@@ -65,7 +65,7 @@
 
 .separator {
   height: 1px;
-  margin: 0 var(--spacing-2, 4px);
+  margin: 0;
   background-color: var(--stroke);
   border: none;
 }
