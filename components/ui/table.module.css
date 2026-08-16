@@ -38,11 +38,18 @@
   display: flex;
   width: 100%;
   align-items: stretch;
-  border-bottom: 1px solid var(--stroke);
+  /*
+   * box-shadow instead of border-bottom: a real border on a row inside
+   * a horizontally-scrolling container (.scrollArea) can visibly clip
+   * or truncate mid-scroll in some browsers (a GPU-compositing/layer-
+   * boundary artifact during the scroll gesture) — box-shadow doesn't
+   * participate in layout the same way and composites cleanly instead.
+   */
+  box-shadow: inset 0 -1px 0 var(--stroke);
   transition: background-color 0.1s ease;
 }
 .body .row:last-child {
-  border-bottom: none;
+  box-shadow: none;
 }
 .body .row:hover {
   background-color: var(--surface-subtle);
@@ -90,4 +97,8 @@
   box-sizing: border-box;
   flex-shrink: 0;
   padding: var(--spacing-6, 12px) var(--spacing-8, 16px);
+  /* Pagination's own min-content width can exceed a narrow table —
+     scroll instead of letting .table's overflow:hidden clip (hide)
+     buttons entirely. */
+  overflow-x: auto;
 }

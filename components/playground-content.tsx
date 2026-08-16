@@ -1954,11 +1954,7 @@ function TableDemo() {
                 <Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />
               </TableHead>
               <TableHead>User</TableHead>
-              <TableHead>Project</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Requests</TableHead>
-              <TableHead>Last active</TableHead>
-              <TableHead>Region</TableHead>
               <TableHead width={56} aria-hidden="true" />
             </TableRow>
           </TableHeader>
@@ -1985,15 +1981,11 @@ function TableDemo() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell>{row.project}</TableCell>
                 <TableCell>
                   <Badge intent={tableStatusIntent[row.status]} dotLeft>
                     {row.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{row.requests}</TableCell>
-                <TableCell>{row.lastActive}</TableCell>
-                <TableCell>{row.region}</TableCell>
                 <TableCell width={56}>
                   <Dropdown>
                     <DropdownTrigger asChild>
