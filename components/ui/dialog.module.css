@@ -1,0 +1,237 @@
+/*
+ * Source: Figma "Dialog" (page 116:4195, ComponentSet 1967:12059).
+ * See dialog.tsx for the full source comment.
+ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(4, 4, 4, 0.4);
+  animation: dialog-overlay-in 0.15s ease-out;
+}
+.overlay[data-state="closed"] {
+  animation: dialog-overlay-out 0.15s ease-in;
+}
+
+@keyframes dialog-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dialog-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.content {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-xxl, 16px);
+  background-color: var(--surface-low);
+  box-shadow: 0px 2px 26px 0px rgba(196, 196, 196, 0.2);
+  overflow: hidden;
+  outline: none;
+}
+
+.content[data-position="center"] {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: dialog-center-in 0.15s ease-out;
+}
+.content[data-position="center"][data-state="closed"] {
+  animation: dialog-center-out 0.15s ease-in;
+}
+
+.content[data-position="right"] {
+  top: 50%;
+  right: var(--spacing-11, 24px);
+  transform: translateY(-50%);
+  animation: dialog-right-in 0.2s ease-out;
+}
+.content[data-position="right"][data-state="closed"] {
+  animation: dialog-right-out 0.15s ease-in;
+}
+
+.content[data-position="left"] {
+  top: 50%;
+  left: var(--spacing-11, 24px);
+  transform: translateY(-50%);
+  animation: dialog-left-in 0.2s ease-out;
+}
+.content[data-position="left"][data-state="closed"] {
+  animation: dialog-left-out 0.15s ease-in;
+}
+
+@keyframes dialog-center-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes dialog-center-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+}
+@keyframes dialog-right-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+@keyframes dialog-right-out {
+  from {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-50%) translateX(16px);
+  }
+}
+@keyframes dialog-left-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+@keyframes dialog-left-out {
+  from {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-16px);
+  }
+}
+
+.header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  gap: var(--spacing-8, 16px);
+  padding: var(--spacing-8, 16px);
+}
+
+.headerText {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--spacing-2, 4px);
+}
+
+.title {
+  margin: 0;
+  color: var(--foreground);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.16px;
+}
+
+.description {
+  margin: 0;
+  color: var(--foreground-subtle);
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+
+.closeButton {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-s, 4px);
+  background: none;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: color 0.1s ease;
+}
+.closeButton:hover {
+  color: var(--foreground-subtle);
+}
+.closeButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.1);
+}
+.closeButton svg {
+  width: 14px;
+  height: 14px;
+}
+
+.body {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  gap: var(--spacing-8, 16px);
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2, 4px) var(--spacing-8, 16px) var(--spacing-8, 16px);
+}
+.body:empty {
+  display: none;
+}
+
+.footer {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--spacing-2, 4px);
+  padding: var(--spacing-8, 16px);
+  border-top: 1px solid var(--stroke);
+}
+
+.footer[data-position="center"] {
+  justify-content: stretch;
+}
+.footer[data-position="center"] > * {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.footer[data-position="right"] {
+  justify-content: flex-end;
+}
+
+.footer[data-position="left"] {
+  justify-content: flex-start;
+}

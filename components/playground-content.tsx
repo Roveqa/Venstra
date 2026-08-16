@@ -16,6 +16,16 @@ import { AvatarGroup } from "@/components/ui/avatar-group";
 import { Progress, type ProgressPercentPosition } from "@/components/ui/progress";
 import { Pagination } from "@/components/ui/pagination";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@/components/ui/breadcrumb";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,6 +87,7 @@ const sections = [
   "Date",
   "Phone",
   "Kbd",
+  "Dialog",
   "Divider",
   "Dropdown",
   "Label",
@@ -1734,6 +1745,68 @@ function KbdDemo() {
   );
 }
 
+const dialogPositions = [
+  { key: "center", label: "Center" },
+  { key: "right", label: "Right" },
+  { key: "left", label: "Left" },
+] as const;
+
+function DialogDemo() {
+  const [position, setPosition] = useState<(typeof dialogPositions)[number]["key"]>("center");
+  const [open, setOpen] = useState(false);
+
+  const cancelButton = (
+    <Button variant="light" intent="neutral" size="sm" onClick={() => setOpen(false)}>
+      Cancel
+    </Button>
+  );
+  const confirmButton = (
+    <Button variant="fill" intent="primary" size="sm" onClick={() => setOpen(false)}>
+      Upgrade
+    </Button>
+  );
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Position" value={position} onChange={setPosition} options={dialogPositions} />
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto">
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button variant="fill" intent="primary" size="md">
+                Open dialog
+              </Button>
+            </DialogTrigger>
+            <DialogContent position={position}>
+              <DialogHeader>
+                <DialogTitle>Title</DialogTitle>
+                <DialogDescription>Add a short description here to provide additional context for this component</DialogDescription>
+              </DialogHeader>
+              <DialogBody />
+              <DialogFooter position={position}>
+                {position === "left" ? (
+                  <>
+                    {confirmButton}
+                    {cancelButton}
+                  </>
+                ) : (
+                  <>
+                    {cancelButton}
+                    {confirmButton}
+                  </>
+                )}
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const checkboxModes = [
   { key: "default", label: "Default" },
   { key: "checked", label: "Checked" },
@@ -2908,6 +2981,8 @@ export function PlaygroundContent() {
             {active === "Phone" && <PhoneInputDemo />}
 
             {active === "Kbd" && <KbdDemo />}
+
+            {active === "Dialog" && <DialogDemo />}
 
             {active === "Divider" && (
               <ComponentSection>
