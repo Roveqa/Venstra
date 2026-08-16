@@ -204,7 +204,15 @@
   flex: 1 0 0;
   flex-direction: column;
   gap: var(--spacing-8, 16px);
-  align-items: center;
+  /*
+   * Figma's own Content slot is align-items: center — fine for its
+   * single-line "(Slot)" placeholder, but real multi-field content
+   * (an input next to a narrower checkbox, say) ends up looking
+   * misaligned rather than reading as a form. Deliberately stretch
+   * instead, per review, so every child fills the dialog's content
+   * width and lines up on the left edge.
+   */
+  align-items: stretch;
   justify-content: center;
   padding: var(--spacing-2, 4px) var(--spacing-8, 16px) var(--spacing-8, 16px);
 }

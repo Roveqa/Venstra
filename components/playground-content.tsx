@@ -1798,6 +1798,7 @@ function DialogDemo() {
               {bodyContent && (
                 <DialogBody>
                   <Input placeholder="you@company.com" size="md" />
+                  <Checkbox label="Keep me signed in" />
                 </DialogBody>
               )}
               <DialogFooter position={position}>
