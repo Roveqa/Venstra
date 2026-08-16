@@ -84,7 +84,7 @@ import {
 
 const sections = [
   "Alert",
-  "AlertDialog",
+  "Alert Dialog",
   "Avatar",
   "Badge",
   "Breadcrumb",
@@ -3059,7 +3059,7 @@ export function PlaygroundContent() {
             {active === "Kbd" && <KbdDemo />}
 
             {active === "Dialog" && <DialogDemo />}
-            {active === "AlertDialog" && <AlertDialogDemo />}
+            {active === "Alert Dialog" && <AlertDialogDemo />}
 
             {active === "Divider" && (
               <ComponentSection>
