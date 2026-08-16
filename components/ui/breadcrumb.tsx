@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { ChevronDown, ChevronRight, Ellipsis } from "lucide-react";
+import { ChevronDown, ChevronRight, Dot, Ellipsis, Slash } from "lucide-react";
 import { forwardRef, type AnchorHTMLAttributes, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { Dropdown, DropdownTrigger, DropdownContent, DropdownItem } from "./dropdown";
 import styles from "./breadcrumb.module.css";
@@ -11,10 +11,10 @@ import styles from "./breadcrumb.module.css";
  * master (2005:1699, padding-2 wrapper + Slot with gap-2 between every
  * item/divider), "Breadcrumb item" ComponentSet (2001:19361: State
  * (Default/Hover/Focus/Active) x Variant(Text + Icon/Icon/Ellipsis), 12
- * variants), "Divider breadcrumb" (2005:605 — ComponentSet exposes
- * Splash/Dot/Chevron variants, but the actual assembled Breadcrumb
- * instance only ever uses Chevron; Splash/Dot were never wired into any
- * real composition, so only Chevron is implemented here).
+ * variants), "Divider breadcrumb" ComponentSet (2005:605: exactly 3
+ * variants — Splash "/", Dot "·", Chevron ">" — all implemented via
+ * `BreadcrumbSeparator`'s `variant` prop, defaulting to "chevron" since
+ * that's what the one assembled Breadcrumb instance in Figma uses).
  *
  * Segment states: Default (foreground-weak), Hover (foreground-subtle,
  * cursor pointer, no bg — color-only), Focus (foreground-weak + ring,
@@ -34,9 +34,8 @@ import styles from "./breadcrumb.module.css";
  * own "Active, Variant=Ellipsis" state literally embeds a real Dropdown
  * Menu panel — so it's built the same way: a Dropdown trigger, not a
  * dead label. `items` is required (an ellipsis with nothing to expand
- * into isn't meaningful). `icon` defaults to Figma's own ellipsis_16
- * glyph but is swappable (e.g. MoreHorizontal) for a consuming app's
- * own collapse affordance.
+ * into isn't meaningful). Fixed to Figma's own ellipsis_16 glyph — one
+ * collapse affordance, not a configurable choice.
  */
 export function Breadcrumb({ className, children, ...props }: ComponentPropsWithoutRef<"nav">) {
   return (
@@ -108,27 +107,39 @@ export function BreadcrumbPage({ className, icon, iconOnly, children, ...props }
   );
 }
 
-export function BreadcrumbSeparator({ className, ...props }: ComponentPropsWithoutRef<"span">) {
+export type BreadcrumbSeparatorVariant = "splash" | "dot" | "chevron";
+
+const separatorIcons: Record<BreadcrumbSeparatorVariant, ReactNode> = {
+  splash: <Slash />,
+  dot: <Dot />,
+  chevron: <ChevronRight />,
+};
+
+export interface BreadcrumbSeparatorProps extends ComponentPropsWithoutRef<"span"> {
+  variant?: BreadcrumbSeparatorVariant;
+}
+
+export function BreadcrumbSeparator({ className, variant = "chevron", ...props }: BreadcrumbSeparatorProps) {
   return (
     <span aria-hidden="true" className={clsx(styles.separator, className)} {...props}>
-      <ChevronRight />
+      {separatorIcons[variant]}
     </span>
   );
 }
 
 export interface BreadcrumbEllipsisProps {
   items: { label: string; onClick?: () => void }[];
-  /** Defaults to Figma's own "ellipsis_16" glyph — override for a different collapse affordance (e.g. MoreHorizontal). */
-  icon?: ReactNode;
   className?: string;
   "aria-label"?: string;
 }
 
-export function BreadcrumbEllipsis({ items, icon = <Ellipsis />, className, "aria-label": ariaLabel = "Show more breadcrumb items" }: BreadcrumbEllipsisProps) {
+export function BreadcrumbEllipsis({ items, className, "aria-label": ariaLabel = "Show more breadcrumb items" }: BreadcrumbEllipsisProps) {
   return (
     <Dropdown>
       <DropdownTrigger className={clsx(styles.item, styles.ellipsisTrigger, className)} aria-label={ariaLabel}>
-        <span className={styles.icon}>{icon}</span>
+        <span className={styles.icon}>
+          <Ellipsis />
+        </span>
       </DropdownTrigger>
       <DropdownContent align="start" className={styles.ellipsisContent}>
         {items.map((item, i) => (

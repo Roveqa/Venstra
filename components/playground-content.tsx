@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Check, Command, Search, Bold, Italic, Underline, User, Settings, LogOut, CreditCard, Trash2, Home, Folder, Ellipsis, MoreHorizontal, Menu } from "lucide-react";
+import { Check, Command, Search, Bold, Italic, Underline, User, Settings, LogOut, CreditCard, Trash2, Home, Folder } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -1500,17 +1500,17 @@ function BadgeDemo() {
   );
 }
 
-const breadcrumbCollapseIcons = [
-  { key: "ellipsis", label: "Ellipsis" },
-  { key: "more-horizontal", label: "More horizontal" },
-  { key: "menu", label: "Menu" },
+const breadcrumbSeparatorVariants = [
+  { key: "chevron", label: "Chevron" },
+  { key: "splash", label: "Splash" },
+  { key: "dot", label: "Dot" },
 ] as const;
 
 function BreadcrumbDemo() {
   const [showIcons, setShowIcons] = useState(true);
   const [collapsed, setCollapsed] = useState(true);
   const [dropdown, setDropdown] = useState(false);
-  const [collapseIcon, setCollapseIcon] = useState<(typeof breadcrumbCollapseIcons)[number]["key"]>("ellipsis");
+  const [separator, setSeparator] = useState<(typeof breadcrumbSeparatorVariants)[number]["key"]>("chevron");
 
   const collapsedItems = [
     { label: "Category" },
@@ -1521,11 +1521,6 @@ function BreadcrumbDemo() {
     { label: "Another category" },
     { label: "Third category" },
   ];
-  const collapseIconElement = {
-    ellipsis: <Ellipsis />,
-    "more-horizontal": <MoreHorizontal />,
-    menu: <Menu />,
-  }[collapseIcon];
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
@@ -1548,7 +1543,7 @@ function BreadcrumbDemo() {
             className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
           />
         </label>
-        {collapsed && <TinySelect label="Collapse icon" value={collapseIcon} onChange={setCollapseIcon} options={breadcrumbCollapseIcons} />}
+        <TinySelect label="Divider" value={separator} onChange={setSeparator} options={breadcrumbSeparatorVariants} />
         <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Segment dropdown</span>
           <input
@@ -1569,13 +1564,13 @@ function BreadcrumbDemo() {
                   Home
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
+              <BreadcrumbSeparator variant={separator} />
               {collapsed ? (
                 <>
                   <BreadcrumbItem>
-                    <BreadcrumbEllipsis items={collapsedItems} icon={collapseIconElement} />
+                    <BreadcrumbEllipsis items={collapsedItems} />
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator />
+                  <BreadcrumbSeparator variant={separator} />
                 </>
               ) : (
                 <>
@@ -1584,13 +1579,13 @@ function BreadcrumbDemo() {
                       Category
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator />
+                  <BreadcrumbSeparator variant={separator} />
                   <BreadcrumbItem>
                     <BreadcrumbLink href="#" icon={showIcons ? <Folder /> : undefined}>
                       Subcategory
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator />
+                  <BreadcrumbSeparator variant={separator} />
                 </>
               )}
               <BreadcrumbItem>
@@ -1598,7 +1593,7 @@ function BreadcrumbDemo() {
                   Products
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
+              <BreadcrumbSeparator variant={separator} />
               <BreadcrumbItem>
                 <BreadcrumbPage icon={showIcons ? <Folder /> : undefined}>Current page</BreadcrumbPage>
               </BreadcrumbItem>
