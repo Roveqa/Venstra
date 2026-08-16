@@ -6,7 +6,13 @@ import { ChevronRight } from "lucide-react";
 type SidebarEntry = string | { label: string; children: { key: string; label: string }[] };
 
 const sections: SidebarEntry[] = [
-  "Alert",
+  {
+    label: "Alert",
+    children: [
+      { key: "Alert", label: "Banner" },
+      { key: "AlertDialog", label: "Dialog" },
+    ],
+  },
   "Avatar",
   "Badge",
   "Breadcrumb",

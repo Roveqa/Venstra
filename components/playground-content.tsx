@@ -26,6 +26,17 @@ import {
   DialogBody,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
 import { Textarea } from "@/components/ui/textarea";
@@ -73,6 +84,7 @@ import {
 
 const sections = [
   "Alert",
+  "AlertDialog",
   "Avatar",
   "Badge",
   "Breadcrumb",
@@ -1822,6 +1834,55 @@ function DialogDemo() {
   );
 }
 
+const alertDialogPositions = [
+  { key: "center", label: "Center" },
+  { key: "right", label: "Right" },
+  { key: "left", label: "Left" },
+] as const;
+
+function AlertDialogDemo() {
+  const [position, setPosition] = useState<(typeof alertDialogPositions)[number]["key"]>("center");
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <TinySelect label="Buttons" value={position} onChange={setPosition} options={alertDialogPositions} />
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto">
+          <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogTrigger asChild>
+              <Button variant="fill" intent="error" size="md">
+                Delete account
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Title</AlertDialogTitle>
+                <AlertDialogDescription>Add a short description here to provide additional context for this component</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter position={position}>
+                <AlertDialogCancel asChild>
+                  <Button variant="light" intent="neutral" size="sm">
+                    Cancel
+                  </Button>
+                </AlertDialogCancel>
+                <AlertDialogAction asChild>
+                  <Button variant="fill" intent="primary" size="sm">
+                    Continue
+                  </Button>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const checkboxModes = [
   { key: "default", label: "Default" },
   { key: "checked", label: "Checked" },
@@ -2998,6 +3059,7 @@ export function PlaygroundContent() {
             {active === "Kbd" && <KbdDemo />}
 
             {active === "Dialog" && <DialogDemo />}
+            {active === "AlertDialog" && <AlertDialogDemo />}
 
             {active === "Divider" && (
               <ComponentSection>
