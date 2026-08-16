@@ -34,50 +34,27 @@
 .content {
   position: fixed;
   z-index: 50;
+  top: 50%;
+  left: 50%;
   display: flex;
   width: 400px;
   max-width: calc(100vw - 32px);
   flex-direction: column;
   box-sizing: border-box;
+  transform: translate(-50%, -50%);
   border: 1px solid var(--stroke);
   border-radius: var(--radius-xxl, 16px);
   background-color: var(--surface-low);
   box-shadow: 0px 2px 26px 0px rgba(196, 196, 196, 0.2);
   overflow: hidden;
   outline: none;
+  animation: dialog-in 0.15s ease-out;
+}
+.content[data-state="closed"] {
+  animation: dialog-out 0.15s ease-in;
 }
 
-.content[data-position="center"] {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: dialog-center-in 0.15s ease-out;
-}
-.content[data-position="center"][data-state="closed"] {
-  animation: dialog-center-out 0.15s ease-in;
-}
-
-.content[data-position="right"] {
-  top: 50%;
-  right: var(--spacing-11, 24px);
-  transform: translateY(-50%);
-  animation: dialog-right-in 0.2s ease-out;
-}
-.content[data-position="right"][data-state="closed"] {
-  animation: dialog-right-out 0.15s ease-in;
-}
-
-.content[data-position="left"] {
-  top: 50%;
-  left: var(--spacing-11, 24px);
-  transform: translateY(-50%);
-  animation: dialog-left-in 0.2s ease-out;
-}
-.content[data-position="left"][data-state="closed"] {
-  animation: dialog-left-out 0.15s ease-in;
-}
-
-@keyframes dialog-center-in {
+@keyframes dialog-in {
   from {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.96);
@@ -87,7 +64,7 @@
     transform: translate(-50%, -50%) scale(1);
   }
 }
-@keyframes dialog-center-out {
+@keyframes dialog-out {
   from {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
@@ -95,46 +72,6 @@
   to {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.96);
-  }
-}
-@keyframes dialog-right-in {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-}
-@keyframes dialog-right-out {
-  from {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-50%) translateX(16px);
-  }
-}
-@keyframes dialog-left-in {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(-16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-}
-@keyframes dialog-left-out {
-  from {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-50%) translateX(-16px);
   }
 }
 

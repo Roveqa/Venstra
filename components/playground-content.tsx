@@ -1770,7 +1770,7 @@ function DialogDemo() {
   return (
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
-        <TinySelect label="Position" value={position} onChange={setPosition} options={dialogPositions} />
+        <TinySelect label="Buttons" value={position} onChange={setPosition} options={dialogPositions} />
         <label className="flex flex-col items-start gap-1.5">
           <span className="text-[13px] text-ink-600">Body content</span>
           <input
@@ -1790,7 +1790,7 @@ function DialogDemo() {
                 Open dialog
               </Button>
             </DialogTrigger>
-            <DialogContent position={position}>
+            <DialogContent>
               <DialogHeader>
                 <DialogTitle>Title</DialogTitle>
                 <DialogDescription>Add a short description here to provide additional context for this component</DialogDescription>

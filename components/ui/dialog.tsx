@@ -19,29 +19,23 @@ import styles from "./dialog.module.css";
  * Built on @radix-ui/react-dialog (Root/Trigger/Portal/Overlay/Content/
  * Title/Description/Close) — correct focus-trap, scroll-lock, and
  * return-focus for free. No dedicated Overlay/scrim node exists in
- * Figma (Position is the only axis) — the semi-transparent backdrop
- * and its fade animation are a standard, necessary modal affordance,
- * not a fabricated visual embellishment.
+ * Figma — the semi-transparent backdrop and its fade animation are a
+ * standard, necessary modal affordance, not a fabricated embellishment.
  *
- * Position (Center/Right/Left) is confirmed identical in every token
- * and internal layout EXCEPT two things Figma's own instances show
- * side by side:
- * 1. Screen placement: Center = viewport-centered; Right/Left = still
- *    vertically centered but horizontally pinned near that edge
- *    (with a fixed viewport margin — not itself a Figma value, since
- *    Position here only ever appears as an isolated 400px-wide
- *    component, never inside a full-screen frame that would show a
- *    real edge distance).
- * 2. Footer buttons: Center's two buttons are equal-width (flex:1,
- *    filling the row); Right/Left's are natural-width and pushed to
- *    one side. Right keeps reading-order (Cancel, then the primary
- *    action); Left reverses it (primary action first, nearest the
- *    edge the panel is pinned to) — confirmed by comparing the actual
- *    button colors in Figma's 3 side-by-side instances, not assumed
- *    from Right's layout. DialogFooter only handles alignment/sizing;
- *    passing children in the right order per position is on the
- *    caller (documented on the demo), not solved with a CSS reorder
- *    trick that would desync visual order from focus order.
+ * Position (Center/Right/Left) does NOT move the panel on screen —
+ * Figma's 3 instances sit in the exact same spot side by side in the
+ * file (first assumed otherwise, corrected after review: the dashed
+ * outlines around each are just Figma's own instance-selection
+ * chrome, not a viewport). The panel is always centered. What Position
+ * actually changes is the footer button layout: Center's two buttons
+ * are equal-width (flex:1, filling the row); Right/Left's are natural-
+ * width and pushed to one side. Right keeps reading order (Cancel,
+ * then the primary action); Left reverses it (primary action first) —
+ * confirmed by comparing the actual button colors across Figma's 3
+ * instances, not assumed from Right's layout. DialogFooter only
+ * handles alignment/sizing; passing children in the right order per
+ * position is on the caller (documented on the demo), not solved with
+ * a CSS reorder trick that would desync visual order from focus order.
  */
 export const Dialog = RadixDialog.Root;
 export const DialogTrigger = RadixDialog.Trigger;
@@ -49,23 +43,18 @@ export const DialogClose = RadixDialog.Close;
 
 export type DialogPosition = "center" | "right" | "left";
 
-export interface DialogContentProps extends ComponentPropsWithoutRef<typeof RadixDialog.Content> {
-  position?: DialogPosition;
-}
-
-export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
-  { className, position = "center", children, ...props },
-  ref,
-) {
-  return (
-    <RadixDialog.Portal>
-      <RadixDialog.Overlay className={styles.overlay} />
-      <RadixDialog.Content ref={ref} className={clsx(styles.content, className)} data-position={position} {...props}>
-        {children}
-      </RadixDialog.Content>
-    </RadixDialog.Portal>
-  );
-});
+export const DialogContent = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeof RadixDialog.Content>>(
+  function DialogContent({ className, children, ...props }, ref) {
+    return (
+      <RadixDialog.Portal>
+        <RadixDialog.Overlay className={styles.overlay} />
+        <RadixDialog.Content ref={ref} className={clsx(styles.content, className)} {...props}>
+          {children}
+        </RadixDialog.Content>
+      </RadixDialog.Portal>
+    );
+  },
+);
 
 export interface DialogHeaderProps {
   className?: string;
