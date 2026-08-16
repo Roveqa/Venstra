@@ -7,7 +7,6 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
   gap: var(--spacing-8, 16px);
 }
 
@@ -22,6 +21,11 @@
 .controls {
   display: flex;
   align-items: center;
+  /* margin-left: auto (not justify-content: space-between on .root) so
+     the nav cluster stays pinned to the right even when the hint text
+     is the only other/absent sibling, instead of collapsing to flush-
+     left once there's nothing to space *between*. */
+  margin-left: auto;
   gap: var(--spacing-15, 40px);
 }
 
