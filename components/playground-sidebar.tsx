@@ -55,6 +55,7 @@ const sections: SidebarEntry[] = [
       { key: "SwitchCard", label: "Card" },
     ],
   },
+  "Table",
   "Tabs",
   "Textarea",
   "Toggle",

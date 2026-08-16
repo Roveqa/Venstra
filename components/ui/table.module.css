@@ -1,0 +1,93 @@
+/*
+ * Source: Figma "Table" (page 2067:2938). See table.tsx for the full
+ * source comment.
+ */
+
+.table {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-xxl, 16px);
+  background-color: var(--surface-elevated);
+  overflow: hidden;
+}
+
+.scrollArea {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  min-width: max-content;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.body {
+  display: flex;
+  width: 100%;
+  min-width: max-content;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  border-bottom: 1px solid var(--stroke);
+  transition: background-color 0.1s ease;
+}
+.body .row:last-child {
+  border-bottom: none;
+}
+.body .row:hover {
+  background-color: var(--surface-subtle);
+}
+
+.head {
+  display: flex;
+  height: 40px;
+  flex: 1 0 140px;
+  align-items: center;
+  gap: var(--spacing-2, 4px);
+  box-sizing: border-box;
+  padding: var(--spacing-6, 12px);
+  background-color: var(--surface-subtle);
+  color: var(--foreground-weak);
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.14px;
+  white-space: nowrap;
+  transition: background-color 0.1s ease;
+}
+.header .row:hover .head {
+  background-color: var(--surface-subtle-hover);
+}
+
+.cell {
+  display: flex;
+  height: 56px;
+  flex: 1 0 140px;
+  align-items: center;
+  gap: var(--spacing-4, 8px);
+  box-sizing: border-box;
+  padding: var(--spacing-1, 2px) var(--spacing-6, 12px);
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+
+.paginationWrapper {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  padding: var(--spacing-6, 12px) var(--spacing-8, 16px);
+}

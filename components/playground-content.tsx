@@ -2,7 +2,24 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Check, Command, Search, Bold, Italic, Underline, User, Settings, LogOut, CreditCard, Trash2, Home, Folder } from "lucide-react";
+import {
+  Check,
+  Command,
+  Search,
+  Bold,
+  Italic,
+  Underline,
+  User,
+  Settings,
+  LogOut,
+  CreditCard,
+  Trash2,
+  Home,
+  Folder,
+  GripVertical,
+  EllipsisVertical,
+  Pencil,
+} from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +54,16 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import {
+  Table,
+  TableScrollArea,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TablePaginationWrapper,
+} from "@/components/ui/table";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
 import { Textarea } from "@/components/ui/textarea";
@@ -112,6 +139,7 @@ const sections = [
   "Slider",
   "Switch",
   "SwitchCard",
+  "Table",
   "Tabs",
   "Textarea",
   "Toggle",
@@ -1883,6 +1911,115 @@ function AlertDialogDemo() {
   );
 }
 
+const tableRows = [
+  { name: "Olivia Hart", email: "oliviahart@email.com", project: "Aurora", status: "Active" as const, requests: "1,204", lastActive: "2h ago", region: "US East" },
+  { name: "Marcus Bell", email: "marcus.bell@email.com", project: "Nimbus", status: "Active" as const, requests: "842", lastActive: "5h ago", region: "EU West" },
+  { name: "Priya Nair", email: "priya.nair@email.com", project: "Zephyr", status: "Paused" as const, requests: "56", lastActive: "1d ago", region: "AP South" },
+  { name: "Diego Silva", email: "diego.silva@email.com", project: "Aurora", status: "Active" as const, requests: "3,019", lastActive: "12m ago", region: "US East" },
+  { name: "Emma Novak", email: "emma.novak@email.com", project: "Vertex", status: "Error" as const, requests: "12", lastActive: "3d ago", region: "EU West" },
+  { name: "Liam Chen", email: "liam.chen@email.com", project: "Nimbus", status: "Active" as const, requests: "618", lastActive: "38m ago", region: "AP South" },
+];
+
+const tableStatusIntent = { Active: "success", Paused: "warning", Error: "error" } as const;
+
+function TableDemo() {
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const allSelected = selected.size === tableRows.length;
+  const someSelected = selected.size > 0 && !allSelected;
+
+  function toggleAll() {
+    setSelected(allSelected ? new Set() : new Set(tableRows.map((r) => r.email)));
+  }
+  function toggleRow(email: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(email)) {
+        next.delete(email);
+      } else {
+        next.add(email);
+      }
+      return next;
+    });
+  }
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ComponentSection>
+        <Table>
+          <TableScrollArea>
+          <TableHeader>
+            <TableRow>
+              <TableHead width={56} aria-hidden="true" />
+              <TableHead width={44}>
+                <Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />
+              </TableHead>
+              <TableHead>User</TableHead>
+              <TableHead>Project</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Requests</TableHead>
+              <TableHead>Last active</TableHead>
+              <TableHead>Region</TableHead>
+              <TableHead width={56} aria-hidden="true" />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tableRows.map((row) => (
+              <TableRow key={row.email}>
+                <TableCell width={56}>
+                  <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" />
+                </TableCell>
+                <TableCell width={44}>
+                  <Checkbox checked={selected.has(row.email)} onCheckedChange={() => toggleRow(row.email)} aria-label={`Select ${row.name}`} />
+                </TableCell>
+                <TableCell>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <Avatar size={32}>
+                      {row.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </Avatar>
+                    <div className="flex min-w-0 flex-col gap-0.5">
+                      <span className="truncate text-[14px] leading-[1.16] text-ink-950">{row.name}</span>
+                      <span className="truncate text-[12px] leading-[1.15] tracking-[-0.3px] text-ink-600">{row.email}</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{row.project}</TableCell>
+                <TableCell>
+                  <Badge intent={tableStatusIntent[row.status]} dotLeft>
+                    {row.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>{row.requests}</TableCell>
+                <TableCell>{row.lastActive}</TableCell>
+                <TableCell>{row.region}</TableCell>
+                <TableCell width={56}>
+                  <Dropdown>
+                    <DropdownTrigger asChild>
+                      <Button iconOnly={<EllipsisVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Row actions" />
+                    </DropdownTrigger>
+                    <DropdownContent align="end">
+                      <DropdownItem icon={<Pencil />}>Edit</DropdownItem>
+                      <DropdownItem icon={<Trash2 />} destructive>
+                        Delete
+                      </DropdownItem>
+                    </DropdownContent>
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          </TableScrollArea>
+          <TablePaginationWrapper>
+            <Pagination page={1} totalPages={4} onPageChange={() => {}} totalItems={tableRows.length * 4} pageSize={tableRows.length} />
+          </TablePaginationWrapper>
+        </Table>
+      </ComponentSection>
+    </div>
+  );
+}
+
 const checkboxModes = [
   { key: "default", label: "Default" },
   { key: "checked", label: "Checked" },
@@ -3060,6 +3197,7 @@ export function PlaygroundContent() {
 
             {active === "Dialog" && <DialogDemo />}
             {active === "Alert Dialog" && <AlertDialogDemo />}
+            {active === "Table" && <TableDemo />}
 
             {active === "Divider" && (
               <ComponentSection>
