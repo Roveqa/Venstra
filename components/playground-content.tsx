@@ -1754,6 +1754,7 @@ const dialogPositions = [
 function DialogDemo() {
   const [position, setPosition] = useState<(typeof dialogPositions)[number]["key"]>("center");
   const [open, setOpen] = useState(false);
+  const [bodyContent, setBodyContent] = useState(true);
 
   const cancelButton = (
     <Button variant="light" intent="neutral" size="sm" onClick={() => setOpen(false)}>
@@ -1770,6 +1771,15 @@ function DialogDemo() {
     <div className="flex w-full flex-col items-center gap-8">
       <ControlBar>
         <TinySelect label="Position" value={position} onChange={setPosition} options={dialogPositions} />
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Body content</span>
+          <input
+            type="checkbox"
+            checked={bodyContent}
+            onChange={(e) => setBodyContent(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
       </ControlBar>
 
       <ComponentSection>
@@ -1785,7 +1795,11 @@ function DialogDemo() {
                 <DialogTitle>Title</DialogTitle>
                 <DialogDescription>Add a short description here to provide additional context for this component</DialogDescription>
               </DialogHeader>
-              <DialogBody />
+              {bodyContent && (
+                <DialogBody>
+                  <Input placeholder="you@company.com" size="md" />
+                </DialogBody>
+              )}
               <DialogFooter position={position}>
                 {position === "left" ? (
                   <>
