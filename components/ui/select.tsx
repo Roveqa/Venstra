@@ -15,9 +15,10 @@ import styles from "./select.module.css";
  * — same anatomy/token recipe as Input Text, just with a chevron-down
  * instead of typed text caret), "Select menu" (2157:1130: panel +
  * ScrollUp/ScrollDown arrow rows), "Select Item" ComponentSet
- * (2148:12658: State(Default/Hover/Selected/Disabled), structurally
- * identical to Dropdown's item — same margin/padding/rounded-md hover
- * box, reused here for the same reason).
+ * (2148:12658: State(Default/Hover/Selected/Disabled), same margin/
+ * padding recipe as Dropdown's item — but radius-s (4px), not
+ * Dropdown's radius-md (8px); updated after review, not an
+ * inconsistency to reconcile back).
  *
  * Built on @radix-ui/react-select (Root/Trigger/Value/Icon/Portal/
  * Content/Viewport/Item/ItemText/ItemIndicator/ScrollUpButton/
