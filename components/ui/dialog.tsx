@@ -44,11 +44,24 @@ export const DialogClose = RadixDialog.Close;
 export type DialogPosition = "center" | "right" | "left";
 
 export const DialogContent = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeof RadixDialog.Content>>(
-  function DialogContent({ className, children, ...props }, ref) {
+  function DialogContent({ className, children, onOpenAutoFocus, ...props }, ref) {
     return (
       <RadixDialog.Portal>
         <RadixDialog.Overlay className={styles.overlay} />
-        <RadixDialog.Content ref={ref} className={clsx(styles.content, className)} {...props}>
+        <RadixDialog.Content
+          ref={ref}
+          className={clsx(styles.content, className)}
+          onOpenAutoFocus={(e) => {
+            // Radix's default focuses the first tabbable descendant on open —
+            // here that's the close X, which shows an unintended focus ring
+            // the instant the dialog appears. Focus the panel itself instead
+            // (tabIndex -1, no visible ring since .content has outline: none).
+            e.preventDefault();
+            (e.currentTarget as HTMLElement | null)?.focus();
+            onOpenAutoFocus?.(e);
+          }}
+          {...props}
+        >
           {children}
         </RadixDialog.Content>
       </RadixDialog.Portal>
