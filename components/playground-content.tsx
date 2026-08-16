@@ -2727,7 +2727,7 @@ export function PlaygroundContent() {
       <div className="flex w-full max-w-[1710px] items-start gap-[83px] px-4 pt-[140px] md:px-10 lg:px-[244px]">
         <PlaygroundSidebar active={active} onSelect={setActive} />
 
-        <div className="flex w-full max-w-[900px] flex-col gap-16 pb-24">
+        <div className="flex min-w-0 flex-1 flex-col gap-16 pb-24 max-w-[900px]">
           <div className="flex w-full flex-col gap-9">
             <div className="flex flex-col gap-2">
               <h1 className="text-[28px] font-semibold leading-none tracking-[-0.84px] text-ink-950">
