@@ -9,6 +9,7 @@ const sections: SidebarEntry[] = [
   "Alert",
   "Avatar",
   "Badge",
+  "Breadcrumb",
   "Button",
   {
     label: "Checkbox",

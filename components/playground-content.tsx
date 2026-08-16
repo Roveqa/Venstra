@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Check, Command, Search, Bold, Italic, Underline, User, Settings, LogOut, CreditCard, Trash2 } from "lucide-react";
+import { Check, Command, Search, Bold, Italic, Underline, User, Settings, LogOut, CreditCard, Trash2, Home, Folder } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +15,7 @@ import { Avatar, type AvatarSize } from "@/components/ui/avatar";
 import { AvatarGroup } from "@/components/ui/avatar-group";
 import { Progress, type ProgressPercentPosition } from "@/components/ui/progress";
 import { Pagination } from "@/components/ui/pagination";
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@/components/ui/breadcrumb";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,6 +65,7 @@ const sections = [
   "Alert",
   "Avatar",
   "Badge",
+  "Breadcrumb",
   "Button",
   "Checkbox",
   "CheckboxCard",
@@ -1498,6 +1500,103 @@ function BadgeDemo() {
   );
 }
 
+function BreadcrumbDemo() {
+  const [showIcons, setShowIcons] = useState(true);
+  const [collapsed, setCollapsed] = useState(true);
+  const [dropdown, setDropdown] = useState(false);
+
+  const collapsedItems = [
+    { label: "Category" },
+    { label: "Subcategory" },
+  ];
+  const dropdownItems = [
+    { label: "Category" },
+    { label: "Another category" },
+    { label: "Third category" },
+  ];
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Icons</span>
+          <input
+            type="checkbox"
+            checked={showIcons}
+            onChange={(e) => setShowIcons(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Collapsed (…)</span>
+          <input
+            type="checkbox"
+            checked={collapsed}
+            onChange={(e) => setCollapsed(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Segment dropdown</span>
+          <input
+            type="checkbox"
+            checked={dropdown}
+            onChange={(e) => setDropdown(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
+      </ControlBar>
+
+      <ComponentSection>
+        <div className="mx-auto">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#" icon={showIcons ? <Home /> : undefined}>
+                  Home
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              {collapsed ? (
+                <>
+                  <BreadcrumbItem>
+                    <BreadcrumbEllipsis items={collapsedItems} />
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                </>
+              ) : (
+                <>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" icon={showIcons ? <Folder /> : undefined}>
+                      Category
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" icon={showIcons ? <Folder /> : undefined}>
+                      Subcategory
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                </>
+              )}
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#" icon={showIcons ? <Folder /> : undefined} items={dropdown ? dropdownItems : undefined}>
+                  Products
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage icon={showIcons ? <Folder /> : undefined}>Current page</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </ComponentSection>
+    </div>
+  );
+}
+
 function ButtonDemo() {
   // Default to Fill/Primary/Medium/Default, not "All" — see feedback_playground_defaults.
   const [variant, setVariant] = useState<WithAll<(typeof buttonStyles)[number]["key"]>>("fill");
@@ -2779,6 +2878,7 @@ export function PlaygroundContent() {
             {active === "Progress" && <ProgressDemo />}
 
             {active === "Badge" && <BadgeDemo />}
+            {active === "Breadcrumb" && <BreadcrumbDemo />}
 
             {active === "Button" && <ButtonDemo />}
 
