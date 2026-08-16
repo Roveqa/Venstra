@@ -34,7 +34,9 @@ import styles from "./breadcrumb.module.css";
  * own "Active, Variant=Ellipsis" state literally embeds a real Dropdown
  * Menu panel — so it's built the same way: a Dropdown trigger, not a
  * dead label. `items` is required (an ellipsis with nothing to expand
- * into isn't meaningful).
+ * into isn't meaningful). `icon` defaults to Figma's own ellipsis_16
+ * glyph but is swappable (e.g. MoreHorizontal) for a consuming app's
+ * own collapse affordance.
  */
 export function Breadcrumb({ className, children, ...props }: ComponentPropsWithoutRef<"nav">) {
   return (
@@ -116,17 +118,17 @@ export function BreadcrumbSeparator({ className, ...props }: ComponentPropsWitho
 
 export interface BreadcrumbEllipsisProps {
   items: { label: string; onClick?: () => void }[];
+  /** Defaults to Figma's own "ellipsis_16" glyph — override for a different collapse affordance (e.g. MoreHorizontal). */
+  icon?: ReactNode;
   className?: string;
   "aria-label"?: string;
 }
 
-export function BreadcrumbEllipsis({ items, className, "aria-label": ariaLabel = "Show more breadcrumb items" }: BreadcrumbEllipsisProps) {
+export function BreadcrumbEllipsis({ items, icon = <Ellipsis />, className, "aria-label": ariaLabel = "Show more breadcrumb items" }: BreadcrumbEllipsisProps) {
   return (
     <Dropdown>
       <DropdownTrigger className={clsx(styles.item, styles.ellipsisTrigger, className)} aria-label={ariaLabel}>
-        <span className={styles.icon}>
-          <Ellipsis />
-        </span>
+        <span className={styles.icon}>{icon}</span>
       </DropdownTrigger>
       <DropdownContent align="start" className={styles.ellipsisContent}>
         {items.map((item, i) => (
