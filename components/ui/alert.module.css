@@ -79,7 +79,6 @@
 .alert[data-type="neutral"] {
   --alert-fill-bg: var(--surface-neutral);
   --alert-fill-text: var(--foreground-neutral-inverse);
-  --alert-fill-close: var(--foreground-neutral-inverse-muted);
   --alert-light-bg: var(--surface-neutral-low);
   --alert-light-text: var(--foreground-neutral);
   --alert-stroke-bg: var(--surface-neutral-inverse);
@@ -90,7 +89,6 @@
 .alert[data-type="error"] {
   --alert-fill-bg: var(--surface-error);
   --alert-fill-text: var(--foreground-error-inverse);
-  --alert-fill-close: var(--foreground-base-inverse);
   --alert-light-bg: var(--surface-error-low);
   --alert-light-text: var(--foreground-error-strong);
   --alert-stroke-bg: var(--surface-error-inverse);
@@ -101,7 +99,6 @@
 .alert[data-type="success"] {
   --alert-fill-bg: var(--surface-success);
   --alert-fill-text: var(--foreground-success-inverse);
-  --alert-fill-close: var(--foreground-base-inverse);
   --alert-light-bg: var(--surface-success-low);
   --alert-light-text: var(--foreground-success-strong);
   --alert-stroke-bg: var(--surface-success-inverse);
@@ -112,7 +109,6 @@
 .alert[data-type="warning"] {
   --alert-fill-bg: var(--surface-warning);
   --alert-fill-text: var(--foreground-warning-inverse);
-  --alert-fill-close: var(--foreground-base-inverse);
   --alert-light-bg: var(--surface-warning-low);
   --alert-light-text: var(--foreground-warning-strong);
   --alert-stroke-bg: var(--surface-warning-inverse);
@@ -123,7 +119,6 @@
 .alert[data-type="info"] {
   --alert-fill-bg: var(--surface-info);
   --alert-fill-text: var(--foreground-info-inverse);
-  --alert-fill-close: var(--foreground-base-inverse);
   --alert-light-bg: var(--surface-info-low);
   --alert-light-text: var(--foreground-info-strong);
   --alert-stroke-bg: var(--surface-info-inverse);
@@ -138,7 +133,7 @@
   color: var(--alert-fill-text);
 }
 .alert[data-variant="fill"] .close {
-  color: var(--alert-fill-close);
+  color: var(--foreground-base-inverse);
 }
 
 .alert[data-variant="light"] {

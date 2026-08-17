@@ -93,9 +93,8 @@
 
 .notification[data-type="neutral"] {
   --notif-fill-bg: var(--surface-neutral);
-  --notif-fill-title: var(--foreground-neutral-inverse);
-  --notif-fill-icon: var(--foreground-neutral-inverse);
-  --notif-fill-muted: var(--foreground-neutral-inverse-muted);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
   --notif-light-bg: var(--surface-subtle);
   --notif-light-icon: var(--foreground-neutral-strong);
   --notif-stroke-icon: var(--foreground-neutral-strong);
@@ -103,9 +102,8 @@
 
 .notification[data-type="success"] {
   --notif-fill-bg: var(--surface-success);
-  --notif-fill-title: var(--foreground-success-inverse);
-  --notif-fill-icon: var(--foreground-success-inverse);
-  --notif-fill-muted: var(--foreground-base-inverse);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
   --notif-light-bg: var(--surface-success-low);
   --notif-light-icon: var(--foreground-success);
   --notif-stroke-icon: var(--foreground-success);
@@ -113,9 +111,8 @@
 
 .notification[data-type="warning"] {
   --notif-fill-bg: var(--surface-warning);
-  --notif-fill-title: var(--foreground-warning-inverse);
-  --notif-fill-icon: var(--foreground-warning-inverse);
-  --notif-fill-muted: var(--foreground-base-inverse);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
   --notif-light-bg: var(--surface-warning-low);
   --notif-light-icon: var(--foreground-warning);
   --notif-stroke-icon: var(--foreground-warning);
@@ -123,9 +120,8 @@
 
 .notification[data-type="error"] {
   --notif-fill-bg: var(--surface-error);
-  --notif-fill-title: var(--foreground-error-inverse);
-  --notif-fill-icon: var(--foreground-error-inverse);
-  --notif-fill-muted: var(--foreground-base-inverse);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
   --notif-light-bg: var(--surface-error-low);
   --notif-light-icon: var(--foreground-error);
   --notif-stroke-icon: var(--foreground-error);
@@ -133,9 +129,8 @@
 
 .notification[data-type="info"] {
   --notif-fill-bg: var(--surface-info);
-  --notif-fill-title: var(--foreground-info-inverse);
-  --notif-fill-icon: var(--foreground-info-inverse);
-  --notif-fill-muted: var(--foreground-base-inverse);
+  --notif-fill-title: var(--foreground-inverse);
+  --notif-fill-icon: var(--foreground-inverse);
   --notif-light-bg: var(--surface-info-low);
   --notif-light-icon: var(--foreground-info);
   --notif-stroke-icon: var(--foreground-info);
@@ -151,10 +146,10 @@
   color: var(--notif-fill-icon);
 }
 .notification[data-variant="fill"] .description {
-  color: var(--notif-fill-muted);
+  color: var(--foreground-base-inverse);
 }
 .notification[data-variant="fill"] .close {
-  color: var(--notif-fill-muted);
+  color: var(--foreground-base-inverse);
 }
 
 .notification[data-variant="light"] {

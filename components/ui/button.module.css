@@ -83,7 +83,7 @@
   --btn-fill: var(--fill-primary);
   --btn-fill-hover: var(--fill-primary-hover);
   --btn-fill-active: var(--fill-primary-active);
-  --btn-fill-text: var(--foreground-inverse);
+  --btn-fill-text: var(--foreground-primary-inverse);
   --btn-overlay: var(--fill-primary-overlay);
   --btn-overlay-hover: var(--fill-primary-overlay-hover);
   --btn-overlay-active: var(--fill-primary-overlay-active);
@@ -102,7 +102,7 @@
   --btn-fill: var(--fill-neutral);
   --btn-fill-hover: var(--fill-neutral-hover);
   --btn-fill-active: var(--fill-neutral-active);
-  --btn-fill-text: var(--foreground-inverse);
+  --btn-fill-text: var(--foreground-neutral-inverse);
   --btn-overlay: var(--fill-neutral-overlay);
   --btn-overlay-hover: var(--fill-neutral-overlay-hover);
   --btn-overlay-active: var(--fill-neutral-overlay-active);
@@ -117,7 +117,7 @@
   --btn-fill: var(--fill-success);
   --btn-fill-hover: var(--fill-success-hover);
   --btn-fill-active: var(--fill-success-active);
-  --btn-fill-text: var(--foreground-inverse);
+  --btn-fill-text: var(--foreground-success-inverse);
   --btn-overlay: var(--fill-success-overlay);
   --btn-overlay-hover: var(--fill-success-overlay-hover);
   --btn-overlay-active: var(--fill-success-overlay-active);
@@ -132,7 +132,7 @@
   --btn-fill: var(--fill-warning);
   --btn-fill-hover: var(--fill-warning-hover);
   --btn-fill-active: var(--fill-warning-active);
-  --btn-fill-text: var(--foreground-inverse);
+  --btn-fill-text: var(--foreground-warning-inverse);
   --btn-overlay: var(--fill-warning-overlay);
   --btn-overlay-hover: var(--fill-warning-overlay-hover);
   --btn-overlay-active: var(--fill-warning-overlay-active);
@@ -147,7 +147,7 @@
   --btn-fill: var(--fill-error);
   --btn-fill-hover: var(--fill-error-hover);
   --btn-fill-active: var(--fill-error-active);
-  --btn-fill-text: var(--foreground-inverse);
+  --btn-fill-text: var(--foreground-error-inverse);
   --btn-overlay: var(--fill-error-overlay);
   --btn-overlay-hover: var(--fill-error-overlay-hover);
   --btn-overlay-active: var(--fill-error-overlay-active);
@@ -162,7 +162,7 @@
   --btn-fill: var(--fill-info);
   --btn-fill-hover: var(--fill-info-hover);
   --btn-fill-active: var(--fill-info-active);
-  --btn-fill-text: var(--foreground-inverse);
+  --btn-fill-text: var(--foreground-info-inverse);
   --btn-overlay: var(--fill-info-overlay);
   --btn-overlay-hover: var(--fill-info-overlay-hover);
   --btn-overlay-active: var(--fill-info-overlay-active);

@@ -56,32 +56,37 @@
   --badge-fill: var(--fill-neutral);
   --badge-overlay: var(--fill-neutral-overlay);
   --badge-text: var(--foreground-neutral);
+  --badge-fill-text: var(--foreground-neutral-inverse);
 }
 .badge[data-intent="success"] {
   --badge-fill: var(--fill-success);
   --badge-overlay: var(--fill-success-overlay);
   --badge-text: var(--foreground-success);
+  --badge-fill-text: var(--foreground-success-inverse);
 }
 .badge[data-intent="warning"] {
   --badge-fill: var(--fill-warning);
   --badge-overlay: var(--fill-warning-overlay);
   --badge-text: var(--foreground-warning);
+  --badge-fill-text: var(--foreground-warning-inverse);
 }
 .badge[data-intent="error"] {
   --badge-fill: var(--fill-error);
   --badge-overlay: var(--fill-error-overlay);
   --badge-text: var(--foreground-error);
+  --badge-fill-text: var(--foreground-error-inverse);
 }
 .badge[data-intent="info"] {
   --badge-fill: var(--fill-info);
   --badge-overlay: var(--fill-info-overlay);
   --badge-text: var(--foreground-info);
+  --badge-fill-text: var(--foreground-info-inverse);
 }
 
 /* ---- Style recipes ---- */
 .badge[data-variant="fill"] {
   background-color: var(--badge-fill);
-  color: var(--foreground-inverse);
+  color: var(--badge-fill-text);
 }
 .badge[data-variant="light"] {
   background-color: var(--badge-overlay);
