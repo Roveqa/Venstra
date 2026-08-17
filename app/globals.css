@@ -284,7 +284,11 @@
      Default/Hover/Active) and 1921:8216/8232 (Neutral-inverse Fill
      Default/Hover). Hover/active read directly from Figma, not
      extrapolated — Primary-inverse's hover is Primary/50 (a light blue
-     tint), not a step on the neutral scale like everything else. */
+     tint), not a step on the neutral scale like everything else.
+     Primary-inverse/*-primary-inverse below are constant across themes
+     in Figma (a Primary-inverse button keeps working on an always-dark
+     accent surface either way) — not redefined in the dark-theme block.
+     Neutral-inverse ones DO flip with the theme (see dark-theme block). */
   --fill-primary-inverse: var(--neutral-50);
   --fill-primary-inverse-hover: var(--primary-50);
   --fill-primary-inverse-active: var(--neutral-50);
@@ -386,7 +390,7 @@
   --surface-strong: var(--neutral-600);
   --ink-950: var(--neutral-50);
   --ink-700: var(--neutral-200);
-  --ink-600: var(--neutral-400);
+  --ink-600: var(--neutral-500);
   --stroke: var(--neutral-800);
   --stroke-subtle: var(--neutral-700);
   --overlay: var(--neutral-white-alpha-8);
@@ -460,7 +464,7 @@
   --foreground-muted: var(--neutral-400);
   --foreground-inverse: var(--neutral-950);
   --foreground-weak: var(--neutral-500);
-  --foreground-base-muted: rgba(255, 255, 255, 0.32);
+  --foreground-base-muted: rgba(255, 255, 255, 0.8);
   --foreground-neutral-strong: var(--neutral-50);
   --foreground-neutral: var(--neutral-50);
   --foreground-neutral-subtle: var(--neutral-200);
@@ -507,6 +511,19 @@
   --stroke-info-strong: var(--blue-700);
   --stroke-info: var(--blue-600);
   --stroke-info-subtle: var(--blue-500);
+
+  /* Fill/Stroke — Inverse mode (Button's Primary-inverse/Neutral-inverse
+     intents). Unlike the Primary-inverse tokens (constant across themes
+     in Figma — a Primary-inverse button is meant to keep working on an
+     always-dark accent surface), the Neutral-inverse ones are an exact
+     950<->50 flip of their own light values in Figma's Semantic
+     collection, same pattern as surface-neutral/foreground-neutral-inverse
+     above — confirmed directly against the Light/Dark variable modes. */
+  --fill-neutral-inverse: var(--neutral-950);
+  --fill-neutral-inverse-hover: var(--neutral-900);
+  --fill-neutral-inverse-active: var(--neutral-950);
+  --fill-neutral-overlay-inverse: var(--neutral-black-alpha-4);
+  --stroke-neutral-inverse: var(--neutral-black-alpha-80);
 }
 
 html,
