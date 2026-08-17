@@ -37,6 +37,9 @@
 .box:hover:not([data-disabled]) {
   background-color: var(--surface-subtle-hover);
 }
+.box:hover:not([data-disabled]) .input::placeholder {
+  color: var(--foreground-subtle);
+}
 
 .box:focus-within,
 .box:has(.prefix[data-state="open"]) {
