@@ -30,11 +30,15 @@ import styles from "./table.module.css";
  * differs (surface-subtle bg) — so rows only need a hover treatment,
  * not a separate "active" one.
  *
- * "List Cell=Yes/No" turned out to mean "has the row's bottom divider"
- * (Yes = every row except the last, No = last row, no border so it
- * doesn't double up against the table's own outer border) — applied
- * here as border-bottom on TableRow itself (removed via :last-child in
- * CSS) rather than a boolean prop repeated on every cell.
+ * "List Cell=Yes/No" is "has the row's bottom divider" — first assumed
+ * this meant every row except the last (dropping it there to avoid
+ * doubling up against the table's own outer border), but the actual
+ * assembled Table instance keeps border-b on every row INCLUDING the
+ * last one, because the Pagination footer always follows and needs
+ * that boundary line (confirmed directly against the real instance's
+ * last row, not the isolated ComponentSet in the abstract). Applied
+ * here as a box-shadow divider on every TableRow unconditionally,
+ * rather than a boolean prop repeated on every cell.
  *
  * The full assembled example (drag-handle column, checkbox column, 6
  * data columns, trailing kebab-menu column) is reproduced in the

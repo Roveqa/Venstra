@@ -1911,24 +1911,83 @@ function AlertDialogDemo() {
   );
 }
 
-const tableRows = [
-  { name: "Olivia Hart", email: "oliviahart@email.com", project: "Aurora", status: "Active" as const, requests: "1,204", lastActive: "2h ago", region: "US East" },
-  { name: "Marcus Bell", email: "marcus.bell@email.com", project: "Nimbus", status: "Active" as const, requests: "842", lastActive: "5h ago", region: "EU West" },
-  { name: "Priya Nair", email: "priya.nair@email.com", project: "Zephyr", status: "Paused" as const, requests: "56", lastActive: "1d ago", region: "AP South" },
-  { name: "Diego Silva", email: "diego.silva@email.com", project: "Aurora", status: "Active" as const, requests: "3,019", lastActive: "12m ago", region: "US East" },
-  { name: "Emma Novak", email: "emma.novak@email.com", project: "Vertex", status: "Error" as const, requests: "12", lastActive: "3d ago", region: "EU West" },
-  { name: "Liam Chen", email: "liam.chen@email.com", project: "Nimbus", status: "Active" as const, requests: "618", lastActive: "38m ago", region: "AP South" },
+const tableNamePool = [
+  "Olivia Hart", "Marcus Bell", "Priya Nair", "Diego Silva", "Emma Novak", "Liam Chen",
+  "Sofia Ramos", "Noah Becker", "Aisha Khan", "Ethan Brooks", "Yuki Tanaka", "Grace Kim",
+  "Lucas Ferreira", "Mia Andersson", "Omar Haddad", "Zara Ahmed", "Felix Wagner", "Nina Petrova",
+  "Ravi Menon", "Chloe Dubois", "Hassan Ali", "Ingrid Solberg", "Tomas Novak", "Wei Zhang",
 ];
+const tableStatuses = ["Active", "Paused", "Error"] as const;
+const tablePriorities = ["Low", "Medium", "High"];
+const tableRows = tableNamePool.map((name, i) => {
+  const email = `${name.toLowerCase().replace(/ /g, ".")}@email.com`;
+  const initials = name.split(" ").map((n) => n[0]).join("");
+  return {
+    name,
+    email,
+    initials,
+    status: tableStatuses[i % tableStatuses.length],
+    verified: i % 3 !== 0,
+    completion: (i * 17 + 20) % 101,
+    priority: tablePriorities[i % tablePriorities.length],
+    reviewers: [tableNamePool[(i + 1) % tableNamePool.length], tableNamePool[(i + 2) % tableNamePool.length], tableNamePool[(i + 3) % tableNamePool.length]].map(
+      (n) => n.split(" ").map((p) => p[0]).join(""),
+    ),
+  };
+});
 
 const tableStatusIntent = { Active: "success", Paused: "warning", Error: "error" } as const;
 
-function TableDemo() {
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const allSelected = selected.size === tableRows.length;
-  const someSelected = selected.size > 0 && !allSelected;
+const tableColumns = [
+  { key: "text", label: "Text" },
+  { key: "checkbox", label: "Checkbox" },
+  { key: "badge", label: "Badge" },
+  { key: "avatar", label: "Avatar" },
+  { key: "avatarGroup", label: "Avatar group" },
+  { key: "progress", label: "Progress" },
+  { key: "button", label: "Button" },
+  { key: "dropdown", label: "Dropdown" },
+] as const;
+type TableColumnKey = (typeof tableColumns)[number]["key"];
 
+const tablePageSize = 6;
+
+function TableDemo() {
+  const [enabled, setEnabled] = useState<Record<TableColumnKey, boolean>>({
+    text: false,
+    checkbox: false,
+    badge: true,
+    avatar: false,
+    avatarGroup: false,
+    progress: false,
+    button: false,
+    dropdown: false,
+  });
+  const [badgeStyle, setBadgeStyle] = useState<(typeof badgeStyles)[number]["key"]>("fill");
+  const [avatarVariant, setAvatarVariant] = useState<(typeof avatarVariants)[number]["key"]>("text");
+  const [buttonStyle, setButtonStyle] = useState<(typeof buttonStyles)[number]["key"]>("light");
+
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [page, setPage] = useState(1);
+  const totalPages = Math.ceil(tableRows.length / tablePageSize);
+  const pageRows = tableRows.slice((page - 1) * tablePageSize, page * tablePageSize);
+
+  const allSelected = pageRows.length > 0 && pageRows.every((r) => selected.has(r.email));
+  const someSelected = pageRows.some((r) => selected.has(r.email)) && !allSelected;
+
+  function toggleColumn(key: TableColumnKey) {
+    setEnabled((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
   function toggleAll() {
-    setSelected(allSelected ? new Set() : new Set(tableRows.map((r) => r.email)));
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (allSelected) {
+        pageRows.forEach((r) => next.delete(r.email));
+      } else {
+        pageRows.forEach((r) => next.add(r.email));
+      }
+      return next;
+    });
   }
   function toggleRow(email: string) {
     setSelected((prev) => {
@@ -1944,67 +2003,144 @@ function TableDemo() {
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
+      <ControlBar>
+        {tableColumns.map((col) => (
+          <label key={col.key} className="flex flex-col items-start gap-1.5">
+            <span className="text-[13px] text-ink-600">{col.label}</span>
+            <input
+              type="checkbox"
+              checked={enabled[col.key]}
+              onChange={() => toggleColumn(col.key)}
+              className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+            />
+          </label>
+        ))}
+        {enabled.badge && <TinySelect label="Badge style" value={badgeStyle} onChange={setBadgeStyle} options={badgeStyles} />}
+        {enabled.avatar && <TinySelect label="Avatar variant" value={avatarVariant} onChange={setAvatarVariant} options={avatarVariants} />}
+        {enabled.button && <TinySelect label="Button style" value={buttonStyle} onChange={setButtonStyle} options={buttonStyles} />}
+      </ControlBar>
+
       <ComponentSection>
         <Table>
           <TableScrollArea>
-          <TableHeader>
-            <TableRow>
-              <TableHead width={56} aria-hidden="true" />
-              <TableHead width={44}>
-                <Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />
-              </TableHead>
-              <TableHead>User</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead width={56} aria-hidden="true" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tableRows.map((row) => (
-              <TableRow key={row.email}>
-                <TableCell width={56}>
-                  <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" />
-                </TableCell>
-                <TableCell width={44}>
-                  <Checkbox checked={selected.has(row.email)} onCheckedChange={() => toggleRow(row.email)} aria-label={`Select ${row.name}`} />
-                </TableCell>
-                <TableCell>
-                  <div className="flex min-w-0 items-center gap-2">
-                    <Avatar size={32}>
-                      {row.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </Avatar>
-                    <div className="flex min-w-0 flex-col gap-0.5">
-                      <span className="truncate text-[14px] leading-[1.16] text-ink-950">{row.name}</span>
-                      <span className="truncate text-[12px] leading-[1.15] tracking-[-0.3px] text-ink-600">{row.email}</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Badge intent={tableStatusIntent[row.status]} dotLeft>
-                    {row.status}
-                  </Badge>
-                </TableCell>
-                <TableCell width={56}>
-                  <Dropdown>
-                    <DropdownTrigger asChild>
-                      <Button iconOnly={<EllipsisVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Row actions" />
-                    </DropdownTrigger>
-                    <DropdownContent align="end">
-                      <DropdownItem icon={<Pencil />}>Edit</DropdownItem>
-                      <DropdownItem icon={<Trash2 />} destructive>
-                        Delete
-                      </DropdownItem>
-                    </DropdownContent>
-                  </Dropdown>
-                </TableCell>
+            <TableHeader>
+              <TableRow>
+                <TableHead width={56} aria-hidden="true" />
+                <TableHead width={44}>
+                  <Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />
+                </TableHead>
+                <TableHead>User</TableHead>
+                {enabled.text && <TableHead>Project</TableHead>}
+                {enabled.checkbox && <TableHead>Verified</TableHead>}
+                {enabled.badge && <TableHead>Status</TableHead>}
+                {enabled.avatar && <TableHead>Assignee</TableHead>}
+                {enabled.avatarGroup && <TableHead>Reviewers</TableHead>}
+                {enabled.progress && <TableHead>Completion</TableHead>}
+                {enabled.button && <TableHead>Action</TableHead>}
+                {enabled.dropdown && <TableHead>Priority</TableHead>}
+                <TableHead width={56} aria-hidden="true" />
               </TableRow>
-            ))}
-          </TableBody>
+            </TableHeader>
+            <TableBody>
+              {pageRows.map((row) => (
+                <TableRow key={row.email}>
+                  <TableCell width={56}>
+                    <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" />
+                  </TableCell>
+                  <TableCell width={44}>
+                    <Checkbox checked={selected.has(row.email)} onCheckedChange={() => toggleRow(row.email)} aria-label={`Select ${row.name}`} />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex min-w-0 items-center gap-2">
+                      <Avatar size={32}>{row.initials}</Avatar>
+                      <div className="flex min-w-0 flex-col gap-0.5">
+                        <span className="truncate text-[14px] leading-[1.16] text-ink-950">{row.name}</span>
+                        <span className="truncate text-[12px] leading-[1.15] tracking-[-0.3px] text-ink-600">{row.email}</span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  {enabled.text && <TableCell>Aurora</TableCell>}
+                  {enabled.checkbox && (
+                    <TableCell>
+                      <Checkbox checked={row.verified} aria-label={`${row.name} verified`} />
+                    </TableCell>
+                  )}
+                  {enabled.badge && (
+                    <TableCell>
+                      <Badge variant={badgeStyle} intent={tableStatusIntent[row.status]} dotLeft>
+                        {row.status}
+                      </Badge>
+                    </TableCell>
+                  )}
+                  {enabled.avatar && (
+                    <TableCell>
+                      <Avatar variant={avatarVariant} size={32} src={AVATAR_PLACEHOLDER_IMG}>
+                        {row.initials}
+                      </Avatar>
+                    </TableCell>
+                  )}
+                  {enabled.avatarGroup && (
+                    <TableCell>
+                      <AvatarGroup size={32} max={3}>
+                        {row.reviewers.map((initials, i) => (
+                          <Avatar key={i}>{initials}</Avatar>
+                        ))}
+                      </AvatarGroup>
+                    </TableCell>
+                  )}
+                  {enabled.progress && (
+                    <TableCell>
+                      <Progress value={row.completion} label={false} hint={false} className="w-[120px]" />
+                    </TableCell>
+                  )}
+                  {enabled.button && (
+                    <TableCell>
+                      <Button variant={buttonStyle} intent="primary" size="sm">
+                        Approve
+                      </Button>
+                    </TableCell>
+                  )}
+                  {enabled.dropdown && (
+                    <TableCell>
+                      <Dropdown>
+                        <DropdownTrigger asChild>
+                          <Button variant="light" intent="neutral" size="sm">
+                            {row.priority}
+                          </Button>
+                        </DropdownTrigger>
+                        <DropdownContent align="start">
+                          {tablePriorities.map((p) => (
+                            <DropdownItem key={p}>{p}</DropdownItem>
+                          ))}
+                        </DropdownContent>
+                      </Dropdown>
+                    </TableCell>
+                  )}
+                  <TableCell width={56}>
+                    <Dropdown>
+                      <DropdownTrigger asChild>
+                        <Button iconOnly={<EllipsisVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Row actions" />
+                      </DropdownTrigger>
+                      <DropdownContent align="end">
+                        <DropdownItem icon={<Pencil />}>Edit</DropdownItem>
+                        <DropdownItem icon={<Trash2 />} destructive>
+                          Delete
+                        </DropdownItem>
+                      </DropdownContent>
+                    </Dropdown>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           </TableScrollArea>
           <TablePaginationWrapper>
-            <Pagination page={1} totalPages={4} onPageChange={() => {}} totalItems={tableRows.length * 4} pageSize={tableRows.length} />
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              totalItems={tableRows.length}
+              pageSize={tablePageSize}
+            />
           </TablePaginationWrapper>
         </Table>
       </ComponentSection>
