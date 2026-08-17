@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
@@ -3364,15 +3365,18 @@ export function PlaygroundContent() {
 
         <div className="flex min-w-0 flex-1 flex-col gap-16 pb-24 max-w-[900px]">
           <div className="flex w-full flex-col gap-9">
-            <div className="flex flex-col gap-2">
-              <h1 className="text-[28px] font-semibold leading-none tracking-[-0.84px] text-ink-950">
-                Playground
-              </h1>
-              <p className="text-[16px] leading-[1.4] tracking-[-0.48px] text-ink-600">
-                Internal component testing. Real production components from{" "}
-                <code className="text-[14px]">components/ui</code>. Not linked anywhere on the
-                site.
-              </p>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <h1 className="text-[28px] font-semibold leading-none tracking-[-0.84px] text-ink-950">
+                  Playground
+                </h1>
+                <p className="text-[16px] leading-[1.4] tracking-[-0.48px] text-ink-600">
+                  Internal component testing. Real production components from{" "}
+                  <code className="text-[14px]">components/ui</code>. Not linked anywhere on the
+                  site.
+                </p>
+              </div>
+              <ThemeToggle />
             </div>
             <div className="h-px w-full bg-stroke" />
           </div>

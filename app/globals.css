@@ -311,11 +311,21 @@
   --foreground-neutral-strong: var(--neutral-950);
   --foreground-neutral: var(--neutral-900);
   --foreground-neutral-subtle: var(--neutral-800);
-  /* Constant like foreground-error-inverse etc below — Alert's
-     Fill/Neutral background (surface-neutral) is always near-black
-     regardless of site theme, unlike the generic (theme-adaptive)
-     foreground-inverse. */
+  /* Unlike foreground-error-inverse etc below, this one DOES flip
+     between themes — confirmed against Figma's Semantic variable
+     collection (Light/Dark modes): surface-neutral and
+     foreground-neutral-inverse are exact inverses of each other in
+     both modes (950<->50), since surface-neutral itself flips
+     (dark-toned surface in light mode, light-toned in dark mode)
+     unlike the colored surfaces (error/success/warning/info), which
+     stay mid/dark-toned in both themes. Redefined in the dark-theme
+     block below to match. */
   --foreground-neutral-inverse: var(--neutral-50);
+  /* Muted counterpart of foreground-neutral-inverse (secondary text/icons
+     on a surface-neutral fill, e.g. Alert/Notification close buttons and
+     descriptions) — same "flips with the surface" behavior, at 80% alpha
+     instead of foreground-base-inverse's theme-constant 80% white. */
+  --foreground-neutral-inverse-muted: var(--neutral-white-alpha-80);
   --foreground-primary: var(--primary-500);
   --foreground-primary-subtle: var(--primary-400);
   --foreground-primary-strong: var(--primary-600);
@@ -374,10 +384,14 @@
   --surface-low: var(--neutral-950);
   --surface-subtle: var(--neutral-800);
   --surface-strong: var(--neutral-600);
+  --ink-950: var(--neutral-50);
+  --ink-700: var(--neutral-200);
+  --ink-600: var(--neutral-400);
   --stroke: var(--neutral-800);
   --stroke-subtle: var(--neutral-700);
   --overlay: var(--neutral-white-alpha-8);
   --overlay-hover: var(--neutral-white-alpha-12);
+  --header-bg: rgba(4, 4, 4, 0.68);
 
   --surface-muted: var(--neutral-950);
   --surface-elevated: var(--neutral-950);
@@ -450,6 +464,8 @@
   --foreground-neutral-strong: var(--neutral-50);
   --foreground-neutral: var(--neutral-50);
   --foreground-neutral-subtle: var(--neutral-200);
+  --foreground-neutral-inverse: var(--neutral-950);
+  --foreground-neutral-inverse-muted: var(--neutral-black-alpha-80);
   --foreground-primary: var(--primary-600);
   --foreground-primary-subtle: var(--primary-500);
   --foreground-primary-strong: var(--primary-700);

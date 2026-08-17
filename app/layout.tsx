@@ -27,6 +27,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.figma.com" />
         <link rel="preconnect" href="https://static.figma.com" />
         <link rel="dns-prefetch" href="https://www.figma.com" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("theme");if(t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.classList.add("dark");}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="font-sans antialiased">
         {children}
