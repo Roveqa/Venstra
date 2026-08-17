@@ -1983,6 +1983,7 @@ function TableDemo() {
   const [avatarVariant, setAvatarVariant] = useState<(typeof avatarVariants)[number]["key"]>("text");
   const [buttonStyle, setButtonStyle] = useState<(typeof buttonStyles)[number]["key"]>("light");
   const [showPagination, setShowPagination] = useState(true);
+  const [showHeaderIcons, setShowHeaderIcons] = useState(true);
 
   const [order, setOrder] = useState(() => tableRows.map((r) => r.email));
   const [verified, setVerified] = useState(() => new Map(tableRows.map((r) => [r.email, r.verified])));
@@ -2074,6 +2075,15 @@ function TableDemo() {
             className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
           />
         </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Header icons</span>
+          <input
+            type="checkbox"
+            checked={showHeaderIcons}
+            onChange={(e) => setShowHeaderIcons(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
         {enabled.badge && <TinySelect label="Badge style" value={badgeStyle} onChange={setBadgeStyle} options={badgeStyles} />}
         {enabled.avatar && <TinySelect label="Avatar variant" value={avatarVariant} onChange={setAvatarVariant} options={avatarVariants} />}
         {enabled.button && <TinySelect label="Button style" value={buttonStyle} onChange={setButtonStyle} options={buttonStyles} />}
@@ -2087,14 +2097,14 @@ function TableDemo() {
                 <TableHead aria-hidden="true" />
                 <TableHead icon={<Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />} />
                 <TableHead>User</TableHead>
-                {enabled.text && <TableHead icon={<Folder />}>Project</TableHead>}
-                {enabled.checkbox && <TableHead icon={<CircleCheck />}>Verified</TableHead>}
-                {enabled.badge && <TableHead icon={<CircleDot />}>Status</TableHead>}
-                {enabled.avatar && <TableHead icon={<User />}>Assignee</TableHead>}
-                {enabled.avatarGroup && <TableHead icon={<Users />}>Reviewers</TableHead>}
-                {enabled.progress && <TableHead icon={<Gauge />}>Completion</TableHead>}
-                {enabled.button && <TableHead icon={<Zap />}>Action</TableHead>}
-                {enabled.dropdown && <TableHead icon={<Flag />}>Priority</TableHead>}
+                {enabled.text && <TableHead icon={showHeaderIcons ? <Folder /> : undefined}>Project</TableHead>}
+                {enabled.checkbox && <TableHead icon={showHeaderIcons ? <CircleCheck /> : undefined}>Verified</TableHead>}
+                {enabled.badge && <TableHead icon={showHeaderIcons ? <CircleDot /> : undefined}>Status</TableHead>}
+                {enabled.avatar && <TableHead icon={showHeaderIcons ? <User /> : undefined}>Assignee</TableHead>}
+                {enabled.avatarGroup && <TableHead icon={showHeaderIcons ? <Users /> : undefined}>Reviewers</TableHead>}
+                {enabled.progress && <TableHead icon={showHeaderIcons ? <Gauge /> : undefined}>Completion</TableHead>}
+                {enabled.button && <TableHead icon={showHeaderIcons ? <Zap /> : undefined}>Action</TableHead>}
+                {enabled.dropdown && <TableHead icon={showHeaderIcons ? <Flag /> : undefined}>Priority</TableHead>}
                 <TableHead aria-hidden="true" />
               </TableRow>
             </TableHeader>
@@ -2114,7 +2124,7 @@ function TableDemo() {
                     setDragging(null);
                     setDragOver(null);
                   }}
-                  className={dragOver === row.email ? "relative before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-[2px] before:bg-primary" : "relative"}
+                  className={dragOver === row.email ? "relative before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-[2px] before:bg-ink-950" : "relative"}
                 >
                   <TableCell>
                     <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" className="cursor-grab active:cursor-grabbing" />
