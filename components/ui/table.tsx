@@ -30,15 +30,15 @@ import styles from "./table.module.css";
  * differs (surface-subtle bg) — so rows only need a hover treatment,
  * not a separate "active" one.
  *
- * "List Cell=Yes/No" is "has the row's bottom divider" — first assumed
- * this meant every row except the last (dropping it there to avoid
- * doubling up against the table's own outer border), but the actual
- * assembled Table instance keeps border-b on every row INCLUDING the
- * last one, because the Pagination footer always follows and needs
- * that boundary line (confirmed directly against the real instance's
- * last row, not the isolated ComponentSet in the abstract). Applied
- * here as a box-shadow divider on every TableRow unconditionally,
- * rather than a boolean prop repeated on every cell.
+ * "List Cell=Yes/No" is "has the row's bottom divider". Every row in
+ * the one assembled Table instance keeps it, including the last one —
+ * confirmed directly against that instance, not assumed — because the
+ * Pagination footer always follows and needs the boundary line. But
+ * List Cell is still a real per-row variant in Figma's own
+ * ComponentSet, not just an internal implementation detail, so it's
+ * exposed here as `divider` on TableRow (default true) rather than
+ * baked in unconditionally — a consuming app can turn it off per row
+ * the same way Figma's own variant does.
  *
  * Columns are a real CSS Grid (`--table-columns`, set once via the
  * `columns` prop on <Table> and inherited by every row) instead of
@@ -107,8 +107,13 @@ export function TableBody({ className, ...props }: ComponentPropsWithoutRef<"div
   return <div role="rowgroup" className={clsx(styles.body, className)} {...props} />;
 }
 
-export function TableRow({ className, ...props }: ComponentPropsWithoutRef<"div">) {
-  return <div role="row" className={clsx(styles.row, className)} {...props} />;
+export interface TableRowProps extends ComponentPropsWithoutRef<"div"> {
+  /** Bottom divider line — Figma's "List Cell" variant. Defaults to true. */
+  divider?: boolean;
+}
+
+export function TableRow({ className, divider = true, ...props }: TableRowProps) {
+  return <div role="row" className={clsx(styles.row, className)} data-divider={divider || undefined} {...props} />;
 }
 
 export interface TableHeadProps extends ComponentPropsWithoutRef<"div"> {

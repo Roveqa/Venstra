@@ -1984,6 +1984,7 @@ function TableDemo() {
   const [buttonStyle, setButtonStyle] = useState<(typeof buttonStyles)[number]["key"]>("light");
   const [showPagination, setShowPagination] = useState(true);
   const [showHeaderIcons, setShowHeaderIcons] = useState(true);
+  const [showDividers, setShowDividers] = useState(true);
 
   const [order, setOrder] = useState(() => tableRows.map((r) => r.email));
   const [verified, setVerified] = useState(() => new Map(tableRows.map((r) => [r.email, r.verified])));
@@ -2084,6 +2085,15 @@ function TableDemo() {
             className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
           />
         </label>
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Row dividers</span>
+          <input
+            type="checkbox"
+            checked={showDividers}
+            onChange={(e) => setShowDividers(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
         {enabled.badge && <TinySelect label="Badge style" value={badgeStyle} onChange={setBadgeStyle} options={badgeStyles} />}
         {enabled.avatar && <TinySelect label="Avatar variant" value={avatarVariant} onChange={setAvatarVariant} options={avatarVariants} />}
         {enabled.button && <TinySelect label="Button style" value={buttonStyle} onChange={setButtonStyle} options={buttonStyles} />}
@@ -2112,6 +2122,7 @@ function TableDemo() {
               {pageRows.map((row) => (
                 <TableRow
                   key={row.email}
+                  divider={showDividers}
                   draggable
                   onDragStart={() => setDragging(row.email)}
                   onDragOver={(e) => {

@@ -39,15 +39,18 @@
   width: max-content;
   min-width: 100%;
   align-items: stretch;
-  /*
-   * box-shadow instead of border-bottom: a real border on a row inside
-   * a horizontally-scrolling container (.scrollArea) can visibly clip
-   * or truncate mid-scroll in some browsers (a GPU-compositing/layer-
-   * boundary artifact during the scroll gesture) — box-shadow doesn't
-   * participate in layout the same way and composites cleanly instead.
-   */
-  box-shadow: inset 0 -1px 0 0 var(--stroke);
   transition: background-color 0.1s ease;
+}
+/*
+ * box-shadow instead of border-bottom: a real border on a row inside a
+ * horizontally-scrolling container (.scrollArea) can visibly clip or
+ * truncate mid-scroll in some browsers (a GPU-compositing/layer-
+ * boundary artifact during the scroll gesture) — box-shadow doesn't
+ * participate in layout the same way and composites cleanly instead.
+ * Only applied when `divider` (Figma's "List Cell") is true.
+ */
+.row[data-divider="true"] {
+  box-shadow: inset 0 -1px 0 0 var(--stroke);
 }
 .body .row:hover {
   background-color: var(--surface-subtle);
