@@ -1951,8 +1951,6 @@ const tableColumns = [
 ] as const;
 type TableColumnKey = (typeof tableColumns)[number]["key"];
 
-const tablePageSize = 6;
-
 const tableColumnWidths: Record<TableColumnKey, TableColumn> = {
   text: { minWidth: 140 },
   checkbox: { minWidth: 110 },
@@ -1986,9 +1984,10 @@ function TableDemo() {
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
   const orderedRows = order.map((email) => tableRows.find((r) => r.email === email)!);
-  const totalPages = Math.ceil(orderedRows.length / tablePageSize);
-  const pageRows = showPagination ? orderedRows.slice((page - 1) * tablePageSize, page * tablePageSize) : orderedRows;
+  const totalPages = Math.ceil(orderedRows.length / pageSize);
+  const pageRows = showPagination ? orderedRows.slice((page - 1) * pageSize, page * pageSize) : orderedRows;
 
   const allSelected = pageRows.length > 0 && pageRows.every((r) => selected.has(r.email));
   const someSelected = pageRows.some((r) => selected.has(r.email)) && !allSelected;
@@ -2100,7 +2099,6 @@ function TableDemo() {
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={() => handleDrop(row.email)}
                   onDragEnd={() => setDragging(null)}
-                  style={{ opacity: dragging === row.email ? 0.4 : 1 }}
                 >
                   <TableCell>
                     <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" className="cursor-grab active:cursor-grabbing" />
@@ -2200,7 +2198,12 @@ function TableDemo() {
                 totalPages={totalPages}
                 onPageChange={setPage}
                 totalItems={orderedRows.length}
-                pageSize={tablePageSize}
+                pageSize={pageSize}
+                pageSizeOptions={[6, 12, 24]}
+                onPageSizeChange={(size) => {
+                  setPageSize(size);
+                  setPage(1);
+                }}
               />
             </TablePaginationWrapper>
           )}
