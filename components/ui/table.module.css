@@ -83,7 +83,12 @@
   align-items: center;
   color: var(--foreground-weak);
 }
-.headIcon svg {
+/* Direct-child selector only — a decorative lucide icon renders its
+   <svg> straight into .headIcon, but a Checkbox (the select-all header
+   cell) nests its own 10x10 checkmark svg several levels deep inside a
+   button > indicator span, and must keep its own fixed size instead of
+   being forced to 16px by this rule. */
+.headIcon > svg {
   width: 16px;
   height: 16px;
 }
