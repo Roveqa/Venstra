@@ -58,7 +58,7 @@
   box-sizing: border-box;
   border-radius: var(--radius-full);
   border: 1px solid var(--stroke-subtle);
-  background-color: var(--foreground-inverse);
+  background-color: var(--fill-primary-inverse);
   cursor: pointer;
   --sl-ring: 0 0 0 0 transparent;
   box-shadow: var(--sl-ring);

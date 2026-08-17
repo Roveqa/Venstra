@@ -139,10 +139,6 @@
   color: var(--foreground);
 }
 
-.item[data-destructive] .check {
-  color: var(--foreground-error);
-}
-
 .kbd {
   flex-shrink: 0;
 }

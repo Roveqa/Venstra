@@ -31,10 +31,11 @@ import styles from "./switch.module.css";
  * unchanged (matches Checkbox's disabled treatment — not grayed out
  * separately).
  *
- * Thumb is always white (fill-primary-inverse / --foreground-inverse,
- * same token reused for Checkbox's check/minus marks — same semantic
- * case, constant white regardless of theme). Figma implements the
- * thumb's on/off position via the track's own justify-content
+ * Thumb is always white (--fill-primary-inverse — confirmed via Figma's
+ * actual bound variable, constant across themes, unlike the generic
+ * --foreground-inverse which flips with the theme and would turn the
+ * thumb near-black in dark mode). Figma implements the thumb's on/off
+ * position via the track's own justify-content
  * (flex-start/flex-end), but that can't be CSS-transitioned smoothly,
  * so this uses transform: translateX() on the thumb instead — same
  * rest position (12px travel = track width 28 - padding 2*2 - thumb

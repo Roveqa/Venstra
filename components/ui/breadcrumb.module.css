@@ -73,7 +73,7 @@ button.item:hover {
   display: flex;
   align-items: center;
   padding: var(--spacing-1, 2px);
-  color: var(--foreground-weak);
+  color: var(--foreground-muted);
 }
 .separator svg {
   width: 16px;
