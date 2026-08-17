@@ -1946,6 +1946,8 @@ const tableRows = tableNamePool.map((name, i) => {
 const tableStatusIntent = { Active: "success", Paused: "warning", Error: "error" } as const;
 
 const tableColumns = [
+  { key: "drag", label: "Drag handle" },
+  { key: "select", label: "Select" },
   { key: "text", label: "Text" },
   { key: "checkbox", label: "Checkbox" },
   { key: "badge", label: "Badge" },
@@ -1958,6 +1960,8 @@ const tableColumns = [
 type TableColumnKey = (typeof tableColumns)[number]["key"];
 
 const tableColumnWidths: Record<TableColumnKey, TableColumn> = {
+  drag: { width: 56 },
+  select: { width: 44 },
   text: { minWidth: 140 },
   checkbox: { minWidth: 110 },
   badge: { minWidth: 140 },
@@ -1970,6 +1974,8 @@ const tableColumnWidths: Record<TableColumnKey, TableColumn> = {
 
 function TableDemo() {
   const [enabled, setEnabled] = useState<Record<TableColumnKey, boolean>>({
+    drag: true,
+    select: true,
     text: false,
     checkbox: false,
     badge: true,
@@ -2045,11 +2051,11 @@ function TableDemo() {
     setDragOver(null);
   }
 
+  const leadingColumnKeys: TableColumnKey[] = ["drag", "select"];
   const columns: TableColumn[] = [
-    { width: 56 },
-    { width: 44 },
+    ...tableColumns.filter((c) => leadingColumnKeys.includes(c.key) && enabled[c.key]).map((c) => tableColumnWidths[c.key]),
     { minWidth: 220 },
-    ...tableColumns.filter((c) => enabled[c.key]).map((c) => tableColumnWidths[c.key]),
+    ...tableColumns.filter((c) => !leadingColumnKeys.includes(c.key) && enabled[c.key]).map((c) => tableColumnWidths[c.key]),
     { width: 56 },
   ];
 
@@ -2104,8 +2110,10 @@ function TableDemo() {
           <TableScrollArea>
             <TableHeader>
               <TableRow>
-                <TableHead aria-hidden="true" />
-                <TableHead icon={<Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />} />
+                {enabled.drag && <TableHead aria-hidden="true" />}
+                {enabled.select && (
+                  <TableHead icon={<Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />} />
+                )}
                 <TableHead>User</TableHead>
                 {enabled.text && <TableHead icon={showHeaderIcons ? <Folder /> : undefined}>Project</TableHead>}
                 {enabled.checkbox && <TableHead icon={showHeaderIcons ? <CircleCheck /> : undefined}>Verified</TableHead>}
@@ -2123,7 +2131,7 @@ function TableDemo() {
                 <TableRow
                   key={row.email}
                   divider={showDividers}
-                  draggable
+                  draggable={enabled.drag}
                   onDragStart={() => setDragging(row.email)}
                   onDragOver={(e) => {
                     e.preventDefault();
@@ -2137,12 +2145,16 @@ function TableDemo() {
                   }}
                   className={dragOver === row.email ? "relative before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-[2px] before:bg-ink-950" : "relative"}
                 >
-                  <TableCell>
-                    <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" className="cursor-grab active:cursor-grabbing" />
-                  </TableCell>
-                  <TableCell>
-                    <Checkbox checked={selected.has(row.email)} onCheckedChange={() => toggleRow(row.email)} aria-label={`Select ${row.name}`} />
-                  </TableCell>
+                  {enabled.drag && (
+                    <TableCell>
+                      <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" className="cursor-grab active:cursor-grabbing" />
+                    </TableCell>
+                  )}
+                  {enabled.select && (
+                    <TableCell>
+                      <Checkbox checked={selected.has(row.email)} onCheckedChange={() => toggleRow(row.email)} aria-label={`Select ${row.name}`} />
+                    </TableCell>
+                  )}
                   <TableCell>
                     <div className="flex min-w-0 items-center gap-2">
                       <Avatar size={32}>{row.initials}</Avatar>
