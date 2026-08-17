@@ -19,6 +19,12 @@ import {
   GripVertical,
   EllipsisVertical,
   Pencil,
+  CircleCheck,
+  CircleDot,
+  Users,
+  Gauge,
+  Zap,
+  Flag,
 } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
@@ -1981,6 +1987,7 @@ function TableDemo() {
   const [order, setOrder] = useState(() => tableRows.map((r) => r.email));
   const [verified, setVerified] = useState(() => new Map(tableRows.map((r) => [r.email, r.verified])));
   const [dragging, setDragging] = useState<string | null>(null);
+  const [dragOver, setDragOver] = useState<string | null>(null);
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
@@ -2033,6 +2040,7 @@ function TableDemo() {
       return next;
     });
     setDragging(null);
+    setDragOver(null);
   }
 
   const columns: TableColumn[] = [
@@ -2079,14 +2087,14 @@ function TableDemo() {
                 <TableHead aria-hidden="true" />
                 <TableHead icon={<Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />} />
                 <TableHead>User</TableHead>
-                {enabled.text && <TableHead>Project</TableHead>}
-                {enabled.checkbox && <TableHead>Verified</TableHead>}
-                {enabled.badge && <TableHead>Status</TableHead>}
-                {enabled.avatar && <TableHead>Assignee</TableHead>}
-                {enabled.avatarGroup && <TableHead>Reviewers</TableHead>}
-                {enabled.progress && <TableHead>Completion</TableHead>}
-                {enabled.button && <TableHead>Action</TableHead>}
-                {enabled.dropdown && <TableHead>Priority</TableHead>}
+                {enabled.text && <TableHead icon={<Folder />}>Project</TableHead>}
+                {enabled.checkbox && <TableHead icon={<CircleCheck />}>Verified</TableHead>}
+                {enabled.badge && <TableHead icon={<CircleDot />}>Status</TableHead>}
+                {enabled.avatar && <TableHead icon={<User />}>Assignee</TableHead>}
+                {enabled.avatarGroup && <TableHead icon={<Users />}>Reviewers</TableHead>}
+                {enabled.progress && <TableHead icon={<Gauge />}>Completion</TableHead>}
+                {enabled.button && <TableHead icon={<Zap />}>Action</TableHead>}
+                {enabled.dropdown && <TableHead icon={<Flag />}>Priority</TableHead>}
                 <TableHead aria-hidden="true" />
               </TableRow>
             </TableHeader>
@@ -2096,9 +2104,17 @@ function TableDemo() {
                   key={row.email}
                   draggable
                   onDragStart={() => setDragging(row.email)}
-                  onDragOver={(e) => e.preventDefault()}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    if (dragging && dragging !== row.email) setDragOver(row.email);
+                  }}
+                  onDragLeave={() => setDragOver((prev) => (prev === row.email ? null : prev))}
                   onDrop={() => handleDrop(row.email)}
-                  onDragEnd={() => setDragging(null)}
+                  onDragEnd={() => {
+                    setDragging(null);
+                    setDragOver(null);
+                  }}
+                  className={dragOver === row.email ? "relative before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-[2px] before:bg-primary" : "relative"}
                 >
                   <TableCell>
                     <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" className="cursor-grab active:cursor-grabbing" />
