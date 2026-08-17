@@ -2127,10 +2127,10 @@ function TableDemo() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pageRows.map((row) => (
+              {pageRows.map((row, index) => (
                 <TableRow
                   key={row.email}
-                  divider={showDividers}
+                  divider={showDividers && (showPagination || index !== pageRows.length - 1)}
                   draggable={enabled.drag}
                   onDragStart={() => setDragging(row.email)}
                   onDragOver={(e) => {
