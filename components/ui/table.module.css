@@ -4,6 +4,7 @@
  */
 
 .table {
+  --table-columns: none;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -22,7 +23,6 @@
 .header {
   display: flex;
   width: 100%;
-  min-width: max-content;
   flex-direction: column;
   flex-shrink: 0;
 }
@@ -30,13 +30,14 @@
 .body {
   display: flex;
   width: 100%;
-  min-width: max-content;
   flex-direction: column;
 }
 
 .row {
-  display: flex;
-  width: 100%;
+  display: grid;
+  grid-template-columns: var(--table-columns);
+  width: max-content;
+  min-width: 100%;
   align-items: stretch;
   /*
    * box-shadow instead of border-bottom: a real border on a row inside
@@ -45,7 +46,7 @@
    * boundary artifact during the scroll gesture) — box-shadow doesn't
    * participate in layout the same way and composites cleanly instead.
    */
-  box-shadow: inset 0 -1px 0 var(--stroke);
+  box-shadow: inset 0 -1px 0 0 var(--stroke);
   transition: background-color 0.1s ease;
 }
 .body .row:hover {
@@ -55,7 +56,7 @@
 .head {
   display: flex;
   height: 40px;
-  flex: 1 0 140px;
+  min-width: 0;
   align-items: center;
   gap: var(--spacing-2, 4px);
   box-sizing: border-box;
@@ -73,10 +74,16 @@
   background-color: var(--surface-subtle-hover);
 }
 
+.headIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
 .cell {
   display: flex;
   height: 56px;
-  flex: 1 0 140px;
+  min-width: 0;
   align-items: center;
   gap: var(--spacing-4, 8px);
   box-sizing: border-box;

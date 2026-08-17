@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { type ComponentPropsWithoutRef, type CSSProperties } from "react";
+import { type ComponentPropsWithoutRef, type ReactNode } from "react";
 import styles from "./table.module.css";
 
 /**
@@ -40,6 +40,19 @@ import styles from "./table.module.css";
  * here as a box-shadow divider on every TableRow unconditionally,
  * rather than a boolean prop repeated on every cell.
  *
+ * Columns are a real CSS Grid (`--table-columns`, set once via the
+ * `columns` prop on <Table> and inherited by every row) instead of
+ * independent flexbox per row. Header and body used to each be their
+ * own flex-col box, and — even with identical flex-basis/grow on every
+ * cell — their EXACT pixel widths could still drift apart by a few px
+ * (confirmed via getBoundingClientRect: header cells sat at 140px while
+ * body cells the same "column" grew to ~150px, because .header and
+ * .body each computed their own independent max-content width from
+ * their own content). That drift is what made the row dividers and
+ * hover state look like they were cutting out mid-scroll — the header
+ * and body columns were never actually aligned to begin with. A single
+ * shared grid track list guarantees pixel-perfect alignment instead.
+ *
  * The full assembled example (drag-handle column, checkbox column, 6
  * data columns, trailing kebab-menu column) is reproduced in the
  * playground demo using these primitives plus the existing Checkbox/
@@ -48,19 +61,39 @@ import styles from "./table.module.css";
  * (matching every other multi-part component in this codebase) rather
  * than a monolithic "data grid" baking in drag/select/actions.
  */
-export function Table({ className, ...props }: ComponentPropsWithoutRef<"div">) {
-  return <div role="table" className={clsx(styles.table, className)} {...props} />;
+export interface TableColumn {
+  /** Fixed column width in px (e.g. the drag-handle/checkbox/actions columns). */
+  width?: number;
+  /** Minimum width for a flexible (grow-to-fill) column — ignored if `width` is set. Defaults to 140. */
+  minWidth?: number;
+}
+
+export interface TableProps extends ComponentPropsWithoutRef<"div"> {
+  /** Column widths, in order — shared by the header row and every body row so they stay pixel-aligned. */
+  columns: TableColumn[];
+}
+
+export function Table({ className, columns, style, ...props }: TableProps) {
+  const template = columns.map((c) => (c.width !== undefined ? `${c.width}px` : `minmax(${c.minWidth ?? 140}px, 1fr)`)).join(" ");
+  return (
+    <div
+      role="table"
+      className={clsx(styles.table, className)}
+      style={{ ...style, ["--table-columns" as string]: template }}
+      {...props}
+    />
+  );
 }
 
 /**
  * Wraps TableHeader + TableBody together so they scroll horizontally
  * in sync (a single shared scrollbox, not two independently-scrolling
- * regions) once the flexible columns hit their min-width and the row
- * no longer fits — not itself in Figma (every column in the one
- * assembled example fits comfortably at 1576px), but necessary real-
- * world behavior for any table with more columns than a narrow
- * viewport can show. TablePaginationWrapper stays a sibling outside
- * this, matching Figma (pagination doesn't scroll with the rows).
+ * regions) once the columns hit their min-width and the row no longer
+ * fits — not itself in Figma (every column in the one assembled
+ * example fits comfortably at 1576px), but necessary real-world
+ * behavior for any table with more columns than a narrow viewport can
+ * show. TablePaginationWrapper stays a sibling outside this, matching
+ * Figma (pagination doesn't scroll with the rows).
  */
 export function TableScrollArea({ className, ...props }: ComponentPropsWithoutRef<"div">) {
   return <div className={clsx(styles.scrollArea, className)} {...props} />;
@@ -79,23 +112,27 @@ export function TableRow({ className, ...props }: ComponentPropsWithoutRef<"div"
 }
 
 export interface TableHeadProps extends ComponentPropsWithoutRef<"div"> {
-  /** Fixed column width (e.g. the drag-handle/checkbox/actions columns) — omit for a flexible data column. */
-  width?: number;
+  /**
+   * Leading glyph before the label — Figma's own "Table head" exposes
+   * this as a `checkbox` boolean specifically for the select-all
+   * column, but the same "icon vs. no icon" header variant applies to
+   * any column, so this takes any node (a Checkbox, a sort arrow,
+   * whatever) rather than being hardcoded to one.
+   */
+  icon?: ReactNode;
 }
 
-export function TableHead({ className, width, style, ...props }: TableHeadProps) {
-  const widthStyle: CSSProperties | undefined = width !== undefined ? { ...style, width, flex: `0 0 ${width}px` } : style;
-  return <div role="columnheader" className={clsx(styles.head, className)} style={widthStyle} {...props} />;
+export function TableHead({ className, icon, children, ...props }: TableHeadProps) {
+  return (
+    <div role="columnheader" className={clsx(styles.head, className)} {...props}>
+      {icon && <span className={styles.headIcon}>{icon}</span>}
+      {children}
+    </div>
+  );
 }
 
-export interface TableCellProps extends ComponentPropsWithoutRef<"div"> {
-  /** Fixed column width (e.g. the drag-handle/checkbox/actions columns) — omit for a flexible data column. */
-  width?: number;
-}
-
-export function TableCell({ className, width, style, ...props }: TableCellProps) {
-  const widthStyle: CSSProperties | undefined = width !== undefined ? { ...style, width, flex: `0 0 ${width}px` } : style;
-  return <div role="cell" className={clsx(styles.cell, className)} style={widthStyle} {...props} />;
+export function TableCell({ className, ...props }: ComponentPropsWithoutRef<"div">) {
+  return <div role="cell" className={clsx(styles.cell, className)} {...props} />;
 }
 
 export function TablePaginationWrapper({ className, ...props }: ComponentPropsWithoutRef<"div">) {

@@ -63,6 +63,7 @@ import {
   TableHead,
   TableCell,
   TablePaginationWrapper,
+  type TableColumn,
 } from "@/components/ui/table";
 import { Alert, type AlertType, type AlertVariant } from "@/components/ui/alert";
 import { Notification, type NotificationType, type NotificationVariant } from "@/components/ui/notification";
@@ -1952,6 +1953,17 @@ type TableColumnKey = (typeof tableColumns)[number]["key"];
 
 const tablePageSize = 6;
 
+const tableColumnWidths: Record<TableColumnKey, TableColumn> = {
+  text: { minWidth: 140 },
+  checkbox: { minWidth: 110 },
+  badge: { minWidth: 140 },
+  avatar: { minWidth: 110 },
+  avatarGroup: { minWidth: 150 },
+  progress: { minWidth: 160 },
+  button: { minWidth: 140 },
+  dropdown: { minWidth: 140 },
+};
+
 function TableDemo() {
   const [enabled, setEnabled] = useState<Record<TableColumnKey, boolean>>({
     text: false,
@@ -1966,11 +1978,17 @@ function TableDemo() {
   const [badgeStyle, setBadgeStyle] = useState<(typeof badgeStyles)[number]["key"]>("fill");
   const [avatarVariant, setAvatarVariant] = useState<(typeof avatarVariants)[number]["key"]>("text");
   const [buttonStyle, setButtonStyle] = useState<(typeof buttonStyles)[number]["key"]>("light");
+  const [showPagination, setShowPagination] = useState(true);
+
+  const [order, setOrder] = useState(() => tableRows.map((r) => r.email));
+  const [verified, setVerified] = useState(() => new Map(tableRows.map((r) => [r.email, r.verified])));
+  const [dragging, setDragging] = useState<string | null>(null);
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
-  const totalPages = Math.ceil(tableRows.length / tablePageSize);
-  const pageRows = tableRows.slice((page - 1) * tablePageSize, page * tablePageSize);
+  const orderedRows = order.map((email) => tableRows.find((r) => r.email === email)!);
+  const totalPages = Math.ceil(orderedRows.length / tablePageSize);
+  const pageRows = showPagination ? orderedRows.slice((page - 1) * tablePageSize, page * tablePageSize) : orderedRows;
 
   const allSelected = pageRows.length > 0 && pageRows.every((r) => selected.has(r.email));
   const someSelected = pageRows.some((r) => selected.has(r.email)) && !allSelected;
@@ -2000,6 +2018,31 @@ function TableDemo() {
       return next;
     });
   }
+  function toggleVerified(email: string) {
+    setVerified((prev) => {
+      const next = new Map(prev);
+      next.set(email, !next.get(email));
+      return next;
+    });
+  }
+  function handleDrop(targetEmail: string) {
+    if (!dragging || dragging === targetEmail) return;
+    setOrder((prev) => {
+      const next = prev.filter((email) => email !== dragging);
+      const targetIndex = next.indexOf(targetEmail);
+      next.splice(targetIndex, 0, dragging);
+      return next;
+    });
+    setDragging(null);
+  }
+
+  const columns: TableColumn[] = [
+    { width: 56 },
+    { width: 44 },
+    { minWidth: 220 },
+    ...tableColumns.filter((c) => enabled[c.key]).map((c) => tableColumnWidths[c.key]),
+    { width: 56 },
+  ];
 
   return (
     <div className="flex w-full flex-col items-center gap-8">
@@ -2015,20 +2058,27 @@ function TableDemo() {
             />
           </label>
         ))}
+        <label className="flex flex-col items-start gap-1.5">
+          <span className="text-[13px] text-ink-600">Pagination</span>
+          <input
+            type="checkbox"
+            checked={showPagination}
+            onChange={(e) => setShowPagination(e.target.checked)}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          />
+        </label>
         {enabled.badge && <TinySelect label="Badge style" value={badgeStyle} onChange={setBadgeStyle} options={badgeStyles} />}
         {enabled.avatar && <TinySelect label="Avatar variant" value={avatarVariant} onChange={setAvatarVariant} options={avatarVariants} />}
         {enabled.button && <TinySelect label="Button style" value={buttonStyle} onChange={setButtonStyle} options={buttonStyles} />}
       </ControlBar>
 
       <ComponentSection>
-        <Table>
+        <Table columns={columns}>
           <TableScrollArea>
             <TableHeader>
               <TableRow>
-                <TableHead width={56} aria-hidden="true" />
-                <TableHead width={44}>
-                  <Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />
-                </TableHead>
+                <TableHead aria-hidden="true" />
+                <TableHead icon={<Checkbox checked={allSelected || (someSelected && "indeterminate")} onCheckedChange={toggleAll} aria-label="Select all rows" />} />
                 <TableHead>User</TableHead>
                 {enabled.text && <TableHead>Project</TableHead>}
                 {enabled.checkbox && <TableHead>Verified</TableHead>}
@@ -2038,16 +2088,24 @@ function TableDemo() {
                 {enabled.progress && <TableHead>Completion</TableHead>}
                 {enabled.button && <TableHead>Action</TableHead>}
                 {enabled.dropdown && <TableHead>Priority</TableHead>}
-                <TableHead width={56} aria-hidden="true" />
+                <TableHead aria-hidden="true" />
               </TableRow>
             </TableHeader>
             <TableBody>
               {pageRows.map((row) => (
-                <TableRow key={row.email}>
-                  <TableCell width={56}>
-                    <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" />
+                <TableRow
+                  key={row.email}
+                  draggable
+                  onDragStart={() => setDragging(row.email)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => handleDrop(row.email)}
+                  onDragEnd={() => setDragging(null)}
+                  style={{ opacity: dragging === row.email ? 0.4 : 1 }}
+                >
+                  <TableCell>
+                    <Button iconOnly={<GripVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Drag to reorder" className="cursor-grab active:cursor-grabbing" />
                   </TableCell>
-                  <TableCell width={44}>
+                  <TableCell>
                     <Checkbox checked={selected.has(row.email)} onCheckedChange={() => toggleRow(row.email)} aria-label={`Select ${row.name}`} />
                   </TableCell>
                   <TableCell>
@@ -2062,7 +2120,7 @@ function TableDemo() {
                   {enabled.text && <TableCell>Aurora</TableCell>}
                   {enabled.checkbox && (
                     <TableCell>
-                      <Checkbox checked={row.verified} aria-label={`${row.name} verified`} />
+                      <Checkbox checked={verified.get(row.email) ?? row.verified} onCheckedChange={() => toggleVerified(row.email)} aria-label={`${row.name} verified`} />
                     </TableCell>
                   )}
                   {enabled.badge && (
@@ -2083,7 +2141,9 @@ function TableDemo() {
                     <TableCell>
                       <AvatarGroup size={32} max={3}>
                         {row.reviewers.map((initials, i) => (
-                          <Avatar key={i}>{initials}</Avatar>
+                          <Avatar key={i} size={32}>
+                            {initials}
+                          </Avatar>
                         ))}
                       </AvatarGroup>
                     </TableCell>
@@ -2116,7 +2176,7 @@ function TableDemo() {
                       </Dropdown>
                     </TableCell>
                   )}
-                  <TableCell width={56}>
+                  <TableCell>
                     <Dropdown>
                       <DropdownTrigger asChild>
                         <Button iconOnly={<EllipsisVertical />} variant="ghost" intent="neutral" size="sm" aria-label="Row actions" />
@@ -2133,15 +2193,17 @@ function TableDemo() {
               ))}
             </TableBody>
           </TableScrollArea>
-          <TablePaginationWrapper>
-            <Pagination
-              page={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-              totalItems={tableRows.length}
-              pageSize={tablePageSize}
-            />
-          </TablePaginationWrapper>
+          {showPagination && (
+            <TablePaginationWrapper>
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                totalItems={orderedRows.length}
+                pageSize={tablePageSize}
+              />
+            </TablePaginationWrapper>
+          )}
         </Table>
       </ComponentSection>
     </div>
