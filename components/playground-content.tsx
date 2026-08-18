@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { Header } from "@/components/header";
 import { PlaygroundSidebar } from "@/components/playground-sidebar";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
@@ -3376,7 +3375,6 @@ export function PlaygroundContent() {
                   site.
                 </p>
               </div>
-              <ThemeToggle />
             </div>
             <div className="h-px w-full bg-stroke" />
           </div>
